@@ -269,6 +269,92 @@ main .calender{
 .calender-arrow .arrow-left{
     cursor: pointer;
 }
+<<<<<<< HEAD
 .calender-arrow .arrow-right{
     cursor: pointer;
+=======
+.view-tit-txt:focus {
+    outline: none;
+}
+/* js하면 삭제될 부분 */
+.view-tit-txt::placeholder {
+    color: #222;
+}
+
+/* main01 - 일정 삭제 버튼 */
+.view-delete-button {
+    background: url(../img/delete-button.svg) no-repeat;
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    right: 20px;
+}
+
+/* main02 */
+.modal-view-txt {
+    margin: 17px 33px 0 25px;
+}
+
+/* main02 - 일정 반복 선택 부분 */
+.view-button {
+    display: flex;
+    gap: 20px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+}
+
+.view-button button {
+    color: #aaa;
+    position: relative;
+    padding-left: 21px;
+
+
+}
+.view-button button::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 52%;
+    transform: translateY(-50%);
+    background: url(../img/check.svg) no-repeat;
+    width: 15px;
+    height: 15px;
+}
+
+/* js로 컨트롤 해야하는 부분..  */
+.view-button button.js {
+    color: #222;
+}
+.view-button button.js::before {
+    background: url(../img/check-on.svg);
+}
+
+/* main02 - 일정 시간 */
+.view-time{
+    font-family: "Inter", sans-serif;
+    font-size: 1.063rem;
+    font-weight: 500;
+    padding-left: 25px;
+    position: relative;
+}
+.view-time::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 52%;
+    transform: translateY(-50%);
+    background: url(../img/alarm.svg) no-repeat;
+    width: 16px;
+    height: 16px;
+}
+
+/* main02 - 일정 내용 */
+.view-description {
+    margin-top: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    /* -webkit-line-clamp: 2; */
+    -webkit-box-orient: vertical;
+>>>>>>> Publishing
 }
