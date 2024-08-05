@@ -1,7 +1,7 @@
 :root {
     --main-color: #43E2BD;
 }
-/*----------------------메인페이지 영역----------------------*/
+/*----------------------------------메인페이지 영역 END----------------------------------*/
 main{
     display: flex;
     width: 100%;
@@ -137,7 +137,7 @@ main .sidebar{
     color: #AAAAAA;
     line-height: 12px;
 }
-
+/*----------------------왼쪽 사이드바 END----------------------*/
 /*----------------------오른쪽 달력----------------------*/
 main .calender{
     width: 100%;
@@ -272,3 +272,214 @@ main .calender{
 .calender-arrow .arrow-right{
     cursor: pointer;
 }
+/*----------------------오른쪽 달력 END-----------------------*/
+/*----------------------------------메인페이지 영역 END----------------------------------*/
+
+/*----------------------------------일정 조회 모달영역----------------------------------*/
+/* 일정 조회 모달 - bg */
+.modal-schedule-view {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    background: rgba(0, 0, 0, 0.5);
+    /* display: none; */
+}
+
+.modal-schedule-view .modal-view-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* display: none; */
+}
+
+
+/* 모달 창 header */
+.modal-date-cont {
+    /* padding: 33px 0 0 46px; */
+    width: 942px;
+    height: 800px;
+    position: relative;
+    background-color: var(--main-color);
+    border-radius: 20px;
+}
+
+/* header - 날짜 부분 */
+.modal-view-date {
+    height: 111px;
+    display: flex;
+    align-items: center;
+    padding: 46px;
+}
+.modal-view-date p {
+    font-family: "Inter", sans-serif;
+    font-weight: bold;
+}
+.view-year {
+    font-size: 1.75rem;
+    text-decoration-line: underline overline;
+    text-underline-offset : 6px;
+    margin-right: 19px;
+}
+.view-month {
+    font-size: 3rem;
+    position: relative;
+}
+.view-separator {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 10px;
+    padding-top: 10px;
+    transform: rotate(11deg);
+}
+.view-day {
+    align-self: flex-start;
+    font-size: 2rem;
+    line-height: 1;
+}
+
+/* header - 모달 창 닫기 버튼 */
+.view-close-button {
+    background: url(../img/close-button.svg) no-repeat;
+    width: 24px;
+    height: 4px;
+    position: absolute;
+    top: 23px;
+    right: 26px;
+}
+
+/* header - 추가 버튼 */
+.view-add-button {
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 25px;
+    position: absolute;
+    top: 48px;
+    right: 62px;
+    padding: 7px 28px;
+    font-size: 1.063rem;
+    line-height: 1;
+}
+
+
+/* main - bg */
+.modal-view-cont {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: #fff;
+    height: 691px;
+    border-radius: 20px;
+    margin: 5px;
+    padding: 36px 46px;
+}
+
+/* 일정 창 main */
+.modal-view-box {
+    height: 190px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.12);
+    margin-bottom: 25px;
+}
+
+/* main01 - 제목 설정 */
+.modal-view-tit {
+    display: flex;
+    padding: 12px 25px;
+    align-items: center; 
+    position: relative;
+    border-bottom: 1px solid #ddd;
+}
+.view-tit-txt {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-left: 6px;
+    position: relative;
+    border: none;
+}
+.view-tit-txt:focus {
+    outline: none;
+}
+/* js하면 삭제될 부분 */
+.view-tit-txt::placeholder {
+    color: #222;
+}
+
+/* main01 - 일정 삭제 버튼 */
+.view-delete-button {
+    background: url(../img/delete-button.svg) no-repeat;
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    right: 20px;
+}
+
+/* main02 */
+.modal-view-txt {
+    margin: 17px 33px 0 25px;
+}
+
+/* main02 - 일정 반복 선택 부분 */
+.view-button {
+    display: flex;
+    gap: 20px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+}
+
+.view-button button {
+    color: #aaa;
+    position: relative;
+    padding-left: 21px;
+
+
+}
+.view-button button::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 52%;
+    transform: translateY(-50%);
+    background: url(../img/check.svg) no-repeat;
+    width: 15px;
+    height: 15px;
+}
+
+/* js로 컨트롤 해야하는 부분..  */
+.view-button button.js {
+    color: #222;
+}
+.view-button button.js::before {
+    background: url(../img/check-on.svg);
+}
+
+/* main02 - 일정 시간 */
+.view-time{
+    font-family: "Inter", sans-serif;
+    font-size: 1.063rem;
+    font-weight: 500;
+    padding-left: 25px;
+    position: relative;
+}
+.view-time::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 52%;
+    transform: translateY(-50%);
+    background: url(../img/alarm.svg) no-repeat;
+    width: 16px;
+    height: 16px;
+}
+
+/* main02 - 일정 내용 */
+.view-description {
+    margin-top: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    /* -webkit-line-clamp: 2; */
+    -webkit-box-orient: vertical;
+}
+/*----------------------------------일정 조회 모달 END----------------------------------*/
