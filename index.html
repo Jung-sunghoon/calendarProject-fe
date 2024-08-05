@@ -230,6 +230,56 @@
                     </div>
         </section>
         <!-------------------------- 일정 조회 모달 End -------------------------->
+        <!-------------------------- 일정 관리 모달 영역 -------------------------->
+        <section class="modal-schedule-edit">
+            <div class="modal-edit-container">
+            <section class="modal-edit-cont">
+                <div class="modal-header">
+                <button id="edit-icon"><img src="./img/edit-btn.svg"></button>
+                <div class="modal-title">JavaScript Study</div>
+                <button id="close-btn"><img src="./img/exit-btn.svg"></button>
+                </div>
+                <div class="modal-content">
+                <div class="modal-content-top">
+                    <div class="input-group">
+            <p>날짜ㅤ<span id="selectedDate" class="date-input">2024년 7월 26일</span></p>
+                    </div>
+                    <div class="input-group">
+            <p>시간ㅤ<span id="selectedTime" class="time-input">11:00</span></p>
+            <span class="time-badge"><img src="./img/time-btn.svg">완료 시간</span>
+                    </div>
+                </div>
+                <div class="textarea-container">
+                <textarea placeholder="내용을 입력하세요..."></textarea>
+                </div>
+                </div>
+                <div class="modal-footer">
+            <button class="footer-btn">취소</button>
+            <button class="footer-btn">저장</button>
+            <button class="footer-btn">삭제</button>
+                </div>
+            </section>
+            </div>
+        </section>
+    
+        <div id="datePicker" class="date-picker" style="display: none;">
+        <div class="header">
+            <button id="prevMonth">&lt;</button>
+            <span id="currentMonth"></span>
+            <button id="nextMonth">&gt;</button>
+        </div>
+        <div class="weekdays">
+            <div class="sun">일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div class="sat">토</div>
+        </div>
+        <div id="calendar"></div>
+        <div class="time-picker">
+            <input type="number" id="hour" min="0" max="23" value="11">
+            <span>:</span>
+            <input type="number" id="minute" min="0" max="59" value="00">
+        </div>
+        <button id="confirm">확인</button>
+        </div>
+        <!-------------------------- 일정 관리 모달 END -------------------------->
 
 
         <!-------------------------- 일정 삭제 모달 Start  -------------------------->
@@ -249,4 +299,5 @@
         </section>
     </main>
   </body>
+  <script src="./script.js"></script>
 </html>
