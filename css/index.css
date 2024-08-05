@@ -1,210 +1,274 @@
 :root {
     --main-color: #43E2BD;
 }
-
-/* 일정 조회 모달 - bg */
-.modal-schedule-view {
+/*----------------------메인페이지 영역----------------------*/
+main{
+    display: flex;
     width: 100%;
-    min-height: 100vh;
-    position: relative;
-    background: rgba(0, 0, 0, 0.5);
-    /* display: none; */
+    height: fit-content;
 }
 
-.modal-schedule-view .modal-view-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    /* display: none; */
+/*----------------------왼쪽 사이드바----------------------*/
+main .sidebar{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 333px;
+    height: 1080px;
+    padding: 56px 28px;
+    background-color: #43E2BD;
 }
-
-
-/* 모달 창 header */
-.modal-date-cont {
-    /* padding: 33px 0 0 46px; */
-    width: 942px;
-    height: 800px;
-    position: relative;
-    background-color: var(--main-color);
+/*-----------사이드바상단(로고, 날씨)-----------*/
+.sidebar .sidebar-top{
+    height: 199px;
+    margin-bottom: 52px;
+}
+.sidebar-top .sidebar-logo{
+    width: 218px;
+    height: 32px;
+    margin: 0 auto 48px;
+}
+.sidebar-top .sidebar-logo a{
+    width: 100%;
+}
+.sidebar-top .sidebar-logo a img{
+    width: 14em;
+}
+.sidebar-top .sidebar-weather{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 124px;
+    padding: 26px 25px;
+    background-color: rgb(255, 255, 255, 50%);
+    opacity: 100%;
     border-radius: 20px;
 }
-
-/* header - 날짜 부분 */
-.modal-view-date {
+.sidebar-weather .sidebar-weather-info{
+    width: fit-content;
+}
+.sidebar-weather .sidebar-weather-info .sidebar-weather-text{
+    font-family:"Inter";
+    font-size:16px;
+    color: #3FB499;
+}
+.sidebar-weather .sidebar-weather-info .sidebar-weather-num{
+    font-family:"Inter";
+    font-size: 50px;
+    font-weight: bold;
+    color: #3FB499;
+}
+.sidebar-weather .sidebar-weather-icon img{
+    width: 116px;
     height: 111px;
+}
+/*-----------사이드바하단(간단한일정)-----------*/
+.sidebar .sidebar-bottom{
+    height: 720px
+}
+.sidebar-bottom .sidebar-scadule{
+    width: 100%;
+    height: 684px;
+    padding: 38px 20px;
+    background-color: #fff;
+    border-radius: 1.2em;
+}
+.sidebar-scadule .sidebar-today{
+    height: 34px;
+}
+.sidebar-scadule .sidebar-today span{
+    font-family: "Noto Sans Kr";
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 15px;
+}
+.sidebar-scadule .sidebar-today::after{
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #f4f4f4;
+    margin-top: 17px;
+}
+.sidebar-scadule .sidebar-scadule-list{
+    margin-top: 19px;
+}
+.sidebar-scadule .sidebar-scadule-list li{
+    margin-bottom: 12px;
+}
+.sidebar-scadule-list li .sidebar-list-box{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 40px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 10px 16px;
+}
+.sidebar-list-box .sidebar-list-cont img{
+    margin-right: 8px;
+}
+.sidebar-list-box .sidebar-list-cont span{
+    display: inline-block;
+    font-family: "Noto sans kr";
+    font-size: 14px;
+}
+.sidebar-list-box .sidebar-list-close{
+    display: none;
+}
+.sidebar-scadule-list li:hover .sidebar-list-box{
+    background-color: #f6f6f6;
+}
+.sidebar-scadule-list li:hover .sidebar-list-box .sidebar-list-close{
+    display: block;
+}
+.sidebar-scadule .sidebar-scadule-add{
+    display: flex;
+    width: 100%;
+    height: 38px;
+    padding: 10px 14px;
+}
+.sidebar-scadule .sidebar-scadule-add img{
+    margin-right: 6px;
+}
+.sidebar-scadule .sidebar-scadule-add span{
+    font-size: 12px;
+    color: #AAAAAA;
+    line-height: 12px;
+}
+
+/*----------------------오른쪽 달력----------------------*/
+main .calender{
+    width: 100%;
+    margin: auto;
+}
+.calender .calender-box{
+    width: 1476px;
+    height: 967px;
+    margin: auto;
+    border: 2px solid #f0f0f0;
+    border-radius: 20px;
+    box-shadow: 0px 0px 20px rgb(0, 0, 0, 20%);
+}
+/*-----------오른쪽달력상단(날짜확인 및 설정)-----------*/
+.calender-box .calender-box-head{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 41px 77px;
+}
+.calender-box-head .calender-info{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 190px;
+}
+.calender-info .calender-month{
+    font-family: "Inter";
+    font-size: 78px;
+    font-weight: bold;
+    line-height: 78px;
+}
+.calender-info .calender-year{
+    font-family: "Inter";
+    font-size: 32px;
+    line-height: 48px;
+}
+.calender-box-head .calender-select{
+    display: flex;
+    justify-content: space-between;
+    width: 294px;
+    z-index: 888;
+}
+.calender-box-head .calender-select p{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 28px;
+    margin-bottom: 16px;
+}
+.calender-box-head .calender-select p span{
+    font-size: 16px;
+    letter-spacing: -2px;
+}
+.calender-select .calender-select-month{
+    width: 140px;
+    height: 42px;
+    border: 2px solid #dddddd;
+    border-radius: 10px;
+    padding: 9px 0;
+}
+.calender-select-month .calender-select-month-box{
+    width: 140px;
+    height: 200px;
+    border: 2px solid #dddddd;
+    border-radius: 10px;
+    padding: 24px 28px;
+    overflow: hidden;
+}
+.calender-select-month .calender-select-month-list{
+    text-align: center;
+    width: 80px;
+    height: 146px;
+    overflow: scroll;
+    scrollbar-width: none;
+}
+.calender-select-month .calender-select-month-list li{
+    margin-bottom: 17px;
+}
+.calender-select .calender-select-year{
+    width: 140px;
+    height: 42px;
+    border: 2px solid #dddddd;
+    border-radius: 10px;
+    padding: 9px 0;
+}
+.calender-select-year .calender-select-year-box{
+    width: 140px;
+    height: 200px;
+    border: 2px solid #dddddd;
+    border-radius: 10px;
+    padding: 24px 28px;
+    overflow: hidden;
+}
+.calender-select-year .calender-select-year-list{
+    text-align: center;
+    width: 80px;
+    height: 146px;
+    overflow: scroll;
+    scrollbar-width: none;
+}
+.calender-select-year .calender-select-year-list li{
+    margin-bottom: 17px;
+}
+/*------스크롤바 숨김처리------*/
+.calender-select-year-list::-webkit-scrollbar{
+    display: none;
+}
+.calender-select-month-list::-webkit-scrollbar{
+    display: none;
+}
+/*-----------오른쪽달력하단(달력표 및 이동화살표)-----------*/
+.calender-box .calender-box-cont{
     display: flex;
     align-items: center;
-    padding: 46px;
+    width: 100%;
+    height: 772px;
+    margin: auto;
+    padding: 0 30px;
 }
-.modal-view-date p {
-    font-family: "Inter", sans-serif;
-    font-weight: bold;
-}
-.view-year {
-    font-size: 1.75rem;
-    text-decoration-line: underline overline;
-    text-underline-offset : 6px;
-    margin-right: 19px;
-}
-.view-month {
-    font-size: 3rem;
-    position: relative;
-}
-.view-separator {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin: 0 10px;
-    padding-top: 10px;
-    transform: rotate(11deg);
-}
-.view-day {
-    align-self: flex-start;
-    font-size: 2rem;
-    line-height: 1;
-}
-
-/* header - 모달 창 닫기 버튼 */
-.view-close-button {
-    background: url(../img/close-button.svg) no-repeat;
-    width: 24px;
-    height: 4px;
-    position: absolute;
-    top: 23px;
-    right: 26px;
-}
-
-/* header - 추가 버튼 */
-.view-add-button {
-    color: #fff;
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 25px;
-    position: absolute;
-    top: 48px;
-    right: 62px;
-    padding: 7px 28px;
-    font-size: 1.063rem;
-    line-height: 1;
-}
-
-
-/* main - bg */
-.modal-view-cont {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    background-color: #fff;
-    height: 691px;
-    border-radius: 20px;
-    margin: 5px;
-    padding: 36px 46px;
-}
-
-/* 일정 창 main */
-.modal-view-box {
-    height: 190px;
-    border: 1px solid #ddd;
-    border-radius: 15px;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.12);
-    margin-bottom: 25px;
-}
-
-/* main01 - 제목 설정 */
-.modal-view-tit {
+.calender-box-cont .calender-arrow{
     display: flex;
-    padding: 12px 25px;
-    align-items: center; 
-    position: relative;
-    border-bottom: 1px solid #ddd;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 772px;
+    z-index: 777;
 }
-.view-tit-txt {
-    font-size: 1.125rem;
-    font-weight: 600;
-    margin-left: 6px;
-    position: relative;
-    border: none;
+.calender-arrow .arrow-left{
+    cursor: pointer;
 }
-.view-tit-txt:focus {
-    outline: none;
-}
-/* js하면 삭제될 부분 */
-.view-tit-txt::placeholder {
-    color: #222;
-}
-
-/* main01 - 일정 삭제 버튼 */
-.view-delete-button {
-    background: url(../img/delete-button.svg) no-repeat;
-    width: 12px;
-    height: 12px;
-    position: absolute;
-    right: 20px;
-}
-
-/* main02 */
-.modal-view-txt {
-    margin: 17px 33px 0 25px;
-}
-
-/* main02 - 일정 반복 선택 부분 */
-.view-button {
-    display: flex;
-    gap: 20px;
-    border-radius: 10px;
-    margin-bottom: 14px;
-}
-
-.view-button button {
-    color: #aaa;
-    position: relative;
-    padding-left: 21px;
-
-
-}
-.view-button button::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 52%;
-    transform: translateY(-50%);
-    background: url(../img/check.svg) no-repeat;
-    width: 15px;
-    height: 15px;
-}
-
-/* js로 컨트롤 해야하는 부분..  */
-.view-button button.js {
-    color: #222;
-}
-.view-button button.js::before {
-    background: url(../img/check-on.svg);
-}
-
-/* main02 - 일정 시간 */
-.view-time{
-    font-family: "Inter", sans-serif;
-    font-size: 1.063rem;
-    font-weight: 500;
-    padding-left: 25px;
-    position: relative;
-}
-.view-time::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 52%;
-    transform: translateY(-50%);
-    background: url(../img/alarm.svg) no-repeat;
-    width: 16px;
-    height: 16px;
-}
-
-/* main02 - 일정 내용 */
-.view-description {
-    margin-top: 12px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+.calender-arrow .arrow-right{
+    cursor: pointer;
 }
