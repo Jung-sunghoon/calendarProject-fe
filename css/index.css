@@ -281,10 +281,9 @@ main .calender{
     position: fixed;
     width: 100%;
     min-height: 100%;
-    /* position: relative; */
     background: rgba(0, 0, 0, 0.5);
     z-index: 999;
-    /* display: none; */
+    display: none;
 }
 
 .modal-schedule-view .modal-view-container {
@@ -292,7 +291,6 @@ main .calender{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /* display: none; */
 }
 
 
@@ -485,3 +483,58 @@ main .calender{
     -webkit-box-orient: vertical;
 }
 /*----------------------------------일정 조회 모달 END----------------------------------*/
+
+/*----------------------------------일정 삭제 모달 Start----------------------------------*/
+.modal-schedule-delete {
+    position: fixed;
+    width: 100%;
+    min-height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: none;
+}
+
+.modal-schedule-delete .modal-delete-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.modal-delete-content {
+    width: 508px;
+    height: 163px;
+    background-color: #fff;
+    border: 3px solid var(--main-color);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.delete-txt {
+    margin-bottom: 21px;
+    font-weight: 500;
+}
+.delete-txt strong {
+    font-weight: 500;
+}
+
+.delete-confirmation-btn,
+.delete-cancel-btn {
+    padding: 6px 20px;
+    border-radius: 5px;
+    border: 1px solid var(--main-color);
+    font-weight: 500;
+}
+
+.delete-confirmation-btn {
+    background-color: var(--main-color);
+    color: #fff;
+    margin-right: 21px;
+}
+.delete-cancel-btn {
+    background-color: #fff;
+}
