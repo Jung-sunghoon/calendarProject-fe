@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>투두리스트 메인페이지</title>
-    <link rel="stylesheet" href="../css/common.css">
-    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/index.css">
   </head>
   <body>
     <main>
@@ -130,14 +130,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <form>
-                        <select name="year" id="select-year">
-                            <option value="month">년도 선택</option>
-                        </select>
-                        <select name="month" id="select-month">
-                            <option value="year">월 선택</option>
-                        </select>
-                    </form> -->
                 </div>
                 <div class="calender-box-cont">
                     <!-- 여기에 캘린더 들어올 예정 -->
@@ -199,33 +191,61 @@
         <!-------------------------- 일정 조회 모달 End -------------------------->
         <!-------------------------- 일정 관리 모달 영역 -------------------------->
         <section class="modal-schedule-edit">
+            <h2 class="blind">일정 관리 모달 창</h2>
             <div class="modal-edit-container">
-            <section class="modal-edit-cont">
+                <section class="modal-edit-cont">
                 <div class="modal-header">
-                <button id="edit-icon"><img src="./img/edit-btn.svg"></button>
-                <div class="modal-title">JavaScript Study</div>
-                <button id="close-btn"><img src="./img/exit-btn.svg"></button>
+                    <div class="modal-title">JavaScript Study</div>
+                    <button id="close-btn"><img src="./img/exit-btn.svg"></button>
                 </div>
                 <div class="modal-content">
-                <div class="modal-content-top">
-                    <div class="input-group">
-            <p>날짜ㅤ<span id="selectedDate" class="date-input">2024년 7월 26일</span></p>
-                    </div>
-                    <div class="input-group">
-            <p>시간ㅤ<span id="selectedTime" class="time-input">11:00</span></p>
-            <span class="time-badge"><img src="./img/time-btn.svg">완료 시간</span>
-                    </div>
-                </div>
-                <div class="textarea-container">
-                <textarea placeholder="내용을 입력하세요..."></textarea>
-                </div>
+                    <form class="modal-content-top">
+                        <!-- 시작일자 영역 -->
+                        <div class="modal-content-start">
+                            <div class="input-group">
+                            <p>시작날짜ㅤ<span id="selectedDate" class="date-input">2024년 7월 26일</span></p>
+                            </div>
+                            <div class="input-group">
+                            <p>시작시간ㅤ<span id="selectedTime" class="time-input">11:00</span></p>
+                            </div>
+                        </div>
+                        <!-- 완료일자 영역 -->
+                        <div class="modal-content-end">
+                            <div class="input-group">
+                            <p>완료날짜ㅤ<span id="selectedDate" class="date-input">2024년 7월 26일</span></p>
+                            </div>
+                            <div class="input-group">
+                            <p>완료시간ㅤ<span id="selectedTime" class="time-input">11:00</span></p>
+                            </div>
+                        </div>
+                        <!-- 반복주기 영역 -->
+                        <div class="modal-content-repeat">
+                            <div class="input-group">
+                                <p>반복주기</p>
+                                <textarea>100</textarea>
+                                <div class="repeat-box">
+                                    <span class="repeat-text">일간 반복</span>
+                                    <ul class="repeat-list">
+                                        <li class="no-repeat"><span>반복 없음</span></li>
+                                        <li class="day-repeat"><span>일간 반복</span></li>
+                                        <li class="weak-repeat"><span>주간 반복</span></li>
+                                        <li class="month-repeat"><span>월간 반복</span></li>
+                                        <li class="year-repeat"><span>연간 반복</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <form class="textarea-container">
+                        <textarea placeholder="내용을 입력하세요..."></textarea>
+                    </form>
                 </div>
                 <div class="modal-footer">
-            <button class="footer-btn">취소</button>
-            <button class="footer-btn">저장</button>
-            <button class="footer-btn">삭제</button>
+                    <button class="footer-btn">취소</button>
+                    <button class="footer-btn">저장</button>
+                    <button class="footer-btn">삭제</button>
                 </div>
-            </section>
+                </section>
             </div>
         </section>
     
