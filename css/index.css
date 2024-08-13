@@ -439,7 +439,7 @@ main .calender{
     min-height: 100%;
     background: rgba(0, 0, 0, 0.5);
     z-index: 999;
-    display: none;
+    /* display: none; */
 }
 .modal-edit-container{
     position: absolute;
@@ -450,8 +450,8 @@ main .calender{
 .modal-edit-cont{
     background-color: #43E2BD;
     border-radius: 20px;
-    width: 942px;
-    height: 800px;
+    width: 780px;
+    height: 650px;
     font-family: 'Noto Sans KR', sans-serif;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -460,23 +460,16 @@ main .calender{
 .modal-header {
     background-color: #43E2BD;
     color: black;
-    padding: 36px 20px;
+    padding: 25px 39px;
     display: flex;
     align-items: center;
 }
 
-#edit-icon {
-    margin-right: 22px;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
 .modal-title {
     font-family: "Noto Sans KR";
-    font-size: 48px;
+    font-size: 36px;
     font-weight: 700;
-    letter-spacing: -2px;
+    letter-spacing: -1px;
     flex-grow: 1;
 }
 
@@ -491,14 +484,17 @@ main .calender{
 
 .modal-content {
     margin: 0 5px;
-    height: 590px;
-    padding: 20px 40px;
+    height: 480px;
+    padding: 0 40px;
     background-color: white;
     border-radius: 20px 20px 0 0;
 }
 
 .modal-content-top{
-    padding: 30px 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-top: 30px;
 }
 
 .modal-content-top:after{
@@ -506,8 +502,19 @@ main .calender{
     display: block;
     width: 100%;
     height: 1px;
-    margin-top: 36px;
-    background-color: #aaaaaa;
+    margin-top: 21px;
+    background-color: #dddddd;
+}
+
+/* ---------- 시작일자 CSS 추가함 ---------- */
+
+.modal-content-start{
+    margin-left: 5px;
+}
+
+/* ---------- 완료일자 CSS 추가함 ---------- */
+.modal-content-end{
+    margin-right: 5px;
 }
 
 .input-group {
@@ -519,10 +526,83 @@ main .calender{
 
 .input-group p {
     font-family: "Inter";
+    font-size: 23px;
+    font-weight: 500;
+    letter-spacing: -2px;
+}
+
+.input-group textarea{
+    width: 60px;
+    height: 47px;
+    margin-left: 24px;
+    padding: 6px 6px;
+    text-align: center;
+    border: 1px solid #DDDDDD;
+    border-radius: 7px;
+    background-color: #F6F6F6;
     font-size: 24px;
     font-weight: 600;
-    letter-spacing: -1px;
+    outline: none;
 }
+
+/* ---------- 반복주기 CSS 추가함 ---------- */
+
+.modal-content-repeat{
+    width: 100%;
+    margin-left: 4px;
+}
+
+.input-group .repeat-box{
+    position: relative;
+    width: 128px;
+    height: 47px;
+    margin-left: 24px;
+    padding: 6px 0;
+    text-align: center;
+    border: 1px solid #DDDDDD;
+    border-radius: 7px;
+    background-color: #F6F6F6;
+    font-size: 24px;
+    font-weight: 600;
+    outline: none;
+}
+
+.repeat-box .repeat-text{
+    font-family: "Inter";
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -2px;
+}
+
+.repeat-box .repeat-list{
+    position: relative;
+    width: 100%;
+    height: 139px;
+    padding: 10px 30px;
+    margin-top: 28px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgb(0, 0, 0, 15%);
+    overflow: auto;
+    display: none;
+}
+
+.repeat-list::-webkit-scrollbar{
+    display: none;
+}
+
+.repeat-list li{
+    width: 100%;
+    padding: 5px 0;
+}
+
+.repeat-list li span{
+    font-family: "Noto sans kr";
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: -2px;
+}
+
+/* ---------- 반복주기 CSS END ---------- */
 
 .date-input, .time-input {
     padding: 6px 16px;
@@ -553,7 +633,7 @@ main .calender{
 
 textarea {
     width: 100%;
-    height: 315px;
+    height: 200px;
     border: 1px solid #DDDDDD;
     border-radius: 7px;
     background-color: #F6F6F6;
@@ -562,6 +642,7 @@ textarea {
     font-size: 26px;
     resize: none;
     outline: none;
+    overflow: auto;
 }
 
 .modal-footer {
@@ -575,16 +656,16 @@ textarea {
 }
 
 .footer-btn {
-    width: 130px;
-    height: 40px;
+    width: 110px;
+    height: 38px;
     border: none;
     outline: none;
     border-radius: 30px;
     cursor: pointer;
-    font-size: 24px;
+    font-size: 18px;
     background-color: #43E2BD;
     color: white;
-    margin: 0 35px;
+    margin: 0 25px;
 }
 
 .date-picker {
