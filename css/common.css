@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Dongle&family=Gowun+Dodum&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+KR:wght@100..900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Dongle&family=Gowun+Dodum&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+/* font-family: "Inter", sans-serif; */
+
+* {
+    box-sizing: border-box;
+}
+html {
+    font-family: "Noto Sans Kr",sans-serif;
+    font-size: 1rem;
+}
+
+/* 마진 패딩 초기화 */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	vertical-align: baseline;
+}
+
+/* 타이포 설정 */
+body, h1, h2, h3, h4, h5, h6, p, a, span, input, select, button, time, strong {
+    font-family: "Noto Sans Kr",sans-serif;
+    font-size: 1rem;
+    color: #222;
+    line-height: 1.2;
+    letter-spacing: -2;
+}
+
+/* 리스트 기호 없애기 */
+ol, ul {
+    list-style: none;
+}
+
+/*링크요소 초기화 */
+a {
+    color: #222;
+    text-decoration: none;
+}
+
+/* 박스 계산법 border-box로 바꾸기 */
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+/* 이미지 및 필드셋 테두리 제거 */
+img, fieldset {
+    border: 0 none;
+}
+
+/* 인라인수직정렬 */
+img {
+    vertical-align: top;
+}
+
+/* 플로트 사용시 클리어하기 */
+.clear::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+/* 컨텐츠 화면에서 숨기기 */
+.blind {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+
+input, button, select, textarea {
+    vertical-align: middle;
+}
+
+button {
+    cursor: pointer;
+    transition: all 0.1s linear;
+    border: none;
+    background-color: transparent;
+}
+
+/* 포커스 아웃라인 재설정 */
+:focus {
+    outline: 0;
+}
+
+/* 테이블 기본 스타일 */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* 폼 요소 기본 스타일 */
+input, textarea, select, button {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
