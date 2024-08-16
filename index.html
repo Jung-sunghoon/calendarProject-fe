@@ -6,6 +6,7 @@
     <title>투두리스트 메인페이지</title>
     <link rel="stylesheet" href="./css/common.css" />
     <link rel="stylesheet" href="./css/index.css" />
+    <link rel="stylesheet" href="./css/calendar.css" />
   </head>
   <body>
     <main>
@@ -135,6 +136,8 @@
             <!-- 여기에 캘린더 들어올 예정 -->
             <div class="calendar-arrow">
               <div class="arrow-left"><img src="./img/arrow-left.svg" /></div>
+              <!-- 캘린더 작업 부분 -->
+              <div class="calendar-date"></div>
               <div class="arrow-right"><img src="./img/arrow-right.svg" /></div>
             </div>
           </div>
@@ -208,7 +211,8 @@
       </section>
       <!-------------------------- 일정 조회 모달 End -------------------------->
       <!-------------------------- 일정 관리 모달 영역 -------------------------->
-      <section class="modal-schedule-edit">
+      <section class="modal-schedule-edit" style="display: none">
+        <!-- 달력 기능 작업 위해 display none으로 설정  ==================> 달력 css 작업 후 스타일 제거 -->
         <h2 class="blind">일정 관리 모달 창</h2>
         <div class="modal-edit-container">
           <section class="modal-edit-cont">
@@ -328,4 +332,5 @@
     </main>
   </body>
   <script src="./script.js"></script>
+  <script src="./calendar.js"></script>
 </html>
