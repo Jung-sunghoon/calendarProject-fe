@@ -4,6 +4,30 @@ document.addEventListener("DOMContentLoaded", function () {
   const previousMonth = document.querySelector(".arrow-left");
   const nextMonth = document.querySelector(".arrow-right");
   const calendarCont = document.querySelector(".calendar-date");
+  const API_URL = "http://localhost:8080";
+
+  async function fetchData() {
+    try {
+      // fetch로 GET 요청을 보내고 응답을 기다림
+      const res = await fetch(`${API_URL}/api/schedules`);
+
+      // 응답이 성공적(200~299)인지 확인
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      // 응답 본문을 JSON으로 파싱
+      const data = await res.json();
+
+      // 데이터 출력
+      console.log(data);
+    } catch (error) {
+      // 오류 처리
+      console.error("Fetch error:", error);
+    }
+  }
+
+  fetchData();
 
   let currentDate = new Date();
 
