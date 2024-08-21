@@ -107,7 +107,7 @@ main .sidebar {
   padding: 10px 16px;
 }
 .sidebar-list-box .sidebar-list-cont img {
-  margin-right: 8px;
+  margin:6px 8px 0 0;
 }
 .sidebar-list-box .sidebar-list-cont span {
   display: inline-block;
@@ -116,6 +116,7 @@ main .sidebar {
 }
 .sidebar-list-box .sidebar-list-close {
   display: none;
+  margin-top: 6px;
 }
 .sidebar-schedule-list li:hover .sidebar-list-box {
   background-color: #f6f6f6;
@@ -205,6 +206,7 @@ main .calendar {
   border: 2px solid #dddddd;
   border-radius: 10px;
   padding: 24px 28px;
+  background-color: #ffffff;
   overflow: hidden;
 }
 .calendar-select-month .calendar-select-month-list {
@@ -230,6 +232,7 @@ main .calendar {
   border: 2px solid #dddddd;
   border-radius: 10px;
   padding: 24px 28px;
+  background-color: #ffffff;
   overflow: hidden;
 }
 .calendar-select-year .calendar-select-year-list {
