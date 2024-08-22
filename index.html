@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>투두리스트 메인페이지</title>
-    <link rel="stylesheet" href="./css/common.css" />
-    <link rel="stylesheet" href="./css/index.css" />
-    <link rel="stylesheet" href="./css/calendar.css" />
+    <link rel="stylesheet" href="./src/css/common.css" />
+    <link rel="stylesheet" href="./src/css/index.css" />
+    <link rel="stylesheet" href="./src/css/calendar.css" />
   </head>
   <body>
     <main>
@@ -18,7 +18,9 @@
           <!-- 사이드바상단 로고 -->
           <section class="sidebar-logo">
             <h1 class="blind">PRONEND LOGO</h1>
-            <a href="#"><img src="./img/main-logo.svg" alt="로고이미지" /></a>
+            <a href="#"
+              ><img src="./src/assets/img/main-logo.svg" alt="로고이미지"
+            /></a>
           </section>
           <!-- 사이드바상단 날씨 -->
           <section class="sidebar-weather">
@@ -28,7 +30,7 @@
               <p class="sidebar-weather-num">27º</p>
             </div>
             <div class="sidebar-weather-icon">
-              <img src="./img/sun-cloud.svg" alt="날씨아이콘" />
+              <img src="./src/assets/img/sun-cloud.svg" alt="날씨아이콘" />
             </div>
           </section>
         </div>
@@ -43,11 +45,11 @@
                 <a href="#">
                   <div class="sidebar-list-box">
                     <div class="sidebar-list-cont">
-                      <img src="./img/list-circle.svg" alt="" />
+                      <img src="./src/assets/img/list-circle.svg" alt="" />
                       <span>JavaScript Study</span>
                     </div>
                     <div class="sidebar-list-close">
-                      <img src="./img/close-btn.svg" alt="" />
+                      <img src="./src/assets/img/close-btn.svg" alt="" />
                     </div>
                   </div>
                 </a>
@@ -56,18 +58,18 @@
                 <a href="#">
                   <div class="sidebar-list-box">
                     <div class="sidebar-list-cont">
-                      <img src="./img/list-circle.svg" alt="" />
+                      <img src="./src/assets/img/list-circle.svg" alt="" />
                       <span>CSS Study</span>
                     </div>
                     <div class="sidebar-list-close">
-                      <img src="./img/close-btn.svg" alt="" />
+                      <img src="./src/assets/img/close-btn.svg" alt="" />
                     </div>
                   </div>
                 </a>
               </li>
             </ul>
             <button type="submit" class="sidebar-schedule-add">
-              <img src="./img/list-add.svg" />
+              <img src="./src/assets/img/list-add.svg" />
               <span>일정 추가</span>
             </button>
           </section>
@@ -89,7 +91,7 @@
               <div class="calendar-select-month">
                 <p>
                   <span class="calendar-select-month-text">년도 선택</span>
-                  <img src="./img/select-arrow.svg" />
+                  <img src="./src/assets/img/select-arrow.svg" />
                 </p>
                 <div class="calendar-select-month-box">
                   <ul class="calendar-select-month-list">
@@ -111,7 +113,7 @@
               <div class="calendar-select-year">
                 <p>
                   <span class="calendar-select-year-text">월 선택</span>
-                  <img src="./img/select-arrow.svg" />
+                  <img src="./src/assets/img/select-arrow.svg" />
                 </p>
                 <div class="calendar-select-year-box">
                   <ul class="calendar-select-year-list">
@@ -135,10 +137,14 @@
           <div class="calendar-box-cont">
             <!-- 여기에 캘린더 들어올 예정 -->
             <div class="calendar-arrow">
-              <div class="arrow-left"><img src="./img/arrow-left.svg" /></div>
+              <div class="arrow-left">
+                <img src="./src/assets/img/arrow-left.svg" />
+              </div>
               <!-- 캘린더 작업 부분 -->
               <div class="calendar-date"></div>
-              <div class="arrow-right"><img src="./img/arrow-right.svg" /></div>
+              <div class="arrow-right">
+                <img src="./src/assets/img/arrow-right.svg" />
+              </div>
             </div>
           </div>
         </section>
@@ -218,7 +224,9 @@
           <section class="modal-edit-cont">
             <div class="modal-header">
               <div class="modal-title">JavaScript Study</div>
-              <button id="close-btn"><img src="./img/exit-btn.svg" /></button>
+              <button id="close-btn">
+                <img src="./src/assets/img/exit-btn.svg" />
+              </button>
             </div>
             <div class="modal-content">
               <form class="modal-content-top">
@@ -331,6 +339,6 @@
       </section>
     </main>
   </body>
-  <script src="./script.js"></script>
-  <script src="./calendar.js"></script>
+  <script src="./src/js/script.js"></script>
+  <script src="./src/js/calendar.js"></script>
 </html>
