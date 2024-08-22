@@ -57,14 +57,14 @@ main .login .login-btn{
 .login .login-btn span{
     font-family: "Noto Sans KR";
     font-size: 24px;
-    line-height: 10px;
-    letter-spacing: -2%;
+    line-height: 24px;
     color: #43E2BD;
     vertical-align: middle;
 }
-main .login .login-btn:hover.login-btn,
-main .login .login-btn:hover.login-btn>span{
+main .login .login-btn:hover.login-btn{
     background-color: #43E2BD;
+}
+main .login .login-btn:hover.login-btn>span{
     color: #ffffff;
 }
 /* ----- 하단 BACKGROUND 부분 ----- */
