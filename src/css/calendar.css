@@ -41,9 +41,14 @@ tr {
   color: #cccccc;
 }
 
-/* today 스타일 적용하는데 height 길이 늘리면 셀이 커집니다
-   css 고수님들 도와주세요..
-*/
+.calendar-day{
+  font-size: 24px;
+}
+.calendar-day.today{
+  width: 42px;
+  height: 42px;
+}
+
 .today {
   background-color: #7fe5a1;
   border-radius: 0px 30px 30px 30px;
@@ -54,5 +59,5 @@ tr {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 5px 0 0 5px;
+  margin: 4px 0 0 4px;
 }
