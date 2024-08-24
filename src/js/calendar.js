@@ -96,6 +96,12 @@ document.addEventListener("DOMContentLoaded", function () {
       ) {
         td.classList.add("today");
         // td.style.color = "red";
+        // today 셀의 숫자에 따로 div 태그, class 추가 했습니다.
+        let todayIndicator = document.createElement("div");
+        todayIndicator.classList.add("today-indicator");
+        todayIndicator.textContent = date;
+        td.innerHTML = "";
+        td.appendChild(todayIndicator);
       }
 
       row.appendChild(td);

@@ -40,24 +40,21 @@ tr {
 .next-month {
   color: #cccccc;
 }
-
-.calendar-day{
-  font-size: 24px;
+.calendar-day.today {
+  position: relative;
 }
-.calendar-day.today{
-  width: 42px;
-  height: 42px;
-}
-
-.today {
+.today .today-indicator {
   background-color: #7fe5a1;
   border-radius: 0px 30px 30px 30px;
   color: white;
   font-weight: bold;
+  display: inline-block;
+  padding: 5px;
+  text-align: center;
   width: 42px;
-  height: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 4px 0 0 4px;
+  height: 35px;
+  line-height: 20px;
+  position: absolute;
+  top: 5px;
+  left: 5px;
 }
