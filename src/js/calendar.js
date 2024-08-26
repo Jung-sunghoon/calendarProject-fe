@@ -4,6 +4,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const previousMonth = document.querySelector(".arrow-left");
   const nextMonth = document.querySelector(".arrow-right");
   const calendarCont = document.querySelector(".calendar-date");
+  const yearSelectText = document.querySelector(".calendar-select-year-text");
+  const monthSelectText = document.querySelector(".calendar-select-month-text");
+  const yearSelectBox = document.querySelector(".calendar-select-year-box");
+  const monthSelectBox = document.querySelector(".calendar-select-month-box");
+  const yearList = document.querySelectorAll(".calendar-select-year-list li");
+  const monthList = document.querySelectorAll(".calendar-select-month-list li");
   const API_URL = "http://localhost:8080";
 
   async function fetchData() {
@@ -31,14 +37,71 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let currentDate = new Date();
 
+  // 처음 화면에서 셀렉트 박스 닫힘
+  yearSelectBox.style.display = "none";
+  monthSelectBox.style.display = "none";
+
   function updateCalendar() {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth() + 1;
-
+    // 현재 년도, 월 표시
     calendarMonthElement.textContent = String(month).padStart(2, "0");
     calendarYearElement.textContent = year;
 
     renderCalendarDays(year, month);
+  }
+  // 연도 선택 핸들러
+  yearList.forEach((item) => {
+    item.addEventListener("click", function () {
+      const selectedYear = parseInt(this.textContent, 10);
+      currentDate.setFullYear(selectedYear);
+      yearSelectText.textContent = `${selectedYear} 년`; // 셀렉트 박스 년도 바꾸기
+      updateCalendar();
+      yearSelectBox.style.display = "none";
+    });
+  });
+
+  // 월 선택 핸들러
+  monthList.forEach((item) => {
+    item.addEventListener("click", function () {
+      const selectedMonth = parseInt(this.textContent, 10);
+      currentDate.setMonth(selectedMonth - 1);
+      monthSelectText.textContent = `${selectedMonth} 월`; // 셀렉트 박스 월 바꾸기
+      updateCalendar();
+      monthSelectBox.style.display = "none";
+    });
+  });
+
+  // 셀렉트 박스 열고 닫기
+  function toggleSelectBox(selectBox, otherSelectBox) {
+    if (selectBox.style.display === "block") {
+      selectBox.style.display = "none";
+    } else {
+      selectBox.style.display = "block";
+      otherSelectBox.style.display = "none"; // 다른 셀렉트 박스는 닫기
+    }
+  }
+
+  function initializeSelectBox() {
+    yearSelectText.addEventListener("click", function () {
+      toggleSelectBox(yearSelectBox, monthSelectBox);
+    });
+
+    monthSelectText.addEventListener("click", function () {
+      toggleSelectBox(monthSelectBox, yearSelectBox);
+    });
+
+    previousMonth.addEventListener("click", () => {
+      currentDate.setMonth(currentDate.getMonth() - 1);
+      updateCalendar();
+    });
+
+    nextMonth.addEventListener("click", () => {
+      currentDate.setMonth(currentDate.getMonth() + 1);
+      updateCalendar();
+    });
+
+    updateCalendar();
   }
 
   function renderCalendarDays(year, month) {
@@ -48,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let table = document.createElement("table");
     let headerRow = document.createElement("tr");
 
-    // 요일 별 클래스 추가 및 토요일, 일요일 클래스 추가 ==> 후에 css 작업
+    // 요일 별 클래스 추가 및 토요일, 일요일 클래스 추가
     daysOfWeek.forEach((day, index) => {
       let th = document.createElement("th");
       th.textContent = day;
@@ -119,16 +182,6 @@ document.addEventListener("DOMContentLoaded", function () {
     table.appendChild(row);
     calendarCont.appendChild(table);
   }
-
-  previousMonth.addEventListener("click", () => {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    updateCalendar();
-  });
-
-  nextMonth.addEventListener("click", () => {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    updateCalendar();
-  });
-
   updateCalendar();
+  initializeSelectBox();
 });
