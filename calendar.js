@@ -1,13 +1,43 @@
+let currentDate;
+let updateCalendar;
+window.currentDate = currentDate;
+window.updateCalendar = updateCalendar;
+
 document.addEventListener("DOMContentLoaded", function () {
   const calendarMonthElement = document.querySelector(".calendar-month");
   const calendarYearElement = document.querySelector(".calendar-year");
   const previousMonth = document.querySelector(".arrow-left");
   const nextMonth = document.querySelector(".arrow-right");
   const calendarCont = document.querySelector(".calendar-date");
+  const API_URL = "http://localhost:8080";
 
-  let currentDate = new Date();
+  async function fetchData() {
+    try {
+      // fetch로 GET 요청을 보내고 응답을 기다림
+      const res = await fetch(`${API_URL}/api/schedules`);
 
-  function updateCalendar() {
+      // 응답이 성공적(200~299)인지 확인
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      // 응답 본문을 JSON으로 파싱
+      const data = await res.json();
+
+      // 데이터 출력
+      console.log(data);
+    } catch (error) {
+      // 오류 처리
+      console.error("Fetch error:", error);
+    }
+  }
+
+  fetchData();
+
+  currentDate = new Date();
+  // currentDate 선언 전역으로 빼놓음
+
+  updateCalendar = function() {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth() + 1;
 
@@ -20,10 +50,10 @@ document.addEventListener("DOMContentLoaded", function () {
   function renderCalendarDays(year, month) {
     calendarCont.innerHTML = "";
 
-    const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+    const daysOfWeek = ["일요일", "월", "화", "수", "목", "금", "토"];
     let table = document.createElement("table");
     let headerRow = document.createElement("tr");
-
+    
     // 요일 별 클래스 추가 및 토요일, 일요일 클래스 추가 ==> 후에 css 작업
     daysOfWeek.forEach((day, index) => {
       let th = document.createElement("th");
@@ -63,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
       let td = document.createElement("td");
       td.textContent = date;
       td.classList.add("calendar-day");
-
+      
       // 오늘 날짜 클래스 추가 ==> 후에 css 작업
       if (
         year === today.getFullYear() &&
@@ -72,6 +102,12 @@ document.addEventListener("DOMContentLoaded", function () {
       ) {
         td.classList.add("today");
         // td.style.color = "red";
+        // today 셀의 숫자에 따로 div 태그, class 추가 했습니다.
+        let todayIndicator = document.createElement("div");
+        todayIndicator.classList.add("today-indicator");
+        todayIndicator.textContent = date;
+        td.innerHTML = "";
+        td.appendChild(todayIndicator);
       }
 
       row.appendChild(td);
