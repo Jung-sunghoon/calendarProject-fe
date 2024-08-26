@@ -27,6 +27,7 @@ main .sidebar {
   width: 218px;
   height: 32px;
   margin: 0 auto 48px;
+  cursor: pointer;
 }
 .sidebar-top .sidebar-logo a {
   width: 100%;
@@ -107,7 +108,7 @@ main .sidebar {
   padding: 10px 16px;
 }
 .sidebar-list-box .sidebar-list-cont img {
-  margin:6px 8px 0 0;
+  margin: 6px 8px 0 0;
 }
 .sidebar-list-box .sidebar-list-cont span {
   display: inline-block;
@@ -201,7 +202,6 @@ main .calendar {
   border: 2px solid #dddddd;
   border-radius: 10px;
   padding: 9px 0;
-  
 }
 .calendar-select-month .calendar-select-month-box {
   width: 140px;
@@ -277,7 +277,7 @@ main .calendar {
   position: relative;
   cursor: pointer;
 }
-.calendar-arrow .arrow-left img{
+.calendar-arrow .arrow-left img {
   position: absolute;
   left: 28px;
 }
@@ -285,7 +285,7 @@ main .calendar {
   position: relative;
   cursor: pointer;
 }
-.calendar-arrow .arrow-right img{
+.calendar-arrow .arrow-right img {
   position: absolute;
   right: 28px;
 }

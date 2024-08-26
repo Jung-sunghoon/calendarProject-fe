@@ -186,6 +186,8 @@ document.addEventListener("DOMContentLoaded", function () {
   logoElement.addEventListener("click", function (event) {
     event.preventDefault();
     currentDate = new Date();
+    yearSelectText.textContent = "년도 선택";
+    monthSelectText.textContent = "월 선택";
     updateCalendar();
   });
 
