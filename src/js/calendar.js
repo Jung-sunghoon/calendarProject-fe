@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const logoElement = document.querySelector(".sidebar-logo a");
   const calendarMonthElement = document.querySelector(".calendar-month");
   const calendarYearElement = document.querySelector(".calendar-year");
   const previousMonth = document.querySelector(".arrow-left");
@@ -91,16 +92,6 @@ document.addEventListener("DOMContentLoaded", function () {
       toggleSelectBox(monthSelectBox, yearSelectBox);
     });
 
-    previousMonth.addEventListener("click", () => {
-      currentDate.setMonth(currentDate.getMonth() - 1);
-      updateCalendar();
-    });
-
-    nextMonth.addEventListener("click", () => {
-      currentDate.setMonth(currentDate.getMonth() + 1);
-      updateCalendar();
-    });
-
     updateCalendar();
   }
 
@@ -166,7 +157,6 @@ document.addEventListener("DOMContentLoaded", function () {
         td.innerHTML = "";
         td.appendChild(todayIndicator);
       }
-
       row.appendChild(td);
     }
 
@@ -182,6 +172,23 @@ document.addEventListener("DOMContentLoaded", function () {
     table.appendChild(row);
     calendarCont.appendChild(table);
   }
+  // 이전 달 이동
+  previousMonth.addEventListener("click", () => {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    updateCalendar();
+  });
+  // 다음 달 이동
+  nextMonth.addEventListener("click", () => {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    updateCalendar();
+  });
+  // 로고 클릭 시 오늘 날짜로 이동
+  logoElement.addEventListener("click", function (event) {
+    event.preventDefault();
+    currentDate = new Date();
+    updateCalendar();
+  });
+
   updateCalendar();
   initializeSelectBox();
 });
