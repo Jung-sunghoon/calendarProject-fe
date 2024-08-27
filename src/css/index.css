@@ -27,6 +27,7 @@ main .sidebar {
   width: 218px;
   height: 32px;
   margin: 0 auto 48px;
+  cursor: pointer;
 }
 .sidebar-top .sidebar-logo a {
   width: 100%;
@@ -107,7 +108,7 @@ main .sidebar {
   padding: 10px 16px;
 }
 .sidebar-list-box .sidebar-list-cont img {
-  margin-right: 8px;
+  margin: 6px 8px 0 0;
 }
 .sidebar-list-box .sidebar-list-cont span {
   display: inline-block;
@@ -116,6 +117,7 @@ main .sidebar {
 }
 .sidebar-list-box .sidebar-list-close {
   display: none;
+  margin-top: 6px;
 }
 .sidebar-schedule-list li:hover .sidebar-list-box {
   background-color: #f6f6f6;
@@ -187,10 +189,12 @@ main .calendar {
   align-items: center;
   padding: 0 28px;
   margin-bottom: 16px;
+  cursor: pointer;
 }
 .calendar-box-head .calendar-select p span {
   font-size: 16px;
   letter-spacing: -2px;
+  user-select: none;
 }
 .calendar-select .calendar-select-month {
   width: 140px;
@@ -204,18 +208,20 @@ main .calendar {
   height: 200px;
   border: 2px solid #dddddd;
   border-radius: 10px;
-  padding: 24px 28px;
+  padding: 24px 0;
+  background-color: #ffffff;
   overflow: hidden;
 }
 .calendar-select-month .calendar-select-month-list {
   text-align: center;
-  width: 80px;
+  width: 100%;
   height: 146px;
   overflow: scroll;
-  scrollbar-width: none;
 }
 .calendar-select-month .calendar-select-month-list li {
   margin-bottom: 17px;
+  cursor: pointer;
+  user-select: none;
 }
 .calendar-select .calendar-select-year {
   width: 140px;
@@ -229,18 +235,20 @@ main .calendar {
   height: 200px;
   border: 2px solid #dddddd;
   border-radius: 10px;
-  padding: 24px 28px;
+  padding: 24px 0;
+  background-color: #ffffff;
   overflow: hidden;
 }
 .calendar-select-year .calendar-select-year-list {
   text-align: center;
-  width: 80px;
+  width: 100%;
   height: 146px;
   overflow: scroll;
-  scrollbar-width: none;
 }
 .calendar-select-year .calendar-select-year-list li {
   margin-bottom: 17px;
+  cursor: pointer;
+  user-select: none;
 }
 /*------스크롤바 숨김처리------*/
 .calendar-select-year-list::-webkit-scrollbar {
@@ -256,7 +264,6 @@ main .calendar {
   width: 100%;
   height: 772px;
   margin: auto;
-  padding: 0 30px;
 }
 .calendar-box-cont .calendar-arrow {
   display: flex;
@@ -267,10 +274,20 @@ main .calendar {
   z-index: 777;
 }
 .calendar-arrow .arrow-left {
+  position: relative;
   cursor: pointer;
 }
+.calendar-arrow .arrow-left img {
+  position: absolute;
+  left: 28px;
+}
 .calendar-arrow .arrow-right {
+  position: relative;
   cursor: pointer;
+}
+.calendar-arrow .arrow-right img {
+  position: absolute;
+  right: 28px;
 }
 /*----------------------오른쪽 달력 END-----------------------*/
 /*----------------------------------메인페이지 영역 END----------------------------------*/
@@ -565,6 +582,22 @@ main .calendar {
   outline: none;
 }
 
+.input-group .repeat-num {
+  width: 11%;
+  height: 16px;
+  border: 1px solid #dddddd;
+  border-radius: 7px;
+  background-color: #f6f6f6;
+  padding: 22px 10px 23px 17px;
+  font-family: "Noto sans KR";
+  font-size: 26px;
+  resize: none;
+  outline: none;
+  overflow: auto;
+  text-align: center;
+  margin-left: 22px;
+}
+
 .repeat-box .repeat-text {
   font-family: "Inter";
   font-size: 24px;
@@ -711,7 +744,7 @@ textarea {
 #calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
+  gap: 3px;
 }
 
 .sun {
@@ -723,16 +756,17 @@ textarea {
 }
 
 .day {
-  text-align: center;
-  padding: 2px;
-  cursor: pointer;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 2px;
+  width: 30px;
+  height: 30px;
   margin: 2px;
+  border-radius: 50%;
+  cursor: pointer;
+  text-align: center;
+  font-size: 16px;
 }
 
 .day.other-month {
@@ -747,6 +781,9 @@ textarea {
 
 .day.today {
   font-weight: bold;
+  width: 30px;
+  height: 30px;
+  margin: 2px 0 0 2px;
 }
 
 .time-picker {
@@ -772,7 +809,7 @@ textarea {
   display: block;
   width: 100%;
   padding: 10px;
-  background-color: #43e2bd;
+  background-color: #6277e0;
   color: white;
   border: none;
   border-radius: 5px;

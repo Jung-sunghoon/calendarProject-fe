@@ -11,7 +11,7 @@ main .login{
 /* ----- 상단 LOGO 부분 ----- */
 main .login .top{
     width: 100%;
-    padding: 66px 53px;
+    padding: 6vh 53px;
 }
 /* ----- 중간 TEXT 부분 ----- */
 main .login .text{
@@ -21,7 +21,7 @@ main .login .text{
     justify-content: space-between;
     width: 986px;
     height: 217px;
-    margin: 210px auto 0;
+    margin: 17vh auto 0;
 }
 .login .text .text-head{
     font-family: "Noto sans KR";
@@ -46,6 +46,7 @@ main .login .login-btn{
     height: 81px;
     border: 1px solid #43E2BD;
     border-radius: 15px;
+    background-color: #ffffff;
     margin:45px auto 0;
 }
 .login .login-btn img{
@@ -56,14 +57,14 @@ main .login .login-btn{
 .login .login-btn span{
     font-family: "Noto Sans KR";
     font-size: 24px;
-    line-height: 10px;
-    letter-spacing: -2%;
+    line-height: 24px;
     color: #43E2BD;
     vertical-align: middle;
 }
-main .login .login-btn:hover.login-btn,
-main .login .login-btn:hover.login-btn>span{
+main .login .login-btn:hover.login-btn{
     background-color: #43E2BD;
+}
+main .login .login-btn:hover.login-btn>span{
     color: #ffffff;
 }
 /* ----- 하단 BACKGROUND 부분 ----- */

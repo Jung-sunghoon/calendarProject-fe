@@ -40,19 +40,21 @@ tr {
 .next-month {
   color: #cccccc;
 }
-
-/* today 스타일 적용하는데 height 길이 늘리면 셀이 커집니다
-   css 고수님들 도와주세요..
-*/
-.today {
+.calendar-day.today {
+  position: relative;
+}
+.today .today-indicator {
   background-color: #7fe5a1;
   border-radius: 0px 30px 30px 30px;
   color: white;
   font-weight: bold;
+  display: inline-block;
+  padding: 5px;
+  text-align: center;
   width: 42px;
-  height: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 5px 0 0 5px;
+  height: 35px;
+  line-height: 20px;
+  position: absolute;
+  top: 5px;
+  left: 5px;
 }
