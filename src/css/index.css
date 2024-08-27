@@ -130,6 +130,8 @@ main .sidebar {
   margin-bottom: 12px;
   padding: 10px 16px;
   border-radius: 15px;
+  background-color: #f6f6f6;
+  display: none;
 }
 .sidebar-schedule .sidebar-schedule-add {
   display: flex;
