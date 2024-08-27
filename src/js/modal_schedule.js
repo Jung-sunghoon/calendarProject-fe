@@ -1,8 +1,12 @@
 document.addEventListener("DOMContentLoaded", function() {
+    let currentDate = new Date();
+
     const $calendarContainer = document.querySelector(".calendar-date");
     const $modalScheduleView = document.querySelector(".modal-schedule-view");
     const $closeBtn = document.querySelector(".view-close-button");
     const $viewYear = document.querySelector(".view-year");
+
+    
 
     document.body.addEventListener("click", function(event) {
         const clickedDay = event.target.closest('td');
@@ -22,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             currentDate = new Date(targetDate);
             
-            if (monthChanged) {
+            if (monthChanged && updateCalendar) {
                 updateCalendar();
             }
 

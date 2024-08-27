@@ -1,3 +1,8 @@
+let currentDate;
+let updateCalendar;
+window.currentDate = currentDate;
+window.updateCalendar = updateCalendar;
+
 document.addEventListener("DOMContentLoaded", function () {
   const logoElement = document.querySelector(".sidebar-logo a");
   const calendarMonthElement = document.querySelector(".calendar-month");
