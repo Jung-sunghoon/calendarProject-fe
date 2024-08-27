@@ -108,7 +108,7 @@ main .sidebar {
   padding: 10px 16px;
 }
 .sidebar-list-box .sidebar-list-cont img {
-  margin: 6px 8px 0 0;
+  margin: 5px 8px 0 0;
 }
 .sidebar-list-box .sidebar-list-cont span {
   display: inline-block;
@@ -117,13 +117,19 @@ main .sidebar {
 }
 .sidebar-list-box .sidebar-list-close {
   display: none;
-  margin-top: 6px;
+  margin-top: 4px;
 }
 .sidebar-schedule-list li:hover .sidebar-list-box {
   background-color: #f6f6f6;
 }
 .sidebar-schedule-list li:hover .sidebar-list-box .sidebar-list-close {
   display: block;
+}
+.sidebar-list-box.sidebar-new-item {
+  height: 40px;
+  margin-bottom: 12px;
+  padding: 10px 16px;
+  border-radius: 15px;
 }
 .sidebar-schedule .sidebar-schedule-add {
   display: flex;
