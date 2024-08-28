@@ -111,9 +111,13 @@ main .sidebar {
   margin: 5px 8px 0 0;
 }
 .sidebar-list-box .sidebar-list-cont span {
+  width: 134px;
   display: inline-block;
   font-family: "Noto sans kr";
   font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  padding-top: 1px;
 }
 .sidebar-list-box .sidebar-list-close {
   display: none;

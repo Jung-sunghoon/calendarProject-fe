@@ -3,11 +3,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const deleteModal = document.querySelector('.modal-schedule-delete');
     const deleteConfirmBtn = deleteModal.querySelector('.delete-confirmation-btn');
     const deleteCancelBtn = deleteModal.querySelector('.delete-cancel-btn');
-    let itemToDelete = null;
     const addButton = document.querySelector('.sidebar-schedule-add');
     const newItem = document.querySelector('.sidebar-new-item');
     const scheduleInput = newItem.querySelector('.sidebar-schedule-input');
-
+    let itemToDelete = null;
 
 
     function showModal(itemText) {
