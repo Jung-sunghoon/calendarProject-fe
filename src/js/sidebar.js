@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const deleteModal = document.querySelector('.modal-schedule-delete');
     const deleteConfirmBtn = deleteModal.querySelector('.delete-confirmation-btn');
     const deleteCancelBtn = deleteModal.querySelector('.delete-cancel-btn');
+    const viewModal = document.querySelector('.modal-schedule-view');
+    const closeModalBtn = viewModal.querySelector('.view-close-button');
     let itemToDelete = null;
     let isAddingItem = false;
 
@@ -162,5 +164,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // ******* 일정 조회 모달 *******
+    function openViewModal() {
+        const [viewYear, viewMonth, viewDay] = ['.view-year', '.view-month', '.view-day']
+            .map(selector => viewModal.querySelector(selector));
+        const today = new Date();
+        [viewYear.textContent, viewMonth.textContent, viewDay.textContent] = 
+            [today.getFullYear(), String(today.getMonth() + 1).padStart(2, '0'), String(today.getDate()).padStart(2, '0')];
+        viewModal.style.display = 'block';
+    }
+
+    scheduleList.addEventListener('click', function(e) {
+        if (e.target.closest('.sidebar-list-box') && !e.target.closest('.sidebar-list-close')) {
+            e.preventDefault();
+            openViewModal();
+        }
+    });
+
+    closeModalButton?.addEventListener('click', () => viewModal.style.display = 'none');
 });
 
