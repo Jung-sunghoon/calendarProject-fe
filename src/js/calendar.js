@@ -18,6 +18,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const monthList = document.querySelectorAll(".calendar-select-month-list li");
   const API_URL = "http://localhost:8080";
 
+  // 전체 스케줄 가져오기
+  let schedules = [];
+
   async function fetchData() {
     try {
       // fetch로 GET 요청을 보내고 응답을 기다림
@@ -29,17 +32,16 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // 응답 본문을 JSON으로 파싱
-      const data = await res.json();
+      schedules = await res.json();
+      updateCalendar();
 
       // 데이터 출력
-      console.log(data);
+      console.log(schedules);
     } catch (error) {
       // 오류 처리
       console.error("Fetch error:", error);
     }
   }
-
-  fetchData();
 
   let currentDate = new Date();
 
@@ -162,6 +164,24 @@ document.addEventListener("DOMContentLoaded", function () {
         td.innerHTML = "";
         td.appendChild(todayIndicator);
       }
+
+      // 해당 날짜의 일정 표시
+      const scheduleForDate = schedules.filter((schedule) => {
+        const scheduleStart = new Date(schedule.schedule_start);
+        return (
+          scheduleStart.getFullYear() === year &&
+          scheduleStart.getMonth() + 1 === month &&
+          scheduleStart.getDate() === date
+        );
+      });
+
+      scheduleForDate.forEach((schedule) => {
+        const scheduleElement = document.createElement("div");
+        scheduleElement.classList.add("schedule-bar");
+        scheduleElement.textContent = schedule.schedule_title;
+        td.appendChild(scheduleElement);
+      });
+
       row.appendChild(td);
     }
 
@@ -177,6 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
     table.appendChild(row);
     calendarCont.appendChild(table);
   }
+
   // 이전 달 이동
   previousMonth.addEventListener("click", () => {
     currentDate.setMonth(currentDate.getMonth() - 1);
@@ -196,6 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCalendar();
   });
 
+  fetchData();
   updateCalendar();
   initializeSelectBox();
 });

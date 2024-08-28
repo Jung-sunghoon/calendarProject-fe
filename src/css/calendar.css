@@ -19,7 +19,7 @@ td {
   text-align: left;
   padding: 5px;
   border: 1px solid #dddddd;
-  height: calc((100% - 40px) / 6); /* 높이 6줄 나눔 */
+  max-height: calc((100% - 40px) / 6); /* 높이 6줄 나눔 */
   vertical-align: top;
   padding: 10px;
 }
@@ -57,4 +57,18 @@ tr {
   position: absolute;
   top: 5px;
   left: 5px;
+}
+
+/* 스케줄 막대 스타일링 */
+.schedule-bar {
+  background-color: #4caf50; /* 예시 색상 */
+  color: white;
+  padding: 2px 4px;
+  margin-top: 2px;
+  border-radius: 4px;
+  font-size: 12px;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

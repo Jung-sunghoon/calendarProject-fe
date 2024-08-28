@@ -135,10 +135,6 @@
             </div>
           </div>
 
-
-
-
-
           <div class="calendar-box-cont">
             <!-- 여기에 캘린더 들어올 예정 -->
             <div class="calendar-arrow">
@@ -152,11 +148,6 @@
               </div>
             </div>
           </div>
-
-
-
-
-          
         </section>
       </article>
       <!-------------------------- 메인페이지 End -------------------------->
@@ -297,9 +288,15 @@
               </form>
             </div>
             <div class="modal-footer">
-              <button type="button" id="exit-btn" class="footer-btn">취소</button>
-              <button type="button" id="save-btn" class="footer-btn">저장</button>
-              <button type="button" id="clear-btn" class="footer-btn">삭제</button>
+              <button type="button" id="exit-btn" class="footer-btn">
+                취소
+              </button>
+              <button type="button" id="save-btn" class="footer-btn">
+                저장
+              </button>
+              <button type="button" id="clear-btn" class="footer-btn">
+                삭제
+              </button>
             </div>
           </section>
         </div>
@@ -322,9 +319,23 @@
         </div>
         <div id="calendar"></div>
         <div class="time-picker">
-          <input type="number" id="hour" min="0" max="23" value="11" oninput="hourValue(this, 2)" />
+          <input
+            type="number"
+            id="hour"
+            min="0"
+            max="23"
+            value="11"
+            oninput="hourValue(this, 2)"
+          />
           <span>:</span>
-          <input type="number" id="minute" min="0" max="59" value="00" oninput="minuteValue(this, 2)" />
+          <input
+            type="number"
+            id="minute"
+            min="0"
+            max="59"
+            value="00"
+            oninput="minuteValue(this, 2)"
+          />
         </div>
         <button id="confirm">확인</button>
       </div>
