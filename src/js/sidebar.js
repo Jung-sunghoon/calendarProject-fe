@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const newSchedule = await addSchedule(scheduleData);
                 addScheduleToUI(newSchedule);
             } catch (error) {
-                console.error('Failed to add new schedule:', error);
-                alert('서버 통신 실패. 로컬에 임시 저장합니다.');
+                console.error('Error:', error);
+                alert('서버 통신 실패');
                 addScheduleToUI({ ...scheduleData, id: Date.now() });
             }
 
@@ -111,27 +111,56 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ******* 일정 삭제 *******
     // 일정 삭제
-    scheduleList.addEventListener('click', (e) => {
+    scheduleList.addEventListener('click', e => {
         if (e.target.closest('.sidebar-list-close')) {
             e.preventDefault();
             const listItem = e.target.closest('li');
-            const itemText = listItem.querySelector('.sidebar-list-cont span').textContent;
+            const scheduleTitle = listItem.querySelector('.sidebar-list-cont span').textContent;
             itemToDelete = listItem;
-            showModal(itemText);
+            showModal(scheduleTitle);
         }
     });
+
+    function showModal(scheduleTitle) {
+        deleteModal.querySelector('.delete-txt strong').textContent = scheduleTitle;
+        deleteModal.style.display = 'block';
+    }
 
     // 삭제 모달창 확인 버튼
     deleteConfirmBtn.addEventListener('click', () => {
         if (itemToDelete) {
-            itemToDelete.remove();
-            itemToDelete = null;
+            const scheduleId = itemToDelete.querySelector('.sidebar-list-box').dataset.id;
+            deleteSchedule(scheduleId);
         }
-        hideModal();
     });
 
     // 삭제 모달창 취소 버튼
-    deleteCancelBtn.addEventListener('click', hideModal);
+    deleteCancelBtn.addEventListener('click', () => {
+        itemToDelete = null;
+        deleteModal.style.display = 'none';
+    });
+
+    async function deleteSchedule() {
+        try {
+            const res = await fetch('http://localhost:8080/api/schedule/:id', {
+                method: 'DELETE',
+            });
+
+            if (!res.ok) {
+                throw new Error('');
+            }
+
+            itemToDelete.remove();
+            itemToDelete = null;
+            deleteModal.style.display = 'none';
+        } catch (error) {
+            console.error('Error', error);
+            alert('서버 통신 실패');
+            itemToDelete.remove();
+            itemToDelete = null;
+            deleteModal.style.display = 'none';
+        }
+    }
 
 });
 
