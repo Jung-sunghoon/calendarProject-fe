@@ -18,6 +18,21 @@ document.addEventListener("DOMContentLoaded", function () {
   const yearList = document.querySelectorAll(".calendar-select-year-list li");
   const monthList = document.querySelectorAll(".calendar-select-month-list li");
 
+  window.updateCalendar = null;
+
+// 기존의 updateCalendar 함수 정의를 다음과 같이 수정
+window.updateCalendar = function() {
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1;
+  // 현재 년도, 월 표시
+  calendarMonthElement.textContent = String(month).padStart(2, "0");
+  calendarYearElement.textContent = year;
+
+  renderCalendarDays(year, month);
+}
+
+
+
   // 전체 스케줄 가져오기
   let schedules = [];
 
