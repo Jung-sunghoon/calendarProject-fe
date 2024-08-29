@@ -108,22 +108,34 @@ main .sidebar {
   padding: 10px 16px;
 }
 .sidebar-list-box .sidebar-list-cont img {
-  margin: 6px 8px 0 0;
+  margin: 5px 8px 0 0;
 }
 .sidebar-list-box .sidebar-list-cont span {
+  width: 134px;
   display: inline-block;
   font-family: "Noto sans kr";
   font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  padding-top: 1px;
 }
 .sidebar-list-box .sidebar-list-close {
   display: none;
-  margin-top: 6px;
+  margin-top: 4px;
 }
 .sidebar-schedule-list li:hover .sidebar-list-box {
   background-color: #f6f6f6;
 }
 .sidebar-schedule-list li:hover .sidebar-list-box .sidebar-list-close {
   display: block;
+}
+.sidebar-list-box.sidebar-new-item {
+  height: 40px;
+  margin-bottom: 12px;
+  padding: 10px 16px;
+  border-radius: 15px;
+  background-color: #f6f6f6;
+  display: none;
 }
 .sidebar-schedule .sidebar-schedule-add {
   display: flex;
@@ -356,7 +368,7 @@ main .calendar {
 
 /* header - 모달 창 닫기 버튼 */
 .view-close-button {
-  background: url(../img/close-button.svg) no-repeat;
+  background: url(../assets/img/close-button.svg) no-repeat;
   width: 24px;
   height: 4px;
   position: absolute;
@@ -379,11 +391,12 @@ main .calendar {
 
 /* main - bg */
 .modal-view-cont {
+  width: 932px;
+  height: 681px;
   position: absolute;
   bottom: 0;
   left: 0;
   background-color: #fff;
-  height: 681px;
   border-radius: 20px;
   margin: 5px;
   padding: 46px;
@@ -428,7 +441,7 @@ main .calendar {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  background: url(../img/alarm.svg) no-repeat;
+  background: url(../assets/img/alarm.svg) no-repeat;
   width: 16px;
   height: 16px;
 }
