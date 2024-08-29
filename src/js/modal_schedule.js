@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
   
         console.log("Selected date: ", targetDate.toDateString());
         updateModalContent(targetDate);
+        fetchScheduleData(targetDate);
       }
     });
   
@@ -69,6 +70,46 @@ document.addEventListener("DOMContentLoaded", function () {
           <span class="view-separator">/</span>
           <p class="view-day">${String(date.getDate()).padStart(2, "0")}</p>
         `;
+      }
+    }
+  
+    async function fetchScheduleData(date) {
+      const $modalViewCont = $modalScheduleView.querySelector(".modal-view-cont");
+      if (!$modalViewCont) return;
+  
+      try {
+        // 날짜를 'YYYY-MM-DD' 형식으로 변환
+        const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+        
+        // API 엔드포인트 (실제 주소로 변경 필요)
+        const response = await fetch(`http://localhost:8080/api/schedule`);
+        
+        if (!response.ok) {
+          throw new Error('네트워크 통신 에러');
+        }
+  
+        const data = await response.json();
+  
+        if (data && data.length > 0) {
+          // 데이터가 있으면 모달 내용 업데이트
+          $modalViewCont.innerHTML = data.map(schedule => `
+            <div class="modal-view-item">
+              <h3 class="modal-view-tit">${schedule.title}</h3>
+              <div class="modal-view-time">
+                <span class="view-time-start">${schedule.startTime}</span>
+                <span class="view-time-separator">~</span>
+                <span class="view-time-end">${schedule.endTime}</span>
+              </div>
+              <p>${schedule.description}</p>
+            </div>
+          `).join('');
+        } else {
+          // 데이터가 없으면 빈 상태로 표시
+          $modalViewCont.innerHTML = '<p>조회 가능한 일정이 없습니다</p>';
+        }
+      } catch (error) {
+        console.error('Error fetching schedule data:', error);
+        $modalViewCont.innerHTML = '<p>뭔가 잘못됬어</p>';
       }
     }
   });
