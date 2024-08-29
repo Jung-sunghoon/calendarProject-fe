@@ -15,6 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const monthSelectText = document.querySelector(".calendar-select-month-text");
   const yearSelectBox = document.querySelector(".calendar-select-year-box");
   const monthSelectBox = document.querySelector(".calendar-select-month-box");
+  const yearSelectCont = document.querySelector(".calendar-select-year");
+  const monthSelectCont = document.querySelector(".calendar-select-month");
   const yearList = document.querySelectorAll(".calendar-select-year-list li");
   const monthList = document.querySelectorAll(".calendar-select-month-list li");
 
@@ -56,6 +58,9 @@ document.addEventListener("DOMContentLoaded", function () {
     calendarMonthElement.textContent = String(month).padStart(2, "0");
     calendarYearElement.textContent = year;
 
+    yearSelectText.textContent = `${year} 년`;
+    monthSelectText.textContent = `${calendarMonthElement.textContent} 월`;
+
     renderCalendarDays(year, month);
   }
   // 연도 선택 핸들러
@@ -65,7 +70,6 @@ document.addEventListener("DOMContentLoaded", function () {
       currentDate.setFullYear(selectedYear);
       yearSelectText.textContent = `${selectedYear} 년`; // 셀렉트 박스 년도 바꾸기
       updateCalendar();
-      yearSelectBox.style.display = "none";
     });
   });
 
@@ -76,14 +80,14 @@ document.addEventListener("DOMContentLoaded", function () {
       currentDate.setMonth(selectedMonth - 1);
       monthSelectText.textContent = `${selectedMonth} 월`; // 셀렉트 박스 월 바꾸기
       updateCalendar();
-      monthSelectBox.style.display = "none";
     });
   });
 
   // 셀렉트 박스 열고 닫기
   function toggleSelectBox(selectBox, otherSelectBox) {
     if (selectBox.style.display === "block") {
-      selectBox.style.display = "none";
+      yearSelectBox.style.display = "none";
+      monthSelectBox.style.display = "none";
     } else {
       selectBox.style.display = "block";
       otherSelectBox.style.display = "none"; // 다른 셀렉트 박스는 닫기
@@ -91,11 +95,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function initializeSelectBox() {
-    yearSelectText.addEventListener("click", function () {
+    yearSelectCont.addEventListener("click", function () {
       toggleSelectBox(yearSelectBox, monthSelectBox);
     });
 
-    monthSelectText.addEventListener("click", function () {
+    monthSelectCont.addEventListener("click", function () {
       toggleSelectBox(monthSelectBox, yearSelectBox);
     });
 
