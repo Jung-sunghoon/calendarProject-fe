@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   const $modalScheduleView = document.querySelector(".modal-schedule-view");
+  const $modalScheduleEdit = document.querySelector(".modal-schedule-edit");
   const $closeBtn = document.querySelector(".view-close-button");
+  const $addBtn = document.querySelector(".view-add-button"); // <=== 추가버튼!!!
   const calendarMonthElement = document.querySelector(".calendar-month");
   const calendarYearElement = document.querySelector(".calendar-year");
 
@@ -49,6 +51,10 @@ document.addEventListener("DOMContentLoaded", function () {
       updateModalContent(targetDate);
       fetchScheduleData(targetDate);
     }
+  });
+
+  $addBtn.addEventListener("click", function () {             // <=== 버튼클릭시 생성모달창 나옴!!!
+    $modalScheduleEdit.style.display = "block"
   });
 
   const closeModal = () => {
