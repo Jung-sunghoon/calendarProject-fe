@@ -1,4 +1,4 @@
-
+document.addEventListener("DOMContentLoaded", function () {
   const scheduleList = document.querySelector(".sidebar-schedule-list");
   const addButton = document.querySelector(".sidebar-schedule-add");
   const newItem = document.querySelector(".sidebar-new-item");
@@ -18,36 +18,35 @@
   let isAddingItem = false;
 
   // ******* 일정 추가 *******
-    async function addNewItem() {
-        try {
-            const res = await fetch('http://localhost:8080/api/schedule', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    schedule_title: scheduleInput.value,
-                    schedule_description: "",
-                    schedule_start: new Date(),
-                    schedule_end: new Date(),
-                    schedule_notification: false,
-                    schedule_recurring: false,
-                }),
-            });
+  async function addNewItem() {
+    try {
+      const res = await fetch("http://localhost:8080/api/schedule", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          schedule_title: scheduleInput.value,
+          schedule_description: "",
+          schedule_start: new Date(),
+          schedule_end: new Date(),
+          schedule_notification: false,
+          schedule_recurring: false,
+        }),
+      });
 
-            if (!res.ok) {
-                throw new Error('');
-            }
+      if (!res.ok) {
+        throw new Error("");
+      }
 
-            const data = await res.json();
-            scheduleInput.value = "";
-            fetchData();
-            return data;
-        } catch (error) {
-            console.error('Error', error);
-        }
+      const data = await res.json();
+      scheduleInput.value = "";
+      fetchData();
+      return data;
+    } catch (error) {
+      console.error("Error", error);
     }
-
+  }
 
   // 일정 추가
   function addScheduleToUI(schedule) {
@@ -85,14 +84,14 @@
     }
   });
 
-  // 포커스를 잃으면 입력 필드 사라지게
-  scheduleInput.addEventListener("blur", () => {
-    if (scheduleInput.textContent.trim()) {
-      addNewItem();
-    } else {
-      newItem.style.display = "none";
-    }
-  });
+  // // 포커스를 잃으면 입력 필드 사라지게
+  // scheduleInput.addEventListener("blur", () => {
+  //   if (scheduleInput.textContent.trim()) {
+  //     addNewItem();
+  //   } else {
+  //     newItem.style.display = "none";
+  //   }
+  // });
 
   // ******* 일정 삭제 *******
   // 일정 삭제
@@ -264,3 +263,4 @@
     }
   }
   fetchWeatherData();
+});
