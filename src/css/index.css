@@ -54,13 +54,13 @@ main .sidebar {
   font-size: 16px;
   color: #3fb499;
 }
-.sidebar-weather .sidebar-weather-info .sidebar-weather-num {
+.sidebar-weather .sidebar-weather-info .sidebar-weather-temp {
   font-family: "Inter";
   font-size: 50px;
   font-weight: bold;
   color: #3fb499;
 }
-.sidebar-weather .sidebar-weather-icon img {
+.sidebar-weather .sidebar-weather-icon {
   width: 116px;
   height: 111px;
 }
@@ -582,7 +582,7 @@ main .calendar {
   outline: none;
 }
 
-.input-group .repeat-num {
+.input-group .repeat-temp {
   width: 11%;
   height: 16px;
   border: 1px solid #dddddd;

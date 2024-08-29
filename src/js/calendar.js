@@ -1,7 +1,8 @@
-let currentDate;
 let updateCalendar;
+let currentDate;
 window.currentDate = currentDate;
 window.updateCalendar = updateCalendar;
+const API_URL = "http://localhost:8080";
 
 document.addEventListener("DOMContentLoaded", function () {
   const logoElement = document.querySelector(".sidebar-logo a");
@@ -16,7 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const monthSelectBox = document.querySelector(".calendar-select-month-box");
   const yearList = document.querySelectorAll(".calendar-select-year-list li");
   const monthList = document.querySelectorAll(".calendar-select-month-list li");
-  const API_URL = "http://localhost:8080";
 
   // 전체 스케줄 가져오기
   let schedules = [];
@@ -168,13 +168,55 @@ document.addEventListener("DOMContentLoaded", function () {
       // 해당 날짜의 일정 표시
       const scheduleForDate = schedules.filter((schedule) => {
         const scheduleStart = new Date(schedule.schedule_start);
-        return (
+
+        // 기본 일정(반복 없음)
+        if (
           scheduleStart.getFullYear() === year &&
           scheduleStart.getMonth() + 1 === month &&
           scheduleStart.getDate() === date
-        );
+        ) {
+          return true;
+        }
+
+        // 반복 일정 처리
+        if (schedule.schedule_recurring && schedule.recurring_pattern) {
+          const pattern = schedule.recurring_pattern;
+          const startsOn = new Date(pattern.starts_on);
+          const endsOn = new Date(pattern.ends_on);
+
+          if (
+            new Date(year, month - 1, date) >= startsOn &&
+            new Date(year, month - 1, date) <= endsOn
+          ) {
+            switch (pattern.repeat_type) {
+              case "daily":
+                return (
+                  ((new Date(year, month - 1, date) - startsOn) /
+                    (1000 * 60 * 60 * 24)) %
+                    pattern.repeat_interval ===
+                  0
+                );
+              case "weekly":
+                const dayOfWeek = daysOfWeek.indexOf(
+                  daysOfWeek[new Date(year, month - 1, date).getDay()]
+                );
+                return pattern.repeat_on.includes(daysOfWeek[dayOfWeek]);
+              case "monthly":
+                return date === startsOn.getDate();
+              case "yearly":
+                return (
+                  month === startsOn.getMonth() + 1 &&
+                  date === startsOn.getDate()
+                );
+              default:
+                return false;
+            }
+          }
+        }
+        return false;
       });
 
+      // 스케줄 바 추가
       scheduleForDate.forEach((schedule) => {
         const scheduleElement = document.createElement("div");
         scheduleElement.classList.add("schedule-bar");
