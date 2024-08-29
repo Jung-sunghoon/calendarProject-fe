@@ -228,17 +228,10 @@ document.addEventListener("DOMContentLoaded", function() {
       }
       return input.value;
     };
-    const repeat = repeatValue(document.getElementById("repeat-num"), 3, 0 ,999);
+    const repeat = repeatValue(document.getElementById("repeat-num"), 3, 0 ,998);
   });
 
   clearBtn.style.display = 'none'; // 삭제버튼숨김
-
-  // closeBtn.onclick = function() {
-  //   $modalScheduleEdit.style.display = "none";
-  // }
-  // exitBtn.onclick = function() {
-  //   $modalScheduleEdit.style.display = "none";
-  // };
 
 // 작은달력 위치 값 조정
   selectedDateSpan.addEventListener('click', () => {
