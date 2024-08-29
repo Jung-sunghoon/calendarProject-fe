@@ -181,6 +181,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    closeModalButton?.addEventListener('click', () => viewModal.style.display = 'none');
+    closeModalBtn?.addEventListener('click', () => viewModal.style.display = 'none');
 });
 

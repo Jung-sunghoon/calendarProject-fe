@@ -368,7 +368,7 @@ main .calendar {
 
 /* header - 모달 창 닫기 버튼 */
 .view-close-button {
-  background: url(../img/close-button.svg) no-repeat;
+  background: url(../assets/img/close-button.svg) no-repeat;
   width: 24px;
   height: 4px;
   position: absolute;
@@ -440,7 +440,7 @@ main .calendar {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  background: url(../img/alarm.svg) no-repeat;
+  background: url(../assets/img/alarm.svg) no-repeat;
   width: 16px;
   height: 16px;
 }
