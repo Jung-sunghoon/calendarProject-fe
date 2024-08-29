@@ -98,7 +98,7 @@
   // 일정 삭제
   async function deleteSchedule() {
     try {
-      const res = await fetch("http://localhost:8080/api/${scheduleId}", {
+      const res = await fetch("http://localhost:8080/api/schedule/${scheduleId}", {
         method: "DELETE",
       });
 
