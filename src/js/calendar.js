@@ -1,10 +1,6 @@
-let updateCalendar;
-let currentDate;
-window.currentDate = currentDate;
-window.updateCalendar = updateCalendar;
+
 const API_URL = "http://localhost:8080";
 
-document.addEventListener("DOMContentLoaded", function () {
   const logoElement = document.querySelector(".sidebar-logo a");
   const calendarMonthElement = document.querySelector(".calendar-month");
   const calendarYearElement = document.querySelector(".calendar-year");
@@ -266,4 +262,4 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchData();
   updateCalendar();
   initializeSelectBox();
-});
+

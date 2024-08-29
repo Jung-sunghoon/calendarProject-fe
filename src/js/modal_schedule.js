@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+
     const $modalScheduleView = document.querySelector(".modal-schedule-view");
     const $closeBtn = document.querySelector(".view-close-button");
     const calendarMonthElement = document.querySelector(".calendar-month");
@@ -112,4 +112,3 @@ document.addEventListener("DOMContentLoaded", function () {
         $modalViewCont.innerHTML = '<p>뭔가 잘못됬어</p>';
       }
     }
-  });
