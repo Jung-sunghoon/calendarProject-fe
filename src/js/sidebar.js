@@ -113,6 +113,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ******* 일정 삭제 *******
     // 일정 삭제
+    async function deleteSchedule() {
+        try {
+            const res = await fetch('http://localhost:8080/api/${scheduleId}', {
+                method: 'DELETE',
+            });
+
+            if (!res.ok) {
+                throw new Error('');
+            }
+
+            itemToDelete.remove();
+            itemToDelete = null;
+            deleteModal.style.display = 'none';
+        } catch (error) {
+            console.error('Error', error);
+            alert('서버 통신 실패');
+            itemToDelete.remove();
+            itemToDelete = null;
+            deleteModal.style.display = 'none';
+        }
+    }
+
     scheduleList.addEventListener('click', e => {
         if (e.target.closest('.sidebar-list-close')) {
             e.preventDefault();
@@ -142,27 +164,6 @@ document.addEventListener('DOMContentLoaded', function() {
         deleteModal.style.display = 'none';
     });
 
-    async function deleteSchedule() {
-        try {
-            const res = await fetch('http://localhost:8080/api/schedule/:id', {
-                method: 'DELETE',
-            });
-
-            if (!res.ok) {
-                throw new Error('');
-            }
-
-            itemToDelete.remove();
-            itemToDelete = null;
-            deleteModal.style.display = 'none';
-        } catch (error) {
-            console.error('Error', error);
-            alert('서버 통신 실패');
-            itemToDelete.remove();
-            itemToDelete = null;
-            deleteModal.style.display = 'none';
-        }
-    }
 
     // ******* 일정 조회 모달 *******
     function openViewModal() {

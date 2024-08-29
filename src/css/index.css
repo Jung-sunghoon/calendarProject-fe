@@ -391,11 +391,12 @@ main .calendar {
 
 /* main - bg */
 .modal-view-cont {
+  width: 932px;
+  height: 681px;
   position: absolute;
   bottom: 0;
   left: 0;
   background-color: #fff;
-  height: 681px;
   border-radius: 20px;
   margin: 5px;
   padding: 46px;
