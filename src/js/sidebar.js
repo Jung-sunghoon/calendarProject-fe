@@ -84,14 +84,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // 포커스를 잃으면 입력 필드 사라지게
-  scheduleInput.addEventListener("blur", () => {
-    if (scheduleInput.textContent.trim()) {
-      addNewItem();
-    } else {
-      newItem.style.display = "none";
-    }
-  });
+  // // 포커스를 잃으면 입력 필드 사라지게
+  // scheduleInput.addEventListener("blur", () => {
+  //   if (scheduleInput.textContent.trim()) {
+  //     addNewItem();
+  //   } else {
+  //     newItem.style.display = "none";
+  //   }
+  // });
 
   // ******* 일정 삭제 *******
   // 일정 삭제
