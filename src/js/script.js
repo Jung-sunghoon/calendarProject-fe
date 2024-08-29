@@ -15,25 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const confirmBtn = document.getElementById("confirm");
   const selectedDateSpan = document.getElementById("selectedDate");
   const selectedTimeSpan = document.getElementById("selectedTime");
-  const sidebarWeatherText = document.querySelector(".sidebar-weather-text");
-  const sidebarWeatherTemp = document.querySelector(".sidebar-weather-temp");
-  const sidebarWeatherIcon = document.querySelector(".sidebar-weather-icon");
-
-  const weatherTranslations = {
-    "clear sky": "맑음",
-    "few clouds": "구름 조금",
-    "scattered clouds": "흩어진 구름",
-    "broken clouds": "흐림",
-    "shower rain": "소나기",
-    rain: "비",
-    thunderstorm: "천둥번개",
-    snow: "눈",
-    mist: "안개",
-  };
-
-  function translateWeatherDescription(description) {
-    return weatherTranslations[description] || description;
-  }
 
   let currentDate = new Date();
   let selectedDate = null;
@@ -115,27 +96,6 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCalendar();
   }
 
-  // 날씨 정보 가져오기
-  async function fetchWeatherData() {
-    try {
-      const res = await fetch(`${API_URL}/api/weather?city=seoul`);
-      if (!res.ok) {
-        throw new Error("Failed to fetch weather data");
-      }
-
-      const data = await res.json();
-      console.log(data);
-
-      sidebarWeatherText.innerText = translateWeatherDescription(
-        data.weather[0].description
-      );
-      sidebarWeatherTemp.innerText = `${Math.round(data.main.temp)}º`;
-      sidebarWeatherIcon.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   prevMonthBtn.addEventListener("click", () => {
     currentDate.setMonth(currentDate.getMonth() - 1);
     updateCalendar();
@@ -181,6 +141,5 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCalendar();
   });
 
-  fetchWeatherData();
   updateCalendar();
 });
