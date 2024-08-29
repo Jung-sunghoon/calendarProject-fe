@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+
   const scheduleList = document.querySelector(".sidebar-schedule-list");
   const addButton = document.querySelector(".sidebar-schedule-add");
   const newItem = document.querySelector(".sidebar-new-item");
@@ -18,60 +18,36 @@ document.addEventListener("DOMContentLoaded", function () {
   let isAddingItem = false;
 
   // ******* 일정 추가 *******
-  async function addSchedule(scheduleData) {
-    try {
-      const res = await fetch("http://localhost:8080/api/schedule", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(scheduleData),
-      });
+    async function addNewItem() {
+        try {
+            const res = await fetch('http://localhost:8080/api/schedule', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    schedule_title: scheduleInput.value,
+                    schedule_description: "",
+                    schedule_start: new Date(),
+                    schedule_end: new Date(),
+                    schedule_notification: false,
+                    schedule_recurring: false,
+                }),
+            });
 
-      if (!res.ok) {
-        throw new Error("");
-      }
+            if (!res.ok) {
+                throw new Error('');
+            }
 
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.error("Error", error);
-      throw error;
+            const data = await res.json();
+            scheduleInput.value = "";
+            fetchData();
+            return data;
+        } catch (error) {
+            console.error('Error', error);
+        }
     }
-  }
 
-  async function addNewItem() {
-    if (isAddingItem) return;
-    isAddingItem = true;
-
-    const newItemText = scheduleInput.textContent.trim();
-    if (newItemText) {
-      const currentDate = new Date();
-      const scheduleData = {
-        schedule_title: newItemText,
-        schedule_description: "",
-        formattedStart: currentDate.toISOString(),
-        formattedEnd: new Date(
-          currentDate.getTime() + 60 * 60 * 1000
-        ).toISOString(),
-        schedule_notification: false,
-        schedule_recurring: false,
-      };
-
-      try {
-        const newSchedule = await addSchedule(scheduleData);
-        addScheduleToUI(newSchedule);
-      } catch (error) {
-        console.error("Error:", error);
-        alert("서버 통신 실패");
-        addScheduleToUI({ ...scheduleData, id: Date.now() });
-      }
-
-      scheduleInput.textContent = "";
-      newItem.style.display = "none";
-    }
-    isAddingItem = false;
-  }
 
   // 일정 추가
   function addScheduleToUI(schedule) {
@@ -288,4 +264,3 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
   fetchWeatherData();
-});

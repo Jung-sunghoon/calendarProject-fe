@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+
   /************ 모달창 닫힘 기능 구현 ************/
   const closeBtn = document.getElementById('close-btn');
   const exitBtn = document.getElementById('exit-btn');                  // 일정 모달창 나가기버튼
@@ -145,4 +145,3 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   updateCalendar();
-});

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+
   /************ 모달창 닫힘 기능 구현 ************/
   const closeBtn = document.getElementById("close-btn");
   const modal = document.querySelector(".modal");
@@ -142,4 +142,3 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   updateCalendar();
-});
