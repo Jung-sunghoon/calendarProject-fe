@@ -107,8 +107,14 @@ main .sidebar {
   border-radius: 15px;
   padding: 10px 16px;
 }
+.sidebar-list-cont {
+  display: flex;
+  align-items: center;
+}
 .sidebar-list-box .sidebar-list-cont img {
-  margin: 5px 8px 0 0;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
 }
 .sidebar-list-box .sidebar-list-cont span {
   width: 134px;
@@ -117,7 +123,6 @@ main .sidebar {
   font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
-  padding-top: 1px;
 }
 .sidebar-list-box .sidebar-list-close {
   display: none;
@@ -136,6 +141,10 @@ main .sidebar {
   border-radius: 15px;
   background-color: #f6f6f6;
   display: none;
+}
+.sidebar-schedule-input {
+  background-color: transparent;
+  border: none;
 }
 .sidebar-schedule .sidebar-schedule-add {
   display: flex;
