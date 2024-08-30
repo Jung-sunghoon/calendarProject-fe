@@ -22,14 +22,12 @@
           </section>
           <!-- 사이드바상단 날씨 -->
           <section class="sidebar-weather">
-            <h2 class="blind">날씨</h2>
+            <h2 class="blind"></h2>
             <div class="sidebar-weather-info">
-              <p class="sidebar-weather-text">대체로맑음</p>
-              <p class="sidebar-weather-num">27º</p>
+              <p class="sidebar-weather-text"></p>
+              <p class="sidebar-weather-temp"></p>
             </div>
-            <div class="sidebar-weather-icon">
-              <img src="./src/assets/img/sun-cloud.svg" alt="날씨아이콘" />
-            </div>
+            <img alt="날씨아이콘" class="sidebar-weather-icon" />
           </section>
         </div>
         <!-- 사이드바하단 -->
@@ -66,6 +64,13 @@
                 </a>
               </li>
             </ul>
+            <div class="sidebar-list-box sidebar-new-item">
+              <div class="sidebar-list-cont">
+                <img src="./src/assets/img/list-circle.svg" alt="" />
+                <!-- <span class="sidebar-schedule-input"></span> -->
+                <input type="text" class="sidebar-schedule-input" />
+              </div>
+            </div>
             <button type="submit" class="sidebar-schedule-add">
               <img src="./src/assets/img/list-add.svg" />
               <span>일정 추가</span>
@@ -225,28 +230,28 @@
                 <!-- 시작일자 영역 -->
                 <div class="modal-content-start">
                   <div class="input-group">
-                    <p>시작날짜ㅤ<span id="selectedDate" class="date-input">2024년 7월 26일</span></p>
+                    <p>시작날짜ㅤ<span id="selectedDate" class="start-date-input">2024년 7월 26일</span></p>
                   </div>
                   <div class="input-group">
-                    <p>시작시간ㅤ<span id="selectedTime" class="time-input">11:00</span></p>
+                    <p>시작시간ㅤ<span id="selectedTime" class="start-time-input">11:00</span></p>
                   </div>
                 </div>
                 <!-- 완료일자 영역 -->
                 <div class="modal-content-end">
                   <div class="input-group">
-                    <p>완료날짜ㅤ<span id="completeDate" class="date-input">2024년 7월 26일</span></p>
+                    <p>완료날짜ㅤ<span id="completeDate" class="end-date-input">2024년 7월 26일</span></p>
                   </div>
                   <div class="input-group">
-                    <p>완료시간ㅤ<span id="completeTime" class="time-input">11:00</span></p>
+                    <p>완료시간ㅤ<span id="completeTime" class="end-time-input">11:00</span></p>
                   </div>
                 </div>
                 <!-- 반복주기 영역 -->
                 <div class="modal-content-repeat">
                   <div class="input-group">
                     <p>반복주기</p>
-                    <textarea>100</textarea>
+                    <textarea id="repeat-num" oninput="repeatValue(this, 3)">100</textarea>
                     <div class="repeat-box">
-                      <span class="repeat-text">일간 반복</span>
+                      <p class="repeat-text">일간 반복</p>
                       <ul class="repeat-list">
                         <li class="no-repeat"><span>반복 없음</span></li>
                         <li class="day-repeat"><span>일간 반복</span></li>
@@ -287,12 +292,18 @@
           <div class="sat">토</div>
         </div>
         <div id="calendar"></div>
-        <div class="time-picker">
-          <input type="number" id="hour" min="0" max="23" value="11" oninput="hourValue(this, 2)" />
+        <div class="start-time">
+          <input type="number" id="start-hour" min="0" max="23" value="11" oninput="hourValue(this, 2)" />
           <span>:</span>
-          <input type="number" id="minute" min="0" max="59" value="00" oninput="minuteValue(this, 2)" />
+          <input type="number" id="start-minute" min="0" max="59" value="00" oninput="minuteValue(this, 2)" />
+          <button id="start-confirm">확인</button>
         </div>
-        <button id="confirm">확인</button>
+        <div class="end-time">
+          <input type="number" id="end-hour" min="0" max="23" value="11" oninput="hourValue(this, 2)" />
+          <span>:</span>
+          <input type="number" id="end-minute" min="0" max="59" value="00" oninput="minuteValue(this, 2)" />
+          <button id="end-confirm">확인</button>
+        </div>
       </div>
       <!-------------------------- 일정 관리 모달 END -------------------------->
 
@@ -310,10 +321,9 @@
         </div>
       </section>
     </main>
-    <script src="./src/js/loginVerify.js"></script>
-    <script src="./src/js/script.js"></script>
-    <script src="/src/js/modal_schedule.js"></script>
-    <script src="/src/js/modal_scadule_create.js"></script>
-    <script src="./src/js/calendar.js"></script>
+    <script src="./src/js/modal_schedule.js" defer></script>
+    <script src="./src/js/modal_schedule_create.js" defer></script>
+    <script src="./src/js/calendar.js" defer></script>
+    <script src="./src/js/sidebar.js" defer></script>
   </body>
 </html>
