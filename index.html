@@ -240,14 +240,14 @@
                 <div class="modal-content-start">
                   <div class="input-group">
                     <p>
-                      시작날짜ㅤ<span id="selectedDate" class="date-input"
+                      시작날짜ㅤ<span id="selectedDate" class="start-date-input"
                         >2024년 7월 26일</span
                       >
                     </p>
                   </div>
                   <div class="input-group">
                     <p>
-                      시작시간ㅤ<span id="selectedTime" class="time-input"
+                      시작시간ㅤ<span id="selectedTime" class="start-time-input"
                         >11:00</span
                       >
                     </p>
@@ -257,14 +257,14 @@
                 <div class="modal-content-end">
                   <div class="input-group">
                     <p>
-                      완료날짜ㅤ<span id="completeDate" class="date-input"
+                      완료날짜ㅤ<span id="completeDate" class="end-date-input"
                         >2024년 7월 26일</span
                       >
                     </p>
                   </div>
                   <div class="input-group">
                     <p>
-                      완료시간ㅤ<span id="completeTime" class="time-input"
+                      완료시간ㅤ<span id="completeTime" class="end-time-input"
                         >11:00</span
                       >
                     </p>
@@ -274,9 +274,9 @@
                 <div class="modal-content-repeat">
                   <div class="input-group">
                     <p>반복주기</p>
-                    <textarea>100</textarea>
+                    <textarea id="repeat-num" oninput="repeatValue(this, 3)">100</textarea>
                     <div class="repeat-box">
-                      <span class="repeat-text">일간 반복</span>
+                      <p class="repeat-text">일간 반복</p>
                       <ul class="repeat-list">
                         <li class="no-repeat"><span>반복 없음</span></li>
                         <li class="day-repeat"><span>일간 반복</span></li>
@@ -323,26 +323,18 @@
           <div class="sat">토</div>
         </div>
         <div id="calendar"></div>
-        <div class="time-picker">
-          <input
-            type="number"
-            id="hour"
-            min="0"
-            max="23"
-            value="11"
-            oninput="hourValue(this, 2)"
-          />
+        <div class="start-time">
+          <input type="number" id="start-hour" min="0" max="23" value="11" oninput="hourValue(this, 2)" />
           <span>:</span>
-          <input
-            type="number"
-            id="minute"
-            min="0"
-            max="59"
-            value="00"
-            oninput="minuteValue(this, 2)"
-          />
+          <input type="number" id="start-minute" min="0" max="59" value="00" oninput="minuteValue(this, 2)" />
+          <button id="start-confirm">확인</button>
         </div>
-        <button id="confirm">확인</button>
+        <div class="end-time">
+          <input type="number" id="end-hour" min="0" max="23" value="11" oninput= "hourValue(this, 2)" />
+          <span>:</span>
+          <input type="number" id="end-minute" min="0" max="59" value="00" oninput= "minuteValue(this, 2)" />
+          <button id="end-confirm">확인</button>
+        </div>
       </div>
       <!-------------------------- 일정 관리 모달 END -------------------------->
 
@@ -364,9 +356,8 @@
         </div>
       </section>
     </main>
-    <script src="./src/js/script.js" defer></script>
-    <script src="/src/js/modal_schedule.js" defer></script>
-    <script src="/src/js/modal_schedule_create.js" defer></script>
+    <script src="./src/js/modal_schedule.js" defer></script>
+    <script src="./src/js/modal_schedule_create.js" defer></script>
     <script src="./src/js/calendar.js" defer></script>
     <script src="./src/js/sidebar.js" defer></script>
   </body>
