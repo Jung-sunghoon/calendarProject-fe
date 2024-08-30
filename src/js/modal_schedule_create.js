@@ -1,33 +1,45 @@
 document.addEventListener("DOMContentLoaded", function() {
-  /************ 모달창 닫힘 기능 구현 ************/
-  const closeBtn = document.getElementById("close-btn");
-  const exitBtn = document.getElementById("exit-btn");
-  const $modalScheduleEdit = document.querySelector(".modal-schedule-edit");
+  /************************ DOM 요소 불러오기 ************************/
+  const $modalScheduleEdit = document.querySelector(".modal-schedule-edit");    // 일정 만드는 모달
+  const closeBtn = document.getElementById("close-btn");                        // 일정 모달의 나가기버튼
+  const exitBtn = document.getElementById("exit-btn");                          // 일정 모달의 취소버튼(나가기버튼과 동일함)
+  const saveBtn = document.getElementById("save-btn");                          // 일정 모달의 저장버튼
+  const clearBtn = document.getElementById("clear-btn");                        // 일정 모달의 삭제버튼
+  const selectedDateSpan = document.getElementById("selectedDate");             // 일정 모달의 시작날짜 (ID명)
+  const selectedTimeSpan = document.getElementById("selectedTime");             // 일정 모달의 시작시간 (ID명)
+  const completeDateSpan = document.getElementById("completeDate");             // 일정 모달의 완료날짜 (ID명)
+  const completeTimeSpan = document.getElementById("completeTime");             // 일정 모달의 완료시간 (ID명)
+  const startDateInput = document.querySelector(".start-date-input");           // 일정 모달의 시작날짜 (클래스명)
+  const startTimeInput = document.querySelector(".start-time-input");           // 일정 모달의 시작시간 (클래스명)
+  const endDateInput = document.querySelector(".end-date-input");               // 일정 모달의 완료날짜 (클래스명)
+  const endTimeInput = document.querySelector(".end-time-input");               // 일정 모달의 완료시간 (클래스명)
+  const repeatText = document.querySelector(".repeat-text");                    // 일정 모달의 반복일정 타이틀
+  const datePicker = document.getElementById("datePicker");                     // 작은 달력 구현
+  const calendar = document.getElementById("calendar");                         // 작은 달력 날짜
+  const currentMonthSpan = document.getElementById("currentMonth");             // 작은 달력의 년도,월 표시(ex. 2024.09)
+  const prevMonthBtn = document.getElementById("prevMonth");                    // 작은 달력의 이전월
+  const nextMonthBtn = document.getElementById("nextMonth");                    // 작은 달력의 다음월
+  const startConfirmBtn = document.getElementById("start-confirm");             // 작은 달력의 확인버튼 (시작일정)
+  const endConfirmBtn = document.getElementById("end-confirm");                 // 작은 달력의 확인버튼 (완료일정)
+
+
+  /************************ 모달창 닫힘 기능 구현 ************************/
   
   closeBtn.onclick = function() {
     $modalScheduleEdit.style.display = "none";
-  }
+  };
   exitBtn.onclick = function() {
     $modalScheduleEdit.style.display = "none";
   };
+  
+
+  /************************ 모달창 내부 삭제버튼 숨김 ************************/
+
+  clearBtn.style.display = 'none';
 
 
-  /************** date-picker 구현 **************/
-  const datePicker = document.getElementById("datePicker");             // 작은 달력 구현
-  const calendar = document.getElementById("calendar");                 // 작은 달력 날짜
-  const currentMonthSpan = document.getElementById("currentMonth");     // 작은 달력의 년도.월
-  const prevMonthBtn = document.getElementById("prevMonth");            // 작은 달력의 이전월
-  const nextMonthBtn = document.getElementById("nextMonth");            // 작은 달력의 다음월
-  const startConfirmBtn = document.getElementById("start-confirm");     // 작은 달력의 확인버튼
-  const endConfirmBtn = document.getElementById("end-confirm");         // 작은 달력의 확인버튼
-  const saveBtn = document.getElementById("save-btn");                  // 일정 생성 및 저장버튼
-  const clearBtn = document.getElementById("clear-btn");                // 일정의 삭제버튼
-  const selectedDateSpan = document.getElementById("selectedDate");     // 일정의 시작날짜
-  const selectedTimeSpan = document.getElementById("selectedTime");     // 일정의 시작시간
-  const completeDateSpan = document.getElementById("completeDate");     // 일정의 완료날짜
-  const completeTimeSpan = document.getElementById("completeTime");     // 일정의 완료시간
-  const repeatText = document.querySelector(".repeat-text");            // 반복일정 타이틀
-
+  /************************ 날짜 기능 구현 함수 ************************/
+  
   let currentDate = new Date();
   let selectedDate = null;
 
@@ -84,7 +96,9 @@ document.addEventListener("DOMContentLoaded", function() {
     updateCalendar();
   }
 
-// 버튼 클릭시 실행될 이벤트값 설정
+  /************************ 버튼 클릭시 실행될 이벤트값 설정 ************************/
+
+  /******** 작은달력 Month 부분 이동버튼 ********/
   prevMonthBtn.addEventListener('click', () => {
     currentDate.setMonth(currentDate.getMonth() - 1);
     updateCalendar();
@@ -94,7 +108,8 @@ document.addEventListener("DOMContentLoaded", function() {
     currentDate.setMonth(currentDate.getMonth() + 1);
     updateCalendar();
   });
-  
+
+  /******** 작은달력 날짜, 시간 확인버튼 ********/
   startConfirmBtn.addEventListener('click', () => {
     const timeValue = (input, length, minValue, maxValue) => {
       const value = input.value.padStart(2, '0')
@@ -133,6 +148,36 @@ document.addEventListener("DOMContentLoaded", function() {
     datePicker.style.display = datePicker.style.display == 'none' ? 'block': 'none';
   });
 
+  /******** 작은달력 날짜, 시간 입력input ********/
+  startDateInput.addEventListener('click', () => {
+    const isStarting = document.querySelector(".start-time");
+    const isEnding = document.querySelector(".end-time");
+    isEnding.style.display = "none";
+    isStarting.style.display = "block";
+  })
+
+  startTimeInput.addEventListener('click', () => {
+    const isStarting = document.querySelector(".start-time");
+    const isEnding = document.querySelector(".end-time");
+    isEnding.style.display = "none";
+    isStarting.style.display = "block";
+  })
+
+  endDateInput.addEventListener('click', () => {
+    const isStarting = document.querySelector(".start-time");
+    const isEnding = document.querySelector(".end-time");
+    isStarting.style.display = "none";
+    isEnding.style.display = "block";
+  })
+
+  endTimeInput.addEventListener('click', () => {
+    const isStarting = document.querySelector(".start-time");
+    const isEnding = document.querySelector(".end-time");
+    isStarting.style.display = "none";
+    isEnding.style.display = "block";
+  })
+
+  /******** 반복일정 횟수 및 주기 설정버튼 ********/
   repeatText.addEventListener('click', () => {
     const repeatList = document.querySelector('.repeat-list');
     const repeatNum = document.getElementById('repeat-num');
@@ -176,39 +221,7 @@ document.addEventListener("DOMContentLoaded", function() {
     repeatList.style.display = repeatList.style.display == "none" ? "block" : "none";
   });
 
-  const startDateInput = document.querySelector(".start-date-input");
-  const startTimeInput = document.querySelector(".start-time-input");
-  const endDateInput = document.querySelector(".end-date-input");
-  const endTimeInput = document.querySelector(".end-time-input");
-
-  startDateInput.addEventListener('click', () => {
-    const isStarting = document.querySelector(".start-time");
-    const isEnding = document.querySelector(".end-time");
-    isEnding.style.display = "none";
-    isStarting.style.display = "block";
-  })
-
-  startTimeInput.addEventListener('click', () => {
-    const isStarting = document.querySelector(".start-time");
-    const isEnding = document.querySelector(".end-time");
-    isEnding.style.display = "none";
-    isStarting.style.display = "block";
-  })
-
-  endDateInput.addEventListener('click', () => {
-    const isStarting = document.querySelector(".start-time");
-    const isEnding = document.querySelector(".end-time");
-    isStarting.style.display = "none";
-    isEnding.style.display = "block";
-  })
-
-  endTimeInput.addEventListener('click', () => {
-    const isStarting = document.querySelector(".start-time");
-    const isEnding = document.querySelector(".end-time");
-    isStarting.style.display = "none";
-    isEnding.style.display = "block";
-  })
-
+  /******** 일정 모달을 벗어난 다른 곳 클릭시 ********/
   window.addEventListener("click", function (event) {
     const closeModal = () => {
       $modalScheduleEdit.style.display = "none";
@@ -231,9 +244,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const repeat = repeatValue(document.getElementById("repeat-num"), 3, 0 ,998);
   });
 
-  clearBtn.style.display = 'none'; // 삭제버튼숨김
 
-// 작은달력 위치 값 조정
+  /************************ 작은달력 위치 값 조정 ************************/
+
   selectedDateSpan.addEventListener('click', () => {
     datePicker.style.display = datePicker.style.display == 'none' ? 'block': 'none';
     datePicker.style.display = datePicker.style.top = `${selectedDateSpan.getBoundingClientRect().bottom + window.scrollY}px`;
@@ -264,3 +277,4 @@ document.addEventListener("DOMContentLoaded", function() {
 
   updateCalendar();
 });
+//
