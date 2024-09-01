@@ -1,63 +1,59 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const scheduleList = document.querySelector(".sidebar-schedule-list");
-  const addButton = document.querySelector(".sidebar-schedule-add");
-  const newItem = document.querySelector(".sidebar-new-item");
-  const scheduleInput = newItem.querySelector(".sidebar-schedule-input");
-  const deleteModal = document.querySelector(".modal-schedule-delete");
-  const deleteConfirmBtn = deleteModal.querySelector(
-    ".delete-confirmation-btn"
-  );
-  const deleteCancelBtn = deleteModal.querySelector(".delete-cancel-btn");
-  const viewModal = document.querySelector(".modal-schedule-view");
-  const closeModalBtn = viewModal.querySelector(".view-close-button");
-  const sidebarWeatherText = document.querySelector(".sidebar-weather-text");
-  const sidebarWeatherTemp = document.querySelector(".sidebar-weather-temp");
-  const sidebarWeatherIcon = document.querySelector(".sidebar-weather-icon");
-
-  let itemToDelete = null;
-
-  // ******* 일정 추가 *******
-  async function addNewItem() {
-    try {
-      const res = await fetch("http://localhost:8080/api/schedule", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          schedule_title: scheduleInput.value,
-          schedule_description: "",
-          schedule_start: new Date(),
-          schedule_end: new Date(),
-          schedule_notification: false,
-          schedule_recurring: false,
-        }),
-      });
-
-      if (!res.ok) {
-        throw new Error("");
+    const scheduleList = document.querySelector(".sidebar-schedule-list");
+    const addButton = document.querySelector(".sidebar-schedule-add");
+    const newItem = document.querySelector(".sidebar-new-item");
+    const scheduleInput = newItem.querySelector(".sidebar-schedule-input");
+    const deleteModal = document.querySelector(".modal-schedule-delete");
+    const deleteConfirmBtn = deleteModal.querySelector(".delete-confirmation-btn");
+    const deleteCancelBtn = deleteModal.querySelector(".delete-cancel-btn");
+    const viewModal = document.querySelector(".modal-schedule-view");
+    const closeModalBtn = viewModal.querySelector(".view-close-button");
+    const sidebarWeatherText = document.querySelector(".sidebar-weather-text");
+    const sidebarWeatherTemp = document.querySelector(".sidebar-weather-temp");
+    const sidebarWeatherIcon = document.querySelector(".sidebar-weather-icon");
+  
+    let itemToDelete = null;
+    let scheduleIdToDelete = null;
+  
+    // ******* 일정 추가 *******
+    async function addNewItem() {
+      try {
+        const res = await fetch("http://localhost:8080/api/schedule", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            schedule_title: scheduleInput.value,
+            schedule_description: "",
+            schedule_start: new Date(),
+            schedule_end: new Date(),
+            schedule_notification: false,
+            schedule_recurring: false,
+          }),
+        });
+  
+        if (!res.ok) {
+          throw new Error("");
+        }
+  
+        const data = await res.json();
+        scheduleInput.value = "";
+        addScheduleToUI(data);
+        newItem.style.display = "none";
+        return data;
+      } catch (error) {
+        console.error("Error", error);
       }
-
-      const data = await res.json();
-      scheduleInput.value = "";
-      addScheduleToUI(data);
-      newItem.style.display = "none";
-      return data;
-    } catch (error) {
-      console.error("Error", error);
     }
-  }
-
-  // 일정 추가
-  function addScheduleToUI(schedule) {
-    const scheduleDate = new Date(schedule.schedule_start);
-    const today = new Date();
-
-    if (isSameDay(scheduleDate, today)) {
+  
+    // 일정 추가
+    function addScheduleToUI(schedule) {
+        console.log("Adding schedule to UI:", schedule);
         const li = document.createElement("li");
         li.innerHTML = `
                 <a href="#">
-                    <div class="sidebar-list-box" data-id="${schedule.id}">
+                    <div class="sidebar-list-box" data-id="${schedule.schedule_id || schedule.id}">
                         <div class="sidebar-list-cont">
                             <img src="./src/assets/img/list-circle.svg" alt="" />
                             <span>${schedule.schedule_title}</span>
@@ -69,129 +65,150 @@ document.addEventListener("DOMContentLoaded", function () {
                 </a>
             `;
         scheduleList.appendChild(li);
-      }
-  }
-
-  // 같은 날짜인지 확인하는 함수
-  function isSameDay(date1, date2) {
-    return date1.getFullYear() === date2.getFullYear() &&
-           date1.getMonth() === date2.getMonth() &&
-           date1.getDate() === date2.getDate();
-  }
-
-  // 새 일정 입력 필드 표시
-  addButton.addEventListener("click", () => {
-    newItem.style.display = "block";
-    scheduleInput.focus();
-  });
-
-  // Enter -> 일정 추가 or 줄 변경 막기
-  scheduleInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      addNewItem();
     }
-  });
-
-  // ******* 일정 삭제 *******
-  // 일정 삭제
-  async function deleteSchedule(scheduleId) {
-    try {
-      const res = await fetch(`http://localhost:8080/api/schedule/${scheduleId}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
+  
+    // 새 일정 입력 필드 표시
+    addButton.addEventListener("click", () => {
+      newItem.style.display = "block";
+      scheduleInput.focus();
+    });
+  
+    // Enter -> 일정 추가 or 줄 변경 막기
+    scheduleInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        addNewItem();
       }
-
-      itemToDelete.remove();
+    });
+  
+    // ******* 일정 삭제 *******
+    // 일정 삭제
+    async function deleteSchedule(scheduleId) {
+        console.log("Attempting to delete schedule with ID:", scheduleId);
+      try {
+        const res = await fetch(`http://localhost:8080/api/schedule/${scheduleId}`, {
+          method: "DELETE",
+        });
+  
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.error || `HTTP error! status: ${res.status}`);
+        }
+  
+        itemToDelete.remove();
+        itemToDelete = null;
+        scheduleIdToDelete = null;
+        deleteModal.style.display = "none";
+      } catch (error) {
+        console.error("Error deleting schedule:", error);
+        alert(`서버 통신 실패: ${error.message}`);
+        deleteModal.style.display = "none";
+      }
+    }
+  
+    scheduleList.addEventListener("click", (e) => {
+      if (e.target.closest(".sidebar-list-close")) {
+        e.preventDefault();
+        const listItem = e.target.closest("li");
+        const scheduleBox = listItem.querySelector(".sidebar-list-box");
+        const scheduleTitle = listItem.querySelector(
+          ".sidebar-list-cont span"
+        ).textContent;
+        itemToDelete = listItem;
+        scheduleIdToDelete = scheduleBox ? scheduleBox.dataset.id : null;
+        console.log("Schedule ID to delete:", scheduleIdToDelete); // 디버깅 로그
+        if (scheduleIdToDelete) {
+            showModal(scheduleTitle);
+        } else {
+            console.error("No schedule ID found for item:", listItem);
+            alert("일정 ID를 찾을 수 없습니다.");
+        }
+    }
+    });
+  
+    function showModal(scheduleTitle) {
+      deleteModal.querySelector(".delete-txt strong").textContent = scheduleTitle;
+      deleteModal.style.display = "block";
+    }
+  
+    // 삭제 모달창 확인 버튼
+    deleteConfirmBtn.addEventListener("click", () => {
+        if (itemToDelete && scheduleIdToDelete) {
+            deleteSchedule(scheduleIdToDelete);
+          } else {
+            console.error("Invalid delete attempt: itemToDelete or scheduleIdToDelete is null");
+            alert("삭제할 일정을 선택해주세요.");
+          }
+    });
+  
+    // 삭제 모달창 취소 버튼
+    deleteCancelBtn.addEventListener("click", () => {
       itemToDelete = null;
       deleteModal.style.display = "none";
-    } catch (error) {
-      console.error("Error deleting schedule:", error);
-      alert(`서버 통신 실패: ${error.message}`);
-      deleteModal.style.display = "none";
+    });
+
+    // 초기 데이터 로드 (당일 일정만)
+    async function fetchData() {
+        try {
+          const res = await fetch("http://localhost:8080/api/schedules");
+          if (!res.ok) {
+            throw new Error("Failed to fetch schedules");
+          }
+          const schedules = await res.json();
+          console.log("Fetched schedules:", schedules);
+          scheduleList.innerHTML = '';
+          const today = new Date();
+          schedules.forEach(schedule => {
+            const scheduleDate = new Date(schedule.schedule_start);
+            if (isSameDay(scheduleDate, today)) {
+              addScheduleToUI(schedule);
+            }
+          });
+        } catch (error) {
+          console.error("Error fetching schedules:", error);
+        }
     }
-  }
-
-  scheduleList.addEventListener("click", (e) => {
-    if (e.target.closest(".sidebar-list-close")) {
-      e.preventDefault();
-      const listItem = e.target.closest("li");
-      const scheduleTitle = listItem.querySelector(
-        ".sidebar-list-cont span"
-      ).textContent;
-      itemToDelete = listItem;
-      showModal(scheduleTitle);
+    
+    // 같은 날짜인지 확인하는 함수
+    function isSameDay(date1, date2) {
+      return date1.getFullYear() === date2.getFullYear() &&
+             date1.getMonth() === date2.getMonth() &&
+             date1.getDate() === date2.getDate();
     }
-  });
-
-  function showModal(scheduleTitle) {
-    deleteModal.querySelector(".delete-txt strong").textContent = scheduleTitle;
-    deleteModal.style.display = "block";
-  }
-
-  // 삭제 모달창 확인 버튼
-  deleteConfirmBtn.addEventListener("click", () => {
-    if (itemToDelete) {
-        const scheduleId = itemToDelete.querySelector(".sidebar-list-box").dataset.id;
-        deleteSchedule(scheduleId);
-  }
-});
-
-  // 삭제 모달창 취소 버튼
-  deleteCancelBtn.addEventListener("click", () => {
-    itemToDelete = null;
-    deleteModal.style.display = "none";
-  });
-
-  // ******* 일정 조회 모달 *******
-  function openViewModal() {
-    const [viewYear, viewMonth, viewDay] = [
-      ".view-year",
-      ".view-month",
-      ".view-day",
-    ].map((selector) => viewModal.querySelector(selector));
-    const today = new Date();
-    [viewYear.textContent, viewMonth.textContent, viewDay.textContent] = [
-      today.getFullYear(),
-      String(today.getMonth() + 1).padStart(2, "0"),
-      String(today.getDate()).padStart(2, "0"),
-    ];
-    viewModal.style.display = "block";
-  }
-
-  scheduleList.addEventListener("click", function (e) {
-    if (
-      e.target.closest(".sidebar-list-box") &&
-      !e.target.closest(".sidebar-list-close")
-    ) {
-      e.preventDefault();
-      openViewModal();
+    
+    fetchData();
+  
+    // ******* 일정 조회 모달 *******
+    function openViewModal() {
+      const [viewYear, viewMonth, viewDay] = [
+        ".view-year",
+        ".view-month",
+        ".view-day",
+      ].map((selector) => viewModal.querySelector(selector));
+      const today = new Date();
+      [viewYear.textContent, viewMonth.textContent, viewDay.textContent] = [
+        today.getFullYear(),
+        String(today.getMonth() + 1).padStart(2, "0"),
+        String(today.getDate()).padStart(2, "0"),
+      ];
+      viewModal.style.display = "block";
     }
-  });
-
-  closeModalBtn?.addEventListener(
-    "click",
-    () => (viewModal.style.display = "none")
-  );
-
-  // 초기 데이터 로드 (당일 일정만)
-  async function fetchData() {
-    try {
-      const res = await fetch("http://localhost:8080/api/schedules");
-      if (!res.ok) {
-        throw new Error("Failed to fetch schedules");
+  
+    scheduleList.addEventListener("click", function (e) {
+      if (
+        e.target.closest(".sidebar-list-box") &&
+        !e.target.closest(".sidebar-list-close")
+      ) {
+        e.preventDefault();
+        openViewModal();
       }
-      const schedules = await res.json();
-      schedules.forEach(addScheduleToUI);
-    } catch (error) {
-      console.error("Error fetching schedules:", error);
-    }
-  }
-
-  fetchData();
+    });
+  
+    closeModalBtn?.addEventListener(
+      "click",
+      () => (viewModal.style.display = "none")
+    );
+  
 
   // ******* 날씨 정보 가져오기 *******
   const weatherTranslations = {
