@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const sidebarWeatherIcon = document.querySelector(".sidebar-weather-icon");
 
   let itemToDelete = null;
-  let isAddingItem = false;
 
   // ******* 일정 추가 *******
   async function addNewItem() {
@@ -41,7 +40,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const data = await res.json();
       scheduleInput.value = "";
-      fetchData();
+      addScheduleToUI(data);
+      newItem.style.display = "none";
       return data;
     } catch (error) {
       console.error("Error", error);
@@ -50,21 +50,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 일정 추가
   function addScheduleToUI(schedule) {
-    const li = document.createElement("li");
-    li.innerHTML = `
-            <a href="#">
-                <div class="sidebar-list-box" data-id="${schedule.id}">
-                    <div class="sidebar-list-cont">
-                        <img src="./src/assets/img/list-circle.svg" alt="" />
-                        <span>${schedule.schedule_title}</span>
+    const scheduleDate = new Date(schedule.schedule_start);
+    const today = new Date();
+
+    if (isSameDay(scheduleDate, today)) {
+        const li = document.createElement("li");
+        li.innerHTML = `
+                <a href="#">
+                    <div class="sidebar-list-box" data-id="${schedule.id}">
+                        <div class="sidebar-list-cont">
+                            <img src="./src/assets/img/list-circle.svg" alt="" />
+                            <span>${schedule.schedule_title}</span>
+                        </div>
+                        <div class="sidebar-list-close">
+                            <img src="./src/assets/img/close-btn.svg" alt="" />
+                        </div>
                     </div>
-                    <div class="sidebar-list-close">
-                        <img src="./src/assets/img/close-btn.svg" alt="" />
-                    </div>
-                </div>
-            </a>
-        `;
-    scheduleList.appendChild(li);
+                </a>
+            `;
+        scheduleList.appendChild(li);
+      }
+  }
+
+  // 같은 날짜인지 확인하는 함수
+  function isSameDay(date1, date2) {
+    return date1.getFullYear() === date2.getFullYear() &&
+           date1.getMonth() === date2.getMonth() &&
+           date1.getDate() === date2.getDate();
   }
 
   // 새 일정 입력 필드 표시
@@ -72,9 +84,6 @@ document.addEventListener("DOMContentLoaded", function () {
     newItem.style.display = "block";
     scheduleInput.focus();
   });
-
-  // 일정 입력 가능하게
-  scheduleInput.setAttribute("contenteditable", "true");
 
   // Enter -> 일정 추가 or 줄 변경 막기
   scheduleInput.addEventListener("keydown", (e) => {
@@ -84,35 +93,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // // 포커스를 잃으면 입력 필드 사라지게
-  // scheduleInput.addEventListener("blur", () => {
-  //   if (scheduleInput.textContent.trim()) {
-  //     addNewItem();
-  //   } else {
-  //     newItem.style.display = "none";
-  //   }
-  // });
-
   // ******* 일정 삭제 *******
   // 일정 삭제
-  async function deleteSchedule() {
+  async function deleteSchedule(scheduleId) {
     try {
-      const res = await fetch("http://localhost:8080/api/schedule/${scheduleId}", {
+      const res = await fetch(`http://localhost:8080/api/schedule/${scheduleId}`, {
         method: "DELETE",
       });
 
       if (!res.ok) {
-        throw new Error("");
+        throw new Error(`HTTP error! status: ${res.status}`);
       }
 
       itemToDelete.remove();
       itemToDelete = null;
       deleteModal.style.display = "none";
     } catch (error) {
-      console.error("Error", error);
-      alert("서버 통신 실패");
-      itemToDelete.remove();
-      itemToDelete = null;
+      console.error("Error deleting schedule:", error);
+      alert(`서버 통신 실패: ${error.message}`);
       deleteModal.style.display = "none";
     }
   }
@@ -137,11 +135,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // 삭제 모달창 확인 버튼
   deleteConfirmBtn.addEventListener("click", () => {
     if (itemToDelete) {
-      const scheduleId =
-        itemToDelete.querySelector(".sidebar-list-box").dataset.id;
-      deleteSchedule(scheduleId);
-    }
-  });
+        const scheduleId = itemToDelete.querySelector(".sidebar-list-box").dataset.id;
+        deleteSchedule(scheduleId);
+  }
+});
 
   // 삭제 모달창 취소 버튼
   deleteCancelBtn.addEventListener("click", () => {
@@ -179,6 +176,22 @@ document.addEventListener("DOMContentLoaded", function () {
     "click",
     () => (viewModal.style.display = "none")
   );
+
+  // 초기 데이터 로드 (당일 일정만)
+  async function fetchData() {
+    try {
+      const res = await fetch("http://localhost:8080/api/schedules");
+      if (!res.ok) {
+        throw new Error("Failed to fetch schedules");
+      }
+      const schedules = await res.json();
+      schedules.forEach(addScheduleToUI);
+    } catch (error) {
+      console.error("Error fetching schedules:", error);
+    }
+  }
+
+  fetchData();
 
   // ******* 날씨 정보 가져오기 *******
   const weatherTranslations = {
