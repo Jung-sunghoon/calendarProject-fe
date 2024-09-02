@@ -14,10 +14,19 @@ document.addEventListener("DOMContentLoaded", function () {
   
     let itemToDelete = null;
     let scheduleIdToDelete = null;
+    let isAddingItem = false;
   
     // ******* 일정 추가 *******
     async function addNewItem() {
-      try {
+        if (isAddingItem) return;
+        isAddingItem = true;
+        try {
+          const scheduleTitle = scheduleInput.value.trim();
+          if (!scheduleTitle) {
+            isAddingItem = false;
+            return;
+          }
+  
         const res = await fetch("http://localhost:8080/api/schedule", {
           method: "POST",
           headers: {
@@ -34,29 +43,29 @@ document.addEventListener("DOMContentLoaded", function () {
         });
   
         if (!res.ok) {
-          throw new Error("");
+          throw new Error("Failed to add new schedule");
         }
   
         const data = await res.json();
         scheduleInput.value = "";
-        addScheduleToUI(data);
+        addScheduleToUI({ ...data, schedule_title: scheduleTitle });
         newItem.style.display = "none";
-        return data;
       } catch (error) {
-        console.error("Error", error);
+        console.error("에러 발생:", error);
+      } finally {
+        isAddingItem = false;
       }
     }
   
     // 일정 추가
     function addScheduleToUI(schedule) {
-        console.log("Adding schedule to UI:", schedule);
         const li = document.createElement("li");
         li.innerHTML = `
                 <a href="#">
-                    <div class="sidebar-list-box" data-id="${schedule.schedule_id || schedule.id}">
+                    <div class="sidebar-list-box" data-id="${schedule.schedule_id}">
                         <div class="sidebar-list-cont">
                             <img src="./src/assets/img/list-circle.svg" alt="" />
-                            <span>${schedule.schedule_title}</span>
+                            <span>${schedule.schedule_title|| 'Untitled'}</span>
                         </div>
                         <div class="sidebar-list-close">
                             <img src="./src/assets/img/close-btn.svg" alt="" />
@@ -74,15 +83,17 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   
     // Enter -> 일정 추가 or 줄 변경 막기
-    scheduleInput.addEventListener("keydown", (e) => {
+    scheduleInput.addEventListener("keydown", async (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
         addNewItem();
+        if (!isAddingItem) {
+            await addNewItem();
+        }
       }
     });
   
     // ******* 일정 삭제 *******
-    // 일정 삭제
     async function deleteSchedule(scheduleId) {
         console.log("Attempting to delete schedule with ID:", scheduleId);
       try {
@@ -116,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ).textContent;
         itemToDelete = listItem;
         scheduleIdToDelete = scheduleBox ? scheduleBox.dataset.id : null;
-        console.log("Schedule ID to delete:", scheduleIdToDelete); // 디버깅 로그
+        console.log("Schedule ID to delete:", scheduleIdToDelete);
         if (scheduleIdToDelete) {
             showModal(scheduleTitle);
         } else {
