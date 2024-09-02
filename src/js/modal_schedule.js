@@ -196,7 +196,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   }
 
-  // 수정 가능한 input field 및 textarea로 수정
   function populateEditModal(schedule) {
     const startDate = new Date(schedule.schedule_start);
     const endDate = new Date(schedule.schedule_end);
@@ -221,28 +220,27 @@ document.addEventListener("DOMContentLoaded", function () {
       schedule.schedule_end
     );
     document.querySelector(".textarea-container textarea").value =
-      schedule.schedule_description || ""; // 추가된 부분: textarea에 기존 설명 설정
+      schedule.schedule_description || "";
   }
 
   function getEditModalData() {
-    const title = document.querySelector("#editTitle").value; // 수정된 title 값
+    const title = document.querySelector("#editTitle").value;
     const startDateText = document.querySelector("#selectedDate").textContent;
     const startTime = document.querySelector("#selectedTime").textContent;
     const endDateText = document.querySelector("#completeDate").textContent;
     const endTime = document.querySelector("#completeTime").textContent;
     const description = document.querySelector(
       ".textarea-container textarea"
-    ).value; // 추가된 부분: textarea 값 가져오기
+    ).value;
 
-    // "xxxx년 xx월 xx일"을 "YYYY-MM-DD" 형식으로 변환
     const startDate = formatDateTime(startDateText, startTime);
     const endDate = formatDateTime(endDateText, endTime);
 
     return {
-      schedule_title: title, // 수정된 title 값 반환
-      schedule_start: startDate, // 변환된 시작일시
-      schedule_end: endDate, // 변환된 종료일시
-      schedule_description: description, // 추가된 부분: 수정된 설명
+      schedule_title: title,
+      schedule_start: startDate,
+      schedule_end: endDate,
+      schedule_description: description,
     };
   }
 
@@ -252,24 +250,20 @@ document.addEventListener("DOMContentLoaded", function () {
     let [hour, minute] = timeText.match(/\d+/g);
     const period = timeText.includes("오전") ? "AM" : "PM";
 
-    // 오전/오후 처리
     if (period === "PM" && hour !== "12") {
       hour = parseInt(hour) + 12;
     } else if (period === "AM" && hour === "12") {
       hour = "00";
     }
 
-    // hour와 minute을 문자열로 변환 후 padStart 호출
     hour = String(hour).padStart(2, "0");
     minute = String(minute).padStart(2, "0");
 
-    // YYYY-MM-DD HH:MM:SS 포맷으로 반환
     return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")} ${hour}:${minute}:00`;
   }
 
   async function updateScheduleData(scheduleId, updatedData) {
     try {
-      // 기존 데이터와 수정된 데이터 병합
       const updatedScheduleData = { ...originalSchedule, ...updatedData };
 
       const response = await fetch(`${API_URL}/api/schedule/${scheduleId}`, {
@@ -281,23 +275,20 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`error status: ${response.status}`);
       }
 
       const result = await response.json();
       console.log("Update response:", result);
 
-      // 성공적으로 업데이트되면 모달 닫기
       closeModal();
 
-      // 데이터 새로고침
-      await fetchData(); // 최신 스케줄 데이터 가져오기
+      await fetchData();
 
-      // 달력 새로 고침
-      updateCalendar(); // 달력 업데이트
+      updateCalendar();
     } catch (error) {
       console.error("Error updating schedule data:", error);
-      alert(`일정을 업데이트하는 중 오류가 발생했습니다: ${error.message}`);
+      alert(`오류 발생: ${error.message}`);
     }
   }
 
@@ -306,7 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const updatedData = getEditModalData();
       updateScheduleData(window.selectedScheduleId, updatedData);
     } else {
-      alert("수정할 일정을 선택하세요.");
+      alert("수정할 일정 선텍");
     }
   });
 });
