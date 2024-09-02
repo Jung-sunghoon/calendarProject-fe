@@ -1,19 +1,5 @@
 const API_URL = "http://localhost:8080";
 
-document.addEventListener("DOMContentLoaded", function () {
-  const logoElement = document.querySelector(".sidebar-logo a");
-  const calendarMonthElement = document.querySelector(".calendar-month");
-  const calendarYearElement = document.querySelector(".calendar-year");
-  const previousMonth = document.querySelector(".arrow-left");
-  const nextMonth = document.querySelector(".arrow-right");
-  const calendarCont = document.querySelector(".calendar-date");
-  const yearSelectText = document.querySelector(".calendar-select-year-text");
-  const monthSelectText = document.querySelector(".calendar-select-month-text");
-  const yearSelectBox = document.querySelector(".calendar-select-year-box");
-  const monthSelectBox = document.querySelector(".calendar-select-month-box");
-  const yearList = document.querySelectorAll(".calendar-select-year-list li");
-  const monthList = document.querySelectorAll(".calendar-select-month-list li");
-
 // 전체 스케줄 가져오기
 let schedules = [];
 

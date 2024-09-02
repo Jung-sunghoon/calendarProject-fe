@@ -411,7 +411,8 @@ main .calendar {
   padding: 46px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  gap: 23px;
 }
 
 /* 일정 box */
