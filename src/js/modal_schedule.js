@@ -53,8 +53,8 @@ document.addEventListener("DOMContentLoaded", function () {
       $modalScheduleView.style.display = "block";
 
       console.log("Selected date: ", targetDate.toDateString());
-      updateModalContent(targetDate);
-      fetchScheduleData(targetDate);
+      updateModalContent(targetDate); // 모달 날짜 업데이트
+      fetchScheduleData(targetDate); // 일정을 비동기로 불러오기
     }
   });
 
@@ -91,10 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if ($modalDateElement) {
       $modalDateElement.innerHTML = `
           <p class="view-year">${date.getFullYear()}</p>
-          <p class="view-month">${String(date.getMonth() + 1).padStart(
-            2,
-            "0"
-          )}</p>
+          <p class="view-month">${String(date.getMonth() + 1).padStart(2,"0")}</p>
           <span class="view-separator">/</span>
           <p class="view-day">${String(date.getDate()).padStart(2, "0")}</p>
         `;
@@ -295,9 +292,19 @@ document.addEventListener("DOMContentLoaded", function () {
   $saveBtn.addEventListener("click", function () {
     if (window.selectedScheduleId) {
       const updatedData = getEditModalData();
+
+      // 시작 날짜와 끝나는 날짜를 비교하는 검증 로직 추가
+      const startDate = new Date(updatedData.schedule_start);
+      const endDate = new Date(updatedData.schedule_end);
+
+      if (startDate > endDate) {
+        alert("시작 날짜와 시간이 종료 날짜와 시간보다 이후일 수 없습니다.");
+        return; // 검증에 실패하면 함수 종료
+      }
+
       updateScheduleData(window.selectedScheduleId, updatedData);
     } else {
-      alert("수정할 일정 선텍");
+      alert("수정할 일정을 선택해주세요.");
     }
   });
 });
