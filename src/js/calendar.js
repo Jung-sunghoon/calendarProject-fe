@@ -255,6 +255,39 @@ logoElement.addEventListener("click", function (event) {
   yearSelectText.textContent = "년도 선택";
   monthSelectText.textContent = "월 선택";
   updateCalendar();
+
+  function updateCalendar(newSchedules) {
+    if (newSchedules) {
+      schedules = newSchedules;
+    }
+    
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth() + 1;
+    
+    // 현재 년도, 월 표시
+    calendarMonthElement.textContent = String(month).padStart(2, "0");
+    calendarYearElement.textContent = year;
+  
+    yearSelectText.textContent = `${year} 년`;
+    monthSelectText.textContent = `${calendarMonthElement.textContent} 월`;
+  
+    renderCalendarDays(year, month);
+  }
+  
+  // 새로운 이벤트 리스너 추가
+  document.addEventListener('updateCalendarEvent', function(e) {
+    updateCalendar(e.detail.schedules);
+  });
+  
+  // 초기화 함수
+  function initCalendar() {
+    fetchData();
+    updateCalendar();
+    initializeSelectBox();
+  }
+  
+  // DOMContentLoaded 이벤트에서 초기화 함수 호출
+  document.addEventListener('DOMContentLoaded', initCalendar);
 });
 
 fetchData();

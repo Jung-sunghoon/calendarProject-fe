@@ -233,11 +233,7 @@ esbuild@^0.21.3:
 
 fsevents@~2.3.2, fsevents@~2.3.3:
   version "2.3.3"
-<<<<<<< HEAD
-  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.3.tgz#cac6407785d03675a2a5e1a5305c697b347d90d6"
-=======
   resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
->>>>>>> 2d707df1b768fe167c6256ebb80dcb05ba39cd4e
   integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
 nanoid@^3.3.7:
