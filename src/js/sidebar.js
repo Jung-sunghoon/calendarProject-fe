@@ -242,7 +242,7 @@ document.addEventListener("DOMContentLoaded", function () {
             todaySchedules.forEach(schedule => {
                 const articleHtml = `
                     <article class="modal-view-box">
-                        <h3 class="modal-view-tit">${schedule.schedule_title}</h3>
+                        <h3 class="modal-view-title">${schedule.schedule_title}</h3>
                         <div class="modal-view-time">
                             <span class="view-time-start">${formatDateTime(schedule.schedule_start)}</span>
                             <span class="view-time-separator">~</span>
