@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
         scheduleInput.value = "";
         addScheduleToUI({ ...data, schedule_title: scheduleTitle });
         newItem.style.display = "none";
+
       } catch (error) {
         console.error("에러 발생:", error);
       } finally {

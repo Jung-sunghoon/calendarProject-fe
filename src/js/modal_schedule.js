@@ -53,8 +53,8 @@ document.addEventListener("DOMContentLoaded", function () {
       $modalScheduleView.style.display = "block";
 
       console.log("Selected date: ", targetDate.toDateString());
-      updateModalContent(targetDate);
-      fetchScheduleData(targetDate);
+      updateModalContent(targetDate); // 모달 날짜 업데이트
+      fetchScheduleData(targetDate); // 일정을 비동기로 불러오기
     }
   });
 
@@ -91,10 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if ($modalDateElement) {
       $modalDateElement.innerHTML = `
           <p class="view-year">${date.getFullYear()}</p>
-          <p class="view-month">${String(date.getMonth() + 1).padStart(
-            2,
-            "0"
-          )}</p>
+          <p class="view-month">${String(date.getMonth() + 1).padStart(2,"0")}</p>
           <span class="view-separator">/</span>
           <p class="view-day">${String(date.getDate()).padStart(2, "0")}</p>
         `;
