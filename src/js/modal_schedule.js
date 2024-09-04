@@ -292,9 +292,19 @@ document.addEventListener("DOMContentLoaded", function () {
   $saveBtn.addEventListener("click", function () {
     if (window.selectedScheduleId) {
       const updatedData = getEditModalData();
+
+      // 시작 날짜와 끝나는 날짜를 비교하는 검증 로직 추가
+      const startDate = new Date(updatedData.schedule_start);
+      const endDate = new Date(updatedData.schedule_end);
+
+      if (startDate > endDate) {
+        alert("시작 날짜와 시간이 종료 날짜와 시간보다 이후일 수 없습니다.");
+        return; // 검증에 실패하면 함수 종료
+      }
+
       updateScheduleData(window.selectedScheduleId, updatedData);
     } else {
-      alert("수정할 일정 선텍");
+      alert("수정할 일정을 선택해주세요.");
     }
   });
 });
