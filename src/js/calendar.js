@@ -164,15 +164,18 @@ function renderCalendarDays(year, month) {
       td.appendChild(todayIndicator);
     }
 
-    // 해당 날짜의 일정 표시
     const scheduleForDate = schedules.filter((schedule) => {
       const scheduleStart = new Date(schedule.schedule_start);
+      const scheduleEnd = new Date(schedule.schedule_end);
 
       // 기본 일정(반복 없음)
       if (
         scheduleStart.getFullYear() === year &&
         scheduleStart.getMonth() + 1 === month &&
-        scheduleStart.getDate() === date
+        scheduleStart.getDate() <= date &&
+        scheduleEnd.getFullYear() === year &&
+        scheduleEnd.getMonth() + 1 === month &&
+        scheduleEnd.getDate() >= date
       ) {
         return true;
       }
@@ -195,17 +198,34 @@ function renderCalendarDays(year, month) {
                   pattern.repeat_interval ===
                 0
               );
+
             case "weekly":
               const dayOfWeek = daysOfWeek.indexOf(
                 daysOfWeek[new Date(year, month - 1, date).getDay()]
               );
               return pattern.repeat_on.includes(daysOfWeek[dayOfWeek]);
+
             case "monthly":
-              return date === startsOn.getDate();
+              const currentDate = new Date(year, month - 1, date);
+              const monthDifference =
+                (currentDate.getFullYear() - startsOn.getFullYear()) * 12 +
+                currentDate.getMonth() -
+                startsOn.getMonth();
+
+              const isWithinRecurringRange =
+                monthDifference % pattern.repeat_interval === 0 &&
+                date >= startsOn.getDate() &&
+                date <= endsOn.getDate();
+
+              return isWithinRecurringRange;
+
             case "yearly":
               return (
-                month === startsOn.getMonth() + 1 && date === startsOn.getDate()
+                month === startsOn.getMonth() + 1 &&
+                date >= startsOn.getDate() &&
+                date <= endsOn.getDate()
               );
+
             default:
               return false;
           }
@@ -260,34 +280,34 @@ logoElement.addEventListener("click", function (event) {
     if (newSchedules) {
       schedules = newSchedules;
     }
-    
+
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth() + 1;
-    
+
     // 현재 년도, 월 표시
     calendarMonthElement.textContent = String(month).padStart(2, "0");
     calendarYearElement.textContent = year;
-  
+
     yearSelectText.textContent = `${year} 년`;
     monthSelectText.textContent = `${calendarMonthElement.textContent} 월`;
-  
+
     renderCalendarDays(year, month);
   }
-  
+
   // 새로운 이벤트 리스너 추가
-  document.addEventListener('updateCalendarEvent', function(e) {
+  document.addEventListener("updateCalendarEvent", function (e) {
     updateCalendar(e.detail.schedules);
   });
-  
+
   // 초기화 함수
   function initCalendar() {
     fetchData();
     updateCalendar();
     initializeSelectBox();
   }
-  
+
   // DOMContentLoaded 이벤트에서 초기화 함수 호출
-  document.addEventListener('DOMContentLoaded', initCalendar);
+  document.addEventListener("DOMContentLoaded", initCalendar);
 });
 
 fetchData();
