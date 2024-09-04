@@ -114,20 +114,6 @@ document.addEventListener("DOMContentLoaded", function () {
         } finally {
             isAddingItem = false;
         }
-<<<<<<< HEAD
-=======
-  
-        const data = await res.json();
-        scheduleInput.value = "";
-        addScheduleToUI({ ...data, schedule_title: scheduleTitle });
-        newItem.style.display = "none";
-
-      } catch (error) {
-        console.error("에러 발생:", error);
-      } finally {
-        isAddingItem = false;
-      }
->>>>>>> b6e4b658ba0ae5b78fa13b14996df03949b959a6
     }
   
     // UI 일정 추가

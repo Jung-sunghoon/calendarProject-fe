@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="modal-view-box" data-schedule-id="${
               schedule.schedule_id
             }">
-              <h3 class="modal-view-tit">${schedule.schedule_title}</h3>
+              <h3 class="modal-view-title">${schedule.schedule_title}</h3>
               <div class="modal-view-time">
                 <span class="view-time-start">${formatTime(
                   schedule.schedule_start
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   schedule.schedule_end
                 )}</span>
               </div>
-              <p class="modal-view-content">${
+              <p class="view-description">${
                 schedule.schedule_description || ""
               }</p>
             </div>

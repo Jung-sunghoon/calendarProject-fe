@@ -411,8 +411,13 @@ main .calendar {
   padding: 46px;
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
   gap: 23px;
+  overflow-y: scroll;
+  overflow: auto;
+}
+.modal-view-cont::-webkit-scrollbar {
+  width: 0;
+  color: transparent;
 }
 
 /* 일정 box */
@@ -420,10 +425,12 @@ main .calendar {
   height: 178px;
   border: 1px solid #ddd;
   border-radius: 15px;
+  background-color: #fff;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.12);
 }
+
 /* 제목 설정 */
-.modal-view-tit {
+.modal-view-title {
   display: flex;
   padding: 12.5px 25px;
   align-items: center;
