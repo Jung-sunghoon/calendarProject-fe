@@ -421,7 +421,6 @@ main .calendar {
 
 /* 일정 box */
 .modal-view-box {
-  height: 178px;
   border: 1px solid #ddd;
   border-radius: 15px;
   background-color: #fff;
@@ -445,7 +444,7 @@ main .calendar {
 }
 .modal-view-time {
   display: flex;
-  margin: 21px 0 13px 25px;
+  margin: 21px 0 0 25px;
 }
 .view-time-start {
   padding-left: 25px;
@@ -467,7 +466,7 @@ main .calendar {
 
 /* 일정 내용 */
 .view-description {
-  margin: 0 33px 0 25px;
+  margin: 11px 33px 23px 25px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
