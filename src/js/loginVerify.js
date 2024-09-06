@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function fetchUserData(token) {
-  fetch("http://localhost:8080/api/user", {
+  fetch(`${import.meta.env.VITE_API_URL}/api/user`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,

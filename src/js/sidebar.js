@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // 일정 데이터 가져오기
   async function fetchData() {
     try {
-      const res = await fetch("http://localhost:8080/api/schedules");
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/schedules`);
       if (!res.ok) {
         throw new Error("Failed to fetch schedules");
       }
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      const res = await fetch("http://localhost:8080/api/schedule", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/schedule`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
   async function deleteSchedule(scheduleId) {
     try {
       const res = await fetch(
-        `http://localhost:8080/api/schedule/${scheduleId}`,
+        `${import.meta.env.VITE_API_URL}/api/schedule/${scheduleId}`,
         {
           method: "DELETE",
         }
@@ -367,7 +367,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function fetchWeatherData() {
     try {
-      const res = await fetch(`${API_URL}/api/weather?city=seoul`);
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/weather?city=seoul`
+      );
       if (!res.ok) {
         throw new Error("Failed to fetch weather data");
       }

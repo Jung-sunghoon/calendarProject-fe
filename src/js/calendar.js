@@ -1,12 +1,10 @@
-const API_URL = "http://localhost:8080";
-
 // 전체 스케줄 가져오기
 let schedules = [];
 
 async function fetchData() {
   try {
     // fetch로 GET 요청을 보내고 응답을 기다림
-    const res = await fetch(`${API_URL}/api/schedules`);
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/schedules`);
 
     // 응답이 성공적(200~299)인지 확인
     if (!res.ok) {

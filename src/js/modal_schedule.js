@@ -91,7 +91,10 @@ document.addEventListener("DOMContentLoaded", function () {
     if ($modalDateElement) {
       $modalDateElement.innerHTML = `
           <p class="view-year">${date.getFullYear()}</p>
-          <p class="view-month">${String(date.getMonth() + 1).padStart(2,"0")}</p>
+          <p class="view-month">${String(date.getMonth() + 1).padStart(
+            2,
+            "0"
+          )}</p>
           <span class="view-separator">/</span>
           <p class="view-day">${String(date.getDate()).padStart(2, "0")}</p>
         `;
@@ -103,7 +106,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!$modalViewCont) return;
 
     try {
-      const response = await fetch(`http://localhost:8080/api/schedules`);
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/schedules`
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -263,13 +268,16 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const updatedScheduleData = { ...originalSchedule, ...updatedData };
 
-      const response = await fetch(`${API_URL}/api/schedule/${scheduleId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedScheduleData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/schedule/${scheduleId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedScheduleData),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`error status: ${response.status}`);
