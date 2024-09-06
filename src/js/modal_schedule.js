@@ -101,9 +101,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const filteredData = data.filter((schedule) => {
         const scheduleStart = new Date(schedule.schedule_start);
+        const scheduleEnd = new Date(schedule.schedule_end); // schedule_end도 가져오기
 
         // 기본 일정(반복 없음)
-        if (scheduleStart.toDateString() === date.toDateString()) {
+        if (
+          (scheduleStart <= date && date <= scheduleEnd) || // 시작과 끝 범위에 해당하는지 확인
+          scheduleStart.toDateString() === date.toDateString() ||
+          scheduleEnd.toDateString() === date.toDateString()
+        ) {
           return true;
         }
 
