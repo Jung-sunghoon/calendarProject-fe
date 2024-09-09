@@ -292,9 +292,6 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("Update response:", result);
       console.log("최신 데이터 받음");
       closeModal();
-
-      // 일정 수정 후 최신 데이터를 가져와서 업데이트
-      closeModal();
       await fetchData();
       updateCalendar();
     } catch (error) {
