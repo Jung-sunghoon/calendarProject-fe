@@ -9,7 +9,7 @@ table {
   table-layout: fixed; /* 셀 크기 고정 */
 }
 th {
-  padding: 15px 0;
+  padding-top: 15px;
   font-weight: bold;
   color: #333;
   border-bottom: 2px solid #dddddd;
@@ -22,6 +22,7 @@ td {
   max-height: calc((100% - 40px) / 6); /* 높이 6줄 나눔 */
   vertical-align: top;
   padding: 10px;
+  height: 100px;
 }
 tr {
   color: #555;
