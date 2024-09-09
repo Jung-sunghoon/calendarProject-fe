@@ -5,6 +5,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const $addBtn = document.querySelector(".view-add-button");
   const calendarMonthElement = document.querySelector(".calendar-month");
   const calendarYearElement = document.querySelector(".calendar-year");
+  const $saveBtn = $modalScheduleEdit.querySelector("#save-btn");
+
+  let scheduleData = [];
+  let originalSchedule = null; // 수정 전의 원본 데이터를 저장하는 변수
+  window.selectedScheduleId = null;
 
   document.body.addEventListener("click", function (event) {
     const clickedDay = event.target.closest("td");
@@ -59,11 +64,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const closeModal = () => {
     $modalScheduleView.style.display = "none";
+    $modalScheduleEdit.style.display = "none";
   };
 
   window.addEventListener("click", function (event) {
     if (event.target === $modalScheduleView || event.target === $closeBtn) {
       closeModal();
+    } else if (event.target.closest(".modal-view-box")) {
+      const scheduleId =
+        event.target.closest(".modal-view-box").dataset.scheduleId;
+      const schedule = scheduleData.find(
+        (s) => s.schedule_id === parseInt(scheduleId)
+      );
+      if (schedule) {
+        window.selectedScheduleId = schedule.schedule_id;
+        originalSchedule = { ...schedule }; // 원본 데이터를 전역 변수에 저장
+        populateEditModal(schedule);
+        $modalScheduleEdit.style.display = "block";
+      }
     }
   });
 
@@ -97,6 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       const data = await response.json();
+      scheduleData = data;
       console.log("Fetched data:", data); // 데이터 로깅
 
       const filteredData = data.filter((schedule) => {
@@ -274,8 +293,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       closeModal();
 
-      await fetchData();
+      // 일정 수정 후 최신 데이터를 가져와서 업데이트
+      await fetchScheduleData(window.currentDate);
 
+      // 일정 데이터 반영 후 달력 업데이트
       updateCalendar();
     } catch (error) {
       console.error("Error updating schedule data:", error);
