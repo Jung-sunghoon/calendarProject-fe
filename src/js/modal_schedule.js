@@ -290,13 +290,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const result = await response.json();
       console.log("Update response:", result);
-
+      console.log("최신 데이터 받음");
       closeModal();
 
       // 일정 수정 후 최신 데이터를 가져와서 업데이트
-      await fetchScheduleData(window.currentDate);
-
-      // 일정 데이터 반영 후 달력 업데이트
+      closeModal();
+      await fetchData();
       updateCalendar();
     } catch (error) {
       console.error("Error updating schedule data:", error);

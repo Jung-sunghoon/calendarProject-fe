@@ -44,7 +44,10 @@ const monthList = document.querySelectorAll(".calendar-select-month-list li");
 yearSelectBox.style.display = "none";
 monthSelectBox.style.display = "none";
 
-function updateCalendar() {
+function updateCalendar(newSchedules) {
+  if (newSchedules) {
+    schedules = newSchedules;
+  }
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1;
   // 현재 년도, 월 표시
@@ -53,7 +56,7 @@ function updateCalendar() {
 
   yearSelectText.textContent = `${year} 년`;
   monthSelectText.textContent = `${calendarMonthElement.textContent} 월`;
-
+  console.log("업데이트 최신");
   renderCalendarDays(year, month);
 }
 // 연도 선택 핸들러
@@ -274,28 +277,7 @@ logoElement.addEventListener("click", function (event) {
   monthSelectText.textContent = "월 선택";
   updateCalendar();
 
-  function updateCalendar(newSchedules) {
-    if (newSchedules) {
-      schedules = newSchedules;
-    }
-
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth() + 1;
-
-    // 현재 년도, 월 표시
-    calendarMonthElement.textContent = String(month).padStart(2, "0");
-    calendarYearElement.textContent = year;
-
-    yearSelectText.textContent = `${year} 년`;
-    monthSelectText.textContent = `${calendarMonthElement.textContent} 월`;
-
-    renderCalendarDays(year, month);
-  }
-
   // 새로운 이벤트 리스너 추가
-  document.addEventListener("updateCalendarEvent", function (e) {
-    updateCalendar(e.detail.schedules);
-  });
 
   // 초기화 함수
   function initCalendar() {
@@ -311,3 +293,5 @@ logoElement.addEventListener("click", function (event) {
 fetchData();
 updateCalendar();
 initializeSelectBox();
+window.updateCalendar = updateCalendar;
+window.fetchData = fetchData;
