@@ -331,8 +331,7 @@ main .calendar {
 }
 
 /* 모달 창 header */
-.modal-date-cont {
-  /* padding: 33px 0 0 46px; */
+.modal-view-date {
   width: 942px;
   height: 800px;
   position: relative;
@@ -341,13 +340,13 @@ main .calendar {
 }
 
 /* header - 날짜 부분 */
-.modal-view-date {
+.modal-date-display {
   height: 114px;
   display: flex;
   align-items: center;
   padding: 46px;
 }
-.modal-view-date p {
+.modal-date-display p {
   font-family: "Inter", sans-serif;
   font-weight: bold;
 }
@@ -398,7 +397,7 @@ main .calendar {
 }
 
 /* main - bg */
-.modal-view-cont {
+.modal-view-content {
   width: 932px;
   height: 681px;
   position: absolute;
@@ -414,7 +413,7 @@ main .calendar {
   overflow-y: scroll;
   overflow: auto;
 }
-.modal-view-cont::-webkit-scrollbar {
+.modal-view-content::-webkit-scrollbar {
   width: 0;
   color: transparent;
 }
@@ -873,14 +872,11 @@ textarea {
   display: none;
 }
 
-.modal-schedule-delete .modal-delete-content {
+.modal-delete-content {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-.modal-delete-content {
   width: 508px;
   height: 163px;
   background-color: #fff;
@@ -890,7 +886,6 @@ textarea {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  text-align: center;
 }
 
 .delete-txt {

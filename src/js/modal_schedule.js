@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateModalContent(date) {
     const $modalDateElement =
-      $modalScheduleView.querySelector(".modal-view-date");
+      $modalScheduleView.querySelector(".modal-date-display");
     if ($modalDateElement) {
       $modalDateElement.innerHTML = `
           <p class="view-year">${date.getFullYear()}</p>
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function fetchScheduleData(date) {
-    const $modalViewCont = $modalScheduleView.querySelector(".modal-view-cont");
+    const $modalViewCont = $modalScheduleView.querySelector(".modal-view-content");
     if (!$modalViewCont) return;
   
     try {
