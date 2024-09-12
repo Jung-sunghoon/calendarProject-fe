@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateModalContent(date) {
     const $modalDateElement =
-      $modalScheduleView.querySelector(".modal-date-display");
+      $modalScheduleView.querySelector(".modal-view-date");
     if ($modalDateElement) {
       $modalDateElement.innerHTML = `
           <p class="view-year">${date.getFullYear()}</p>
@@ -102,46 +102,64 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function fetchScheduleData(date) {
-    const $modalViewCont = $modalScheduleView.querySelector(".modal-view-content");
+    const $modalViewCont = $modalScheduleView.querySelector(".modal-view-cont");
     if (!$modalViewCont) return;
-  
+
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/schedules`);
-  
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/schedules`
+      );
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-  
+
       const data = await response.json();
       scheduleData = data;
       console.log("Fetched data:", data);
-  
+
       const filteredData = data.filter((schedule) => {
         const scheduleStart = new Date(schedule.schedule_start);
         const scheduleEnd = new Date(schedule.schedule_end);
-  
+
         // 날짜 비교를 위해 시간 정보를 제거
-        const scheduleDate = new Date(scheduleStart.getFullYear(), scheduleStart.getMonth(), scheduleStart.getDate());
-        const clickedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-        
+        const scheduleDate = new Date(
+          scheduleStart.getFullYear(),
+          scheduleStart.getMonth(),
+          scheduleStart.getDate()
+        );
+        const clickedDate = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate()
+        );
+
         // 기본 일정(반복 없음)
-        if (scheduleDate.getTime() === clickedDate.getTime() ||
-            (clickedDate >= scheduleStart && clickedDate <= scheduleEnd)) {
+        if (
+          scheduleDate.getTime() === clickedDate.getTime() ||
+          (clickedDate >= scheduleStart && clickedDate <= scheduleEnd)
+        ) {
           return true;
         }
-  
+
         // 반복 일정 처리
         if (schedule.schedule_recurring && schedule.recurring_pattern) {
           const pattern = schedule.recurring_pattern;
           const startsOn = new Date(pattern.starts_on);
           const endsOn = new Date(pattern.ends_on);
-  
+
           if (clickedDate >= startsOn && clickedDate <= endsOn) {
             switch (pattern.repeat_type) {
               case "daily":
-                return ((clickedDate - startsOn) / (1000 * 60 * 60 * 24)) % pattern.repeat_interval === 0;
+                return (
+                  ((clickedDate - startsOn) / (1000 * 60 * 60 * 24)) %
+                    pattern.repeat_interval ===
+                  0
+                );
               case "weekly":
-                const dayOfWeek = ["일", "월", "화", "수", "목", "금", "토"][clickedDate.getDay()];
+                const dayOfWeek = ["일", "월", "화", "수", "목", "금", "토"][
+                  clickedDate.getDay()
+                ];
                 return pattern.repeat_on.includes(dayOfWeek);
               case "monthly":
                 return clickedDate.getDate() === startsOn.getDate();
@@ -157,19 +175,27 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         return false;
       });
-  
+
       if (filteredData.length > 0) {
         $modalViewCont.innerHTML = filteredData
           .map(
             (schedule) => `
-            <div class="modal-view-box" data-schedule-id="${schedule.schedule_id}">
+            <div class="modal-view-box" data-schedule-id="${
+              schedule.schedule_id
+            }">
               <h3 class="modal-view-title">${schedule.schedule_title}</h3>
               <div class="modal-view-time">
-                <span class="view-time-start">${formatTime(schedule.schedule_start)}</span>
+                <span class="view-time-start">${formatTime(
+                  schedule.schedule_start
+                )}</span>
                 <span class="view-time-separator">~</span>
-                <span class="view-time-end">${formatTime(schedule.schedule_end)}</span>
+                <span class="view-time-end">${formatTime(
+                  schedule.schedule_end
+                )}</span>
               </div>
-              <p class="view-description">${schedule.schedule_description || ""}</p>
+              <p class="view-description">${
+                schedule.schedule_description || ""
+              }</p>
             </div>
           `
           )
@@ -182,7 +208,6 @@ document.addEventListener("DOMContentLoaded", function () {
       $modalViewCont.innerHTML = `<p>일정을 불러오는 중 오류가 발생했습니다: ${error.message}</p>`;
     }
   }
-
 
   function formatTime(timeString) {
     const date = new Date(timeString);
@@ -234,6 +259,17 @@ document.addEventListener("DOMContentLoaded", function () {
       schedule_start: startDate,
       schedule_end: endDate,
       schedule_description: description,
+      schedule_notification: true,
+      schedule_recurring: true,
+      recurring_pattern: {
+        repeat_type: "weekly",
+        repeat_interval: 1,
+        repeat_on: ["월"],
+        starts_on: "2024-08-20 00:00:00",
+        ends_on: "2024-08-30 00:00:00",
+
+        //더미데이터로 넘겨보는데 여기 데이터만 안넘어갑니다.. 살려주세요 성훈님
+      },
     };
   }
 
@@ -276,7 +312,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const result = await response.json();
       console.log("Update response:", result);
-      console.log("최신 데이터 받음");
+      console.log("최신 데이터 받음", result);
       closeModal();
       await fetchData();
       updateCalendar();
