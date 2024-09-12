@@ -234,22 +234,22 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function getRecurringText(pattern) {
-    const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
-    switch (pattern.repeat_type) {
-      case "daily":
-        return `매일`;
-      case "weekly":
-        return `매주 ${pattern.repeat_on.join(", ")}요일`;
-      case "monthly":
-        return `매월 ${new Date(pattern.starts_on).getDate()}일`;
-      case "yearly":
-        const date = new Date(pattern.starts_on);
-        return `매년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
-      default:
-        return "";
-    }
-  }
+  // function getRecurringText(pattern) {
+  //   const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+  //   switch (pattern.repeat_type) {
+  //     case "daily":
+  //       return `매일`;
+  //     case "weekly":
+  //       return `매주 ${pattern.repeat_on.join(", ")}요일`;
+  //     case "monthly":
+  //       return `매월 ${new Date(pattern.starts_on).getDate()}일`;
+  //     case "yearly":
+  //       const date = new Date(pattern.starts_on);
+  //       return `매년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+  //     default:
+  //       return "";
+  //   }
+  // }
 
   function formatTime(timeString) {
     const date = new Date(timeString);
