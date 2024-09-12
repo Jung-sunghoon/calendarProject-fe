@@ -160,9 +160,9 @@
       <section class="modal-schedule-view">
         <h2 class="blind">일정 조회 모달 창</h2>
         <div class="modal-view-container">
-          <section class="modal-date-cont">
+          <section class="modal-view-date">
             <h2 class="blind">일정 날짜</h2>
-            <div class="modal-view-date">
+            <div class="modal-date-display">
               <p class="view-year">2024</p>
               <p class="view-month">07</p>
               <span class="view-separator">/</span>
@@ -171,11 +171,11 @@
             <button
               class="view-close-button"
               type="button"
-              aria-label="닫기"
+              aria-label="닫기 버튼"
             ></button>
-            <a href="#" class="view-add-button">추가</a>
+            <button type="button" class="view-add-button">추가</button>
           </section>
-          <section class="modal-view-cont">
+          <section class="modal-view-content">
             <h2 class="blind">일정 내용</h2>
             <article class="modal-view-box">
               <h3 class="modal-view-title">JavaScript Study</h3>
@@ -371,17 +371,15 @@
       <!-------------------------- 일정 삭제 모달 Start  -------------------------->
       <section class="modal-schedule-delete">
         <h2 class="blind">일정 삭제 모달 창</h2>
-        <div class="modal-delete-container">
-          <div class="modal-delete-content">
-            <p class="delete-txt">
-              <strong>JavaScript Study</strong> 일정을 삭제하시겠습니까?
-            </p>
-            <div class="delete-btn">
-              <button type="button" class="delete-confirmation-btn">
+        <div class="modal-delete-content">
+          <p class="delete-txt">
+            <strong>JavaScript Study</strong> 일정을 삭제하시겠습니까?
+          </p>
+          <div class="delete-btn">
+            <button type="button" class="delete-confirmation-btn">
                 확인
-              </button>
-              <button type="button" class="delete-cancel-btn">취소</button>
-            </div>
+            </button>
+            <button type="button" class="delete-cancel-btn">취소</button>
           </div>
         </div>
       </section>
