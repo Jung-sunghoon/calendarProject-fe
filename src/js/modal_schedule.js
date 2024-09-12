@@ -7,12 +7,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const calendarYearElement = document.querySelector(".calendar-year");
   const $saveBtn = $modalScheduleEdit.querySelector("#save-btn");
 
-  let scheduleData = [];
-  let originalSchedule = null; // 수정 전의 원본 데이터를 저장하는 변수
-  window.selectedScheduleId = null;
+  // let scheduleData = [];
+  // let originalSchedule = null;
+  // window.selectedScheduleId = null;
 
   document.body.addEventListener("click", function (event) {
     const clickedDay = event.target.closest("td");
+    // console.log('--------------------this(clickedDay): -------------------- \n'+clickedDay);
+    
     if (
       clickedDay &&
       (clickedDay.classList.contains("calendar-day") ||
@@ -20,8 +22,11 @@ document.addEventListener("DOMContentLoaded", function () {
         clickedDay.classList.contains("next-month"))
     ) {
       let currentYear = parseInt(calendarYearElement.textContent);
+      console.log('--------------------this(currentYear): -------------------- \n'+currentYear);
       let currentMonth = parseInt(calendarMonthElement.textContent) - 1; // 0-based month
+      console.log('--------------------this(currentMonth): -------------------- \n'+currentMonth);
       let clickedDate = parseInt(clickedDay.textContent);
+      console.log('--------------------this(clickedDate): -------------------- \n'+clickedDate);
 
       if (clickedDay.classList.contains("prev-month")) {
         if (currentMonth === 0) {
@@ -39,7 +44,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
 
+      /*calendar ui에서 prev-month, nexy-month 로드 시
+      updateCalendar함수를 가져오면서 충동.  
+      */
+
+      
+
       let targetDate = new Date(currentYear, currentMonth, clickedDate);
+      console.log('--------------------this(targetDate): -------------------- \n'+targetDate);
 
       // 현재 날짜 업데이트
       window.currentDate = new Date(targetDate);
@@ -67,9 +79,12 @@ document.addEventListener("DOMContentLoaded", function () {
     $modalScheduleEdit.style.display = "none";
   };
 
+
+  // 조회 스케줄에서 이벤트 클릭했을 때
   window.addEventListener("click", function (event) {
     if (event.target === $modalScheduleView || event.target === $closeBtn) {
       closeModal();
+    // --
     } else if (event.target.closest(".modal-view-box")) {
       const scheduleId =
         event.target.closest(".modal-view-box").dataset.scheduleId;
@@ -82,9 +97,12 @@ document.addEventListener("DOMContentLoaded", function () {
         populateEditModal(schedule);
         $modalScheduleEdit.style.display = "block";
       }
+    // --
     }
   });
 
+
+  // 스케줄 조회 모달 날짜 업데이트
   function updateModalContent(date) {
     const $modalDateElement =
       $modalScheduleView.querySelector(".modal-view-date");
@@ -113,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
   
       const data = await response.json();
-      scheduleData = data;
+      // scheduleData = data;
       console.log("Fetched data:", data);
   
       const filteredData = data.filter((schedule) => {
@@ -183,7 +201,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-
   function formatTime(timeString) {
     const date = new Date(timeString);
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -215,7 +232,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelector(".textarea-container textarea").value =
       schedule.schedule_description || "";
   }
-
+// --
   function getEditModalData() {
     const title = document.querySelector("#editTitle").value;
     const startDateText = document.querySelector("#selectedDate").textContent;
@@ -254,7 +271,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")} ${hour}:${minute}:00`;
   }
-
+// --
   async function updateScheduleData(scheduleId, updatedData) {
     try {
       const updatedScheduleData = { ...originalSchedule, ...updatedData };
@@ -285,7 +302,7 @@ document.addEventListener("DOMContentLoaded", function () {
       alert(`오류 발생: ${error.message}`);
     }
   }
-
+// --
   $saveBtn.addEventListener("click", function () {
     if (window.selectedScheduleId) {
       const updatedData = getEditModalData();
