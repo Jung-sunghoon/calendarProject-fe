@@ -7,9 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const calendarYearElement = document.querySelector(".calendar-year");
   const $saveBtn = $modalScheduleEdit.querySelector("#save-btn");
 
-  // let scheduleData = [];
-  // let originalSchedule = null;
-  // window.selectedScheduleId = null;
+  let scheduleData = [];
+  let originalSchedule = null;
+  window.selectedScheduleId = null;
 
   document.body.addEventListener("click", function (event) {
     const clickedDay = event.target.closest("td");
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // 스케줄 조회 모달 날짜 업데이트
   function updateModalContent(date) {
     const $modalDateElement =
-      $modalScheduleView.querySelector(".modal-view-date");
+      $modalScheduleView.querySelector(".modal-date-display");
     if ($modalDateElement) {
       $modalDateElement.innerHTML = `
           <p class="view-year">${date.getFullYear()}</p>
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function fetchScheduleData(date) {
-    const $modalViewCont = $modalScheduleView.querySelector(".modal-view-cont");
+    const $modalViewCont = $modalScheduleView.querySelector(".modal-view-content");
     if (!$modalViewCont) return;
 
     try {
@@ -133,7 +133,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       const data = await response.json();
-      // scheduleData = data;
       console.log("Fetched data:", data);
 
       const filteredData = data.filter((schedule) => {
@@ -167,6 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const endsOn = new Date(pattern.ends_on);
 
           if (clickedDate >= startsOn && clickedDate <= endsOn) {
+            const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
             switch (pattern.repeat_type) {
               case "daily":
                 return (
@@ -175,16 +175,23 @@ document.addEventListener("DOMContentLoaded", function () {
                   0
                 );
               case "weekly":
-                const dayOfWeek = ["일", "월", "화", "수", "목", "금", "토"][
-                  clickedDate.getDay()
-                ];
+                const dayOfWeek = daysOfWeek[clickedDate.getDay()];
                 return pattern.repeat_on.includes(dayOfWeek);
               case "monthly":
-                return clickedDate.getDate() === startsOn.getDate();
+                const monthDifference =
+                  (clickedDate.getFullYear() - startsOn.getFullYear()) * 12 +
+                  clickedDate.getMonth() -
+                  startsOn.getMonth();
+                return (
+                  monthDifference % pattern.repeat_interval === 0 &&
+                  clickedDate.getDate() >= startsOn.getDate() &&
+                  clickedDate.getDate() <= endsOn.getDate()
+                );
               case "yearly":
                 return (
                   clickedDate.getMonth() === startsOn.getMonth() &&
-                  clickedDate.getDate() === startsOn.getDate()
+                  clickedDate.getDate() >= startsOn.getDate() &&
+                  clickedDate.getDate() <= endsOn.getDate()
                 );
               default:
                 return false;
@@ -224,6 +231,23 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (error) {
       console.error("Error fetching schedule data:", error);
       $modalViewCont.innerHTML = `<p>일정을 불러오는 중 오류가 발생했습니다: ${error.message}</p>`;
+    }
+  }
+
+  function getRecurringText(pattern) {
+    const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+    switch (pattern.repeat_type) {
+      case "daily":
+        return `매일`;
+      case "weekly":
+        return `매주 ${pattern.repeat_on.join(", ")}요일`;
+      case "monthly":
+        return `매월 ${new Date(pattern.starts_on).getDate()}일`;
+      case "yearly":
+        const date = new Date(pattern.starts_on);
+        return `매년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+      default:
+        return "";
     }
   }
 
