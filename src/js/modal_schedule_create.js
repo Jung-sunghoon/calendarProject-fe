@@ -1,28 +1,28 @@
 document.addEventListener("DOMContentLoaded", function() {
   /************************ DOM 요소 불러오기 ************************/
-  const $modalScheduleEdit = document.querySelector(".modal-schedule-edit");    // 일정 만드는 모달
-  const closeBtn = document.getElementById("close-btn");                        // 일정 모달의 나가기버튼
-  const exitBtn = document.getElementById("exit-btn");                          // 일정 모달의 취소버튼(나가기버튼과 동일함)
-  const saveBtn = document.getElementById("save-btn");                          // 일정 모달의 저장버튼
-  const clearBtn = document.getElementById("clear-btn");                        // 일정 모달의 삭제버튼
-  const selectedDateSpan = document.getElementById("selectedDate");             // 일정 모달의 시작날짜 (ID명)
-  const selectedTimeSpan = document.getElementById("selectedTime");             // 일정 모달의 시작시간 (ID명)
-  const completeDateSpan = document.getElementById("completeDate");             // 일정 모달의 완료날짜 (ID명)
-  const completeTimeSpan = document.getElementById("completeTime");             // 일정 모달의 완료시간 (ID명)
-  const startDateInput = document.querySelector(".start-date-input");           // 일정 모달의 시작날짜 (클래스명)
-  const startTimeInput = document.querySelector(".start-time-input");           // 일정 모달의 시작시간 (클래스명)
-  const endDateInput = document.querySelector(".end-date-input");               // 일정 모달의 완료날짜 (클래스명)
-  const endTimeInput = document.querySelector(".end-time-input");               // 일정 모달의 완료시간 (클래스명)
-  const repeatText = document.querySelector(".repeat-text");                    // 일정 모달의 반복일정 타이틀
-  const datePicker = document.getElementById("datePicker");                     // 작은 달력 구현
-  const calendar = document.getElementById("calendar");                         // 작은 달력 날짜
-  const currentMonthSpan = document.getElementById("currentMonth");             // 작은 달력의 년도,월 표시(ex. 2024.09)
-  const prevMonthBtn = document.getElementById("prevMonth");                    // 작은 달력의 이전월
-  const nextMonthBtn = document.getElementById("nextMonth");                    // 작은 달력의 다음월
-  const startConfirmBtn = document.getElementById("start-confirm");             // 작은 달력의 확인버튼 (시작일정)
-  const endConfirmBtn = document.getElementById("end-confirm");                 // 작은 달력의 확인버튼 (완료일정)
-
-
+  const $modalScheduleEdit = document.querySelector(".modal-schedule-edit");
+  const closeBtn = document.getElementById("close-btn");                    
+  const exitBtn = document.getElementById("exit-btn");                      
+  const saveBtn = document.getElementById("save-btn");                      
+  const clearBtn = document.getElementById("clear-btn");                    
+  const selectedDateSpan = document.getElementById("selectedDate");         
+  const selectedTimeSpan = document.getElementById("selectedTime");         
+  const completeDateSpan = document.getElementById("completeDate");         
+  const completeTimeSpan = document.getElementById("completeTime");         
+  const startDateInput = document.querySelector(".start-date-input");       
+  const startTimeInput = document.querySelector(".start-time-input");       
+  const endDateInput = document.querySelector(".end-date-input");           
+  const endTimeInput = document.querySelector(".end-time-input");           
+  const repeatText = document.querySelector(".repeat-text");                
+  const datePicker = document.getElementById("datePicker");                 
+  const calendar = document.getElementById("calendar");                     
+  const currentMonthSpan = document.getElementById("currentMonth");         
+  const prevMonthBtn = document.getElementById("prevMonth");                
+  const nextMonthBtn = document.getElementById("nextMonth");                
+  const startConfirmBtn = document.getElementById("start-confirm");         
+  const endConfirmBtn = document.getElementById("end-confirm");             
+  
+  
   /************************ 모달창 닫힘 기능 구현 ************************/
   
   closeBtn.onclick = function() {
@@ -32,15 +32,14 @@ document.addEventListener("DOMContentLoaded", function() {
     $modalScheduleEdit.style.display = "none";
   };
   
-
   /************************ 모달창 내부 삭제버튼 숨김 ************************/
 
   clearBtn.style.display = 'none';
 
-
   /************************ 날짜 기능 구현 함수 ************************/
   
   let currentDate = new Date();
+  let currentTime = new Date();
   let selectedDate = null;
 
   function updateCalendar() {
@@ -96,6 +95,16 @@ document.addEventListener("DOMContentLoaded", function() {
     updateCalendar();
   }
 
+  /************************ 현재 일정 나타내기 ************************/
+  const selectDay = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월 ${currentDate.getDate()}일`;
+  selectedDateSpan.textContent = selectDay;
+  const completeDay = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월 ${currentDate.getDate()}일`;
+  completeDateSpan.textContent = completeDay;
+  const selectedTime = `${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`;
+  selectedTimeSpan.textContent = selectedTime;
+  const completeTime = `${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`;
+  completeTimeSpan.textContent = completeTime;
+
   /************************ 버튼 클릭시 실행될 이벤트값 설정 ************************/
 
   /******** 작은달력 Month 부분 이동버튼 ********/
@@ -122,10 +131,12 @@ document.addEventListener("DOMContentLoaded", function() {
       }
       return input.value;
     };
-    const startHour = timeValue(document.getElementById("start-hour"), 2, 0, 23);
-    const startMinute = timeValue(document.getElementById("start-minute"), 2, 0, 59);
+    const startHour = timeValue(document.getElementById("start-hour"), 2, 0, 23).padStart(2, "0");
+    const startMinute = timeValue(document.getElementById("start-minute"), 2, 0, 59).padStart(2, "0");
     selectedDateSpan.textContent = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월 ${currentDate.getDate()}일`;
+    console.log(selectedDateSpan.textContent);
     selectedTimeSpan.textContent = `${startHour}:${startMinute}`;
+    console.log(selectedTimeSpan.textContent);
     datePicker.style.display = datePicker.style.display == 'none' ? 'block': 'none';
   });
 
@@ -191,33 +202,37 @@ document.addEventListener("DOMContentLoaded", function() {
       repeatNum.disabled = true;
       repeatNum.style.color = "#ccc";
       repeatText.innerText = noRepeat.textContent;
+      console.log(repeatText.textContent);
       repeatList.style.display = "block" ? "none" : "block";
     });
     dayRepeat.addEventListener("click", () => {
       repeatNum.disabled = false;
       repeatNum.style.color = "#000";
       repeatText.innerText = dayRepeat.textContent;
+      console.log(repeatText.textContent);
       repeatList.style.display = "block" ? "none" : "block";
     });
     weakRepeat.addEventListener("click", () => {
       repeatNum.disabled = false;
       repeatNum.style.color = "#000";
       repeatText.innerText = weakRepeat.textContent;
+      console.log(repeatText.textContent);
       repeatList.style.display = "block" ? "none" : "block";
     });
     monthRepeat.addEventListener("click", () => {
       repeatNum.disabled = false;
       repeatNum.style.color = "#000";
       repeatText.innerText = monthRepeat.textContent;
+      console.log(repeatText.textContent);
       repeatList.style.display = "block" ? "none" : "block";
     });
     yearRepeat.addEventListener("click", () => {
       repeatNum.disabled = false;
       repeatNum.style.color = "#000";
       repeatText.innerText = yearRepeat.textContent;
+      console.log(repeatText.textContent);
       repeatList.style.display = "block" ? "none" : "block";
     });
-
     repeatList.style.display = repeatList.style.display == "none" ? "block" : "none";
   });
 
@@ -244,6 +259,66 @@ document.addEventListener("DOMContentLoaded", function() {
     const repeat = repeatValue(document.getElementById("repeat-num"), 3, 0 ,998);
   });
 
+    /************************ 일정 저장하기 ************************/
+//   async function addSchedule(){
+//   try{
+//     const modalTitle = document.querySelector(".modal-title").textContent;
+//     const startDateInput = document.querySelector(".start-date-input").value;
+//     const endDateInput = document.querySelector(".end-date-input").value;
+//     const startTimeInput = document.querySelector(".start-time-input").value;
+//     const endTimeInput = document.querySelector(".end-time-input").value;
+//     const repeatText = document.querySelector(".repeat-text").textContent;
+//     const repeatNum = document.getElementById("repeat-num").value;
+//     const memoText = document.querySelector(".schedule-memo").value;
+
+//     function changeDateTime(date, time){
+//       const [year, month, day] = date.split('-').map(Number);
+//       const [hours, minutes] = time.split(':').map(Number);
+//       return new Date(year, month -1, day, hours, minutes);
+//     }
+    
+//     function startDateTime(startDateInput, startTimeInput){
+//       return changeDateTime(startDateInput, startTimeInput)
+//     };
+//     function endDateTime(endDateInput, endTimeInput){
+//       return changeDateTime(endDateInput, endTimeInput)
+//     }
+
+//     const start = startDateTime(startDateInput, startTimeInput);
+//     const end = endDateTime(endDateInput, endTimeInput);
+//     const repeat = repeatText + repeatNum;
+
+//     const res = await fetch(`${import.meta.env.VITE_API_URL}/api/schedule`,{
+//       method:"POST",
+//       headers: {"Content-type":"application/json"},
+//       body: JSON.stringify({
+//         schedule_title: modalTitle,
+//         schedule_description: memoText,
+//         schedule_start: start,
+//         schedule_end: end,
+//         schedule_notification: false,
+//         schedule_recurring: repeat,
+//       }),
+//     });
+    
+//     if (!res.ok) {
+//       throw new Error(`일정을 저장 할 수 없습니다`);
+//     }
+//     const result = await res.json();
+//     console.log('Schedule saved successfully:', result);
+//     return result;
+//   }catch(error){
+//     console.error('Error saving schedule:', error);
+//     throw error;
+//   };
+// };
+//   saveBtn.addEventListener('click', async () => {
+//     try{
+//     await addSchedule();
+//     } catch (error){
+//       console.error('스케줄을 추가할수 없습니다', error);
+//     };
+//   });
 
   /************************ 작은달력 위치 값 조정 ************************/
 
