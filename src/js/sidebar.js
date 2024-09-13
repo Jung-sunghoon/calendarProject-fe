@@ -122,18 +122,18 @@ document.addEventListener("DOMContentLoaded", function () {
   function addScheduleToUI(schedule) {
     const li = document.createElement("li");
     li.innerHTML = `
-            <a href="#">
-                <div class="sidebar-list-box" data-id="${schedule.schedule_id}">
-                    <div class="sidebar-list-cont">
-                        <img src="./src/assets/img/list-circle.svg" alt="" />
-                        <span>${schedule.schedule_title || ""}</span>
-                    </div>
-                    <div class="sidebar-list-close">
-                        <img src="./src/assets/img/close-btn.svg" alt="" />
-                    </div>
-                </div>
-            </a>
-        `;
+      <a href="#">
+        <div class="sidebar-list-box" data-id="${schedule.schedule_id}">
+          <div class="sidebar-list-cont">
+            <img src="./src/assets/img/list-circle.svg" alt="" />
+            <span>${schedule.schedule_title || ""}</span>
+          </div>
+          <div class="sidebar-list-close">
+            <img src="./src/assets/img/close-btn.svg" alt="" />
+          </div>
+        </div>
+      </a>
+    `;
     scheduleList.appendChild(li);
   }
 
@@ -240,7 +240,7 @@ document.addEventListener("DOMContentLoaded", function () {
     updateElement(".view-month", String(date.getMonth() + 1).padStart(2, "0"));
     updateElement(".view-day", String(date.getDate()).padStart(2, "0"));
 
-    const modalViewCont = viewModal.querySelector(".modal-view-cont");
+    const modalViewCont = viewModal.querySelector(".modal-view-content");
     modalViewCont.innerHTML = "";
 
     if (todaySchedules.length === 0) {
@@ -248,24 +248,24 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       todaySchedules.forEach((schedule) => {
         const articleHtml = `
-                    <article class="modal-view-box">
-                        <h3 class="modal-view-title">${
-                          schedule.schedule_title
-                        }</h3>
-                        <div class="modal-view-time">
-                            <span class="view-time-start">${formatDateTime(
-                              schedule.schedule_start
-                            )}</span>
-                            <span class="view-time-separator">~</span>
-                            <span class="view-time-end">${formatDateTime(
-                              schedule.schedule_end
-                            )}</span>
-                        </div>
-                        <p class="view-description">${
-                          schedule.schedule_description || ""
-                        }</p>
-                    </article>
-                `;
+          <article class="modal-view-box">
+            <h3 class="modal-view-title">
+              ${schedule.schedule_title}
+            </h3>
+            <div class="modal-view-time">
+              <span class="view-time-start">
+                ${formatDateTime(schedule.schedule_start)}
+              </span>
+              <span class="view-time-separator">~</span>
+              <span class="view-time-end">
+                ${formatDateTime(schedule.schedule_end)}
+              </span>
+            </div>
+            <p class="view-description">
+              ${schedule.schedule_description || ""}
+            </p>
+          </article>
+        `;
         modalViewCont.innerHTML += articleHtml;
       });
     }
