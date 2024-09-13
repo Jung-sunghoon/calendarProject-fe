@@ -229,7 +229,7 @@
         <div class="modal-edit-container">
           <section class="modal-edit-cont">
             <div class="modal-header">
-              <div class="modal-title">JavaScript Study</div>
+              <input type="text" class="modal-title" placeholder="제목을 입력하세요">
               <button id="close-btn">
                 <img src="./src/assets/img/exit-btn.svg" />
               </button>
@@ -241,14 +241,14 @@
                   <div class="input-group">
                     <p>
                       시작날짜ㅤ<span id="selectedDate" class="start-date-input"
-                        >2024년 7월 26일</span
+                        ></span
                       >
                     </p>
                   </div>
                   <div class="input-group">
                     <p>
                       시작시간ㅤ<span id="selectedTime" class="start-time-input"
-                        >11:00</span
+                        ></span
                       >
                     </p>
                   </div>
@@ -258,14 +258,14 @@
                   <div class="input-group">
                     <p>
                       완료날짜ㅤ<span id="completeDate" class="end-date-input"
-                        >2024년 7월 26일</span
+                        ></span
                       >
                     </p>
                   </div>
                   <div class="input-group">
                     <p>
                       완료시간ㅤ<span id="completeTime" class="end-time-input"
-                        >11:00</span
+                        ></span
                       >
                     </p>
                   </div>
@@ -274,9 +274,7 @@
                 <div class="modal-content-repeat">
                   <div class="input-group">
                     <p>반복주기</p>
-                    <textarea id="repeat-num" oninput="repeatValue(this, 3)">
-100</textarea
-                    >
+                    <textarea id="repeat-num" oninput="repeatValue(this, 3)"></textarea>
                     <div class="repeat-box">
                       <p class="repeat-text">일간 반복</p>
                       <ul class="repeat-list">
@@ -291,7 +289,7 @@
                 </div>
               </form>
               <form class="textarea-container">
-                <textarea placeholder="내용을 입력하세요..."></textarea>
+                <textarea placeholder="내용을 입력하세요..." class="schedule-memo"></textarea>
               </form>
             </div>
             <div class="modal-footer">
