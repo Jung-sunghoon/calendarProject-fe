@@ -912,3 +912,8 @@ textarea {
 .delete-cancel-btn {
   background-color: #fff;
 }
+
+.modal-title {
+  background-color: var(--main-color);
+  border: none;
+}
