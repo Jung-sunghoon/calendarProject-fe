@@ -4,9 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const newItem = document.querySelector(".sidebar-new-item");
   const scheduleInput = newItem.querySelector(".sidebar-schedule-input");
   const deleteModal = document.querySelector(".modal-schedule-delete");
-  const deleteConfirmBtn = deleteModal.querySelector(
-    ".delete-confirmation-btn"
-  );
+  const deleteConfirmBtn = deleteModal.querySelector(".delete-confirmation-btn");
   const deleteCancelBtn = deleteModal.querySelector(".delete-cancel-btn");
   const viewModal = document.querySelector(".modal-schedule-view");
   const closeModalBtn = viewModal.querySelector(".view-close-button");
@@ -43,9 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // 오늘 일정 업데이트
   function updateTodaySchedules() {
     const today = new Date();
-    todaySchedules = allSchedules.filter((schedule) =>
-      isSameDay(new Date(schedule.schedule_start), today)
-    );
+    todaySchedules = allSchedules.filter((schedule) => isSameDay(new Date(schedule.schedule_start), today));
   }
 
   // 사이드바 일정 업데이트
@@ -86,6 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          user_email: "john.doe@example.com", // 나중에 알맞은 이메일 받아와야함
           schedule_title: scheduleInput.value,
           schedule_description: "",
           schedule_start: new Date(),
@@ -140,12 +137,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // ******* 일정 삭제 *******
   async function deleteSchedule(scheduleId) {
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/schedule/${scheduleId}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/schedule/${scheduleId}`, {
+        method: "DELETE",
+      });
 
       if (!res.ok) {
         const errorData = await res.json();
@@ -212,10 +206,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (itemToDelete && scheduleIdToDelete) {
       deleteSchedule(scheduleIdToDelete);
     } else {
-      console.error(
-        "Invalid delete attempt: itemToDelete or scheduleIdToDelete is null"
-      );
-      alert("삭제할 일정을 선택해주세요.");
+      console.error("Invalid delete attempt: itemToDelete or scheduleIdToDelete is null");
+      // alert("삭제할 일정을 선택해주세요.");
     }
   });
 
@@ -367,9 +359,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function fetchWeatherData() {
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/weather?city=seoul`
-      );
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/weather?city=seoul`);
       if (!res.ok) {
         throw new Error("Failed to fetch weather data");
       }
@@ -377,9 +367,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const data = await res.json();
       console.log(data);
 
-      sidebarWeatherText.innerText = translateWeatherDescription(
-        data.weather[0].id
-      );
+      sidebarWeatherText.innerText = translateWeatherDescription(data.weather[0].id);
       sidebarWeatherTemp.innerText = `${Math.round(data.main.temp)}º`;
       sidebarWeatherIcon.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`;
     } catch (error) {
