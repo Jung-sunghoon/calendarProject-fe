@@ -109,10 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if ($modalDateElement) {
       $modalDateElement.innerHTML = `
           <p class="view-year">${date.getFullYear()}</p>
-          <p class="view-month">${String(date.getMonth() + 1).padStart(
-            2,
-            "0"
-          )}</p>
+          <p class="view-month">${String(date.getMonth() + 1).padStart(2,"0")}</p>
           <span class="view-separator">/</span>
           <p class="view-day">${String(date.getDate()).padStart(2, "0")}</p>
         `;
