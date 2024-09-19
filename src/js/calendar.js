@@ -293,5 +293,5 @@ logoElement.addEventListener("click", function (event) {
 fetchData();
 updateCalendar();
 initializeSelectBox();
-window.updateCalendar = updateCalendar;
-window.fetchData = fetchData;
+
+export { updateCalendar, fetchData };

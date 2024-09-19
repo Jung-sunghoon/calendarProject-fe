@@ -1,3 +1,5 @@
+import { updateCalendar, fetchData } from './calendar.js';
+
 document.addEventListener("DOMContentLoaded", function () {
   const $modalScheduleView = document.querySelector(".modal-schedule-view");
   const $modalScheduleEdit = document.querySelector(".modal-schedule-edit");
@@ -26,11 +28,11 @@ document.addEventListener("DOMContentLoaded", function () {
         clickedDay.classList.contains("next-month"))
     ) {
       let currentYear = parseInt(calendarYearElement.textContent);
-      console.log("--------------------this(currentYear): -------------------- \n" + currentYear);
+      // console.log("--------------------this(currentYear): -------------------- \n" + currentYear);
       let currentMonth = parseInt(calendarMonthElement.textContent) - 1; // 0-based month
-      console.log("--------------------this(currentMonth): -------------------- \n" + currentMonth);
+      // console.log("--------------------this(currentMonth): -------------------- \n" + currentMonth);
       let clickedDate = parseInt(clickedDay.textContent);
-      console.log("--------------------this(clickedDate): -------------------- \n" + clickedDate);
+      // console.log("--------------------this(clickedDate): -------------------- \n" + clickedDate);
 
       if (clickedDay.classList.contains("prev-month")) {
         if (currentMonth === 0) {
@@ -53,15 +55,13 @@ document.addEventListener("DOMContentLoaded", function () {
       */
 
       let targetDate = new Date(currentYear, currentMonth, clickedDate);
-      console.log("--------------------this(targetDate): -------------------- \n" + targetDate);
+      // console.log("--------------------this(targetDate): -------------------- \n" + targetDate);
 
       // 현재 날짜 업데이트
       window.currentDate = new Date(targetDate);
 
       // calendar.js의 updateCalendar 함수 호출
-      if (typeof window.updateCalendar === "function") {
-        window.updateCalendar();
-      }
+      updateCalendar();
 
       // 모달 표시
       $modalScheduleView.style.display = "block";
