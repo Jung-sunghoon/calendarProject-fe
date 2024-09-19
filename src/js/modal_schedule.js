@@ -1,4 +1,4 @@
-import { updateCalendar, fetchData } from './calendar.js';
+import { updateCalendar, fetchData, currentDate } from './calendar.js';
 
 document.addEventListener("DOMContentLoaded", function () {
   const $modalScheduleView = document.querySelector(".modal-schedule-view");
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // console.log("--------------------this(targetDate): -------------------- \n" + targetDate);
 
       // 현재 날짜 업데이트
-      window.currentDate = new Date(targetDate);
+      let currentDate = new Date(targetDate);
 
       // calendar.js의 updateCalendar 함수 호출
       updateCalendar();
