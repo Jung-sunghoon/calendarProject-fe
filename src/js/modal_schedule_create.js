@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentDate = new Date();
   let currentTime = new Date();
   let selectedDate = null;
+  let isAddingItem = false;
 
   function updateCalendar() {
     calendar.innerHTML = "";
@@ -274,65 +275,65 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   /************************ 일정 저장하기 ************************/
-  //   async function addSchedule(){
-  //   try{
-  //     const modalTitle = document.querySelector(".modal-title").textContent;
-  //     const startDateInput = document.querySelector(".start-date-input").value;
-  //     const endDateInput = document.querySelector(".end-date-input").value;
-  //     const startTimeInput = document.querySelector(".start-time-input").value;
-  //     const endTimeInput = document.querySelector(".end-time-input").value;
-  //     const repeatText = document.querySelector(".repeat-text").textContent;
-  //     const repeatNum = document.getElementById("repeat-num").value;
-  //     const memoText = document.querySelector(".schedule-memo").value;
-
-  //     function changeDateTime(date, time){
-  //       const [year, month, day] = date.split('-').map(Number);
-  //       const [hours, minutes] = time.split(':').map(Number);
-  //       return new Date(year, month -1, day, hours, minutes);
-  //     }
-
-  //     function startDateTime(startDateInput, startTimeInput){
-  //       return changeDateTime(startDateInput, startTimeInput)
-  //     };
-  //     function endDateTime(endDateInput, endTimeInput){
-  //       return changeDateTime(endDateInput, endTimeInput)
-  //     }
-
-  //     const start = startDateTime(startDateInput, startTimeInput);
-  //     const end = endDateTime(endDateInput, endTimeInput);
-  //     const repeat = repeatText + repeatNum;
-
-  //     const res = await fetch(`${import.meta.env.VITE_API_URL}/api/schedule`,{
-  //       method:"POST",
-  //       headers: {"Content-type":"application/json"},
-  //       body: JSON.stringify({
-  //         schedule_title: modalTitle,
-  //         schedule_description: memoText,
-  //         schedule_start: start,
-  //         schedule_end: end,
-  //         schedule_notification: false,
-  //         schedule_recurring: repeat,
-  //       }),
-  //     });
-
-  //     if (!res.ok) {
-  //       throw new Error(`일정을 저장 할 수 없습니다`);
-  //     }
-  //     const result = await res.json();
-  //     console.log('Schedule saved successfully:', result);
-  //     return result;
-  //   }catch(error){
-  //     console.error('Error saving schedule:', error);
-  //     throw error;
-  //   };
-  // };
-  //   saveBtn.addEventListener('click', async () => {
-  //     try{
-  //     await addSchedule();
-  //     } catch (error){
-  //       console.error('스케줄을 추가할수 없습니다', error);
-  //     };
-  //   });
+  const createSchedule = async function () {
+    const scheduleTitle = document.querySelector(".modal-title").value;
+    const startDateText = document.querySelector("#selectedDate").value;
+    const startTimeText = document.querySelector("#selectedTime").value;
+    const endDateText = document.querySelector("#completeDate").value;
+    const endTimeText = document.querySelector("#completeTime").value;
+  //  const repeatText = document.querySelector(".repeat-text").value;
+  //  const repeatNum = document.querySelector("#repeat-num").value;
+    const scheduleMemo = document.querySelector(".schedule-memo").value;
+  
+    const startText = (startDateText, startTimeText);
+    const endText = (endDateText, endTimeText);
+  //  const repeat = (repeatText, repeatNum);
+  
+    if(isAddingItem) return;
+    isAddingItem = true;
+    try{
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/schedules`, {
+        method : "POST",
+        headers : {"Content-Type" : "application/json"},
+        body: JSON.stringify({
+          schedule_title: scheduleTitle,
+          schedule_description: scheduleMemo,
+          schedule_start: startText,
+          schedule_end: endText,
+          schedule_notification: false,
+          schedule_recurring: true,
+        }),
+      });
+      if(!res.ok){
+        throw new error("Failed to delete the schedule");
+      }
+      else{
+        $modalViewCont.innerHTML =  filteredData
+        .map(
+          (schedule) => `
+          <div class="modal-view-box" data-schedule-id="${schedule.schedule_id}">
+            <h3 class="modal-view-title">${schedule.schedule_title}</h3>
+            <div class="modal-view-time">
+              <span class="view-time-start">${formatTime(schedule.schedule_start)}</span>
+              <span class="view-time-separator">~</span>
+              <span class="view-time-end">${formatTime(schedule.schedule_end)}</span>
+            </div>
+            <p class="view-description">${schedule.schedule_description || ""}</p>
+          </div>
+        `
+        )
+        .join("");
+      }
+    } catch(error){
+      console.error("일정을 추가할수 없습니다.");
+    }
+  };
+  
+  saveBtn.addEventListener("click", () => {
+    if (!isAddingItem){
+      createSchedule();
+    }
+  });
 
   /************************ 작은달력 위치 값 조정 ************************/
 
