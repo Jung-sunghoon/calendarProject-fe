@@ -323,12 +323,13 @@ document.addEventListener("DOMContentLoaded", function () {
         `
         )
         .join("");
-      }
+      } // 다른 코드 가져온건데 제대로 동작할지 모르겠어..
     } catch(error){
       console.error("일정을 추가할수 없습니다.");
     }
   };
-  
+
+  // 저장 버튼 클릭시 데이터 적용
   saveBtn.addEventListener("click", () => {
     if (!isAddingItem){
       createSchedule();
