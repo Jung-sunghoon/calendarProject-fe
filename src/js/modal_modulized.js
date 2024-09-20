@@ -1,0 +1,423 @@
+// modal_schedule.js
+import { updateCalendar, fetchData, currentDate } from "./calendar.js";
+
+// State management
+const state = {
+  scheduleData: [],
+  originalSchedule: null,
+  selectedScheduleId: null,
+};
+
+// DOM Elements
+const elements = {
+  $modalScheduleView: document.querySelector(".modal-schedule-view"),
+  $modalScheduleEdit: document.querySelector(".modal-schedule-edit"),
+  $closeBtn: document.querySelector(".view-close-button"),
+  $addBtn: document.querySelector(".view-add-button"),
+  calendarMonthElement: document.querySelector(".calendar-month"),
+  calendarYearElement: document.querySelector(".calendar-year"),
+  $saveBtn: document.querySelector("#save-btn"),
+  $clearBtn: document.querySelector("#clear-btn"),
+  deleteModal: document.querySelector(".modal-schedule-delete"),
+  $modalDeleteConfirmBtn: document.querySelector(".delete-confirmation-btn"),
+  $modalDeleteCancelBtn: document.querySelector(".delete-cancel-btn"),
+};
+
+// Utility functions
+function formatTime(timeString) {
+  const date = new Date(timeString);
+  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+function formatDateTime(dateText, timeText) {
+  const [year, month, day] = dateText.match(/\d+/g);
+  let [hour, minute] = timeText.match(/\d+/g);
+  const period = timeText.includes("오전") ? "AM" : "PM";
+
+  if (period === "PM" && hour !== "12") {
+    hour = parseInt(hour) + 12;
+  } else if (period === "AM" && hour === "12") {
+    hour = "00";
+  }
+
+  hour = String(hour).padStart(2, "0");
+  minute = String(minute).padStart(2, "0");
+
+  return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")} ${hour}:${minute}:00`;
+}
+
+// Calendar interaction functions
+function handleCalendarDayClick(event) {
+  const clickedDay = findClickedDay(event.target);
+  if (clickedDay) {
+    const date = extractDateFromClickedDay(clickedDay);
+    showScheduleModal(date);
+  }
+}
+
+function findClickedDay(element) {
+  return element.closest("td.calendar-day, td.prev-month, td.next-month");
+}
+
+function extractDateFromClickedDay(clickedDay) {
+  let currentYear = parseInt(elements.calendarYearElement.textContent);
+  let currentMonth = parseInt(elements.calendarMonthElement.textContent) - 1;
+  let clickedDate = parseInt(clickedDay.textContent);
+
+  if (clickedDay.classList.contains("prev-month")) {
+    if (currentMonth === 0) {
+      currentYear--;
+      currentMonth = 11;
+    } else {
+      currentMonth--;
+    }
+  } else if (clickedDay.classList.contains("next-month")) {
+    if (currentMonth === 11) {
+      currentYear++;
+      currentMonth = 0;
+    } else {
+      currentMonth++;
+    }
+  }
+
+  return new Date(currentYear, currentMonth, clickedDate);
+}
+
+// Modal management functions
+function showScheduleModal(date) {
+  updateModalContent(date);
+  elements.$modalScheduleView.style.display = "block";
+  fetchScheduleData(date);
+}
+
+function updateModalContent(date) {
+  const $modalDateElement = elements.$modalScheduleView.querySelector(
+    ".modal-date-display"
+  );
+  if ($modalDateElement) {
+    $modalDateElement.innerHTML = `
+      <p class="view-year">${date.getFullYear()}</p>
+      <p class="view-month">${String(date.getMonth() + 1).padStart(2, "0")}</p>
+      <span class="view-separator">/</span>
+      <p class="view-day">${String(date.getDate()).padStart(2, "0")}</p>
+    `;
+  }
+}
+
+function closeModal() {
+  elements.$modalScheduleView.style.display = "none";
+  elements.$modalScheduleEdit.style.display = "none";
+}
+
+// Schedule data management functions
+async function fetchScheduleData(date) {
+    const $modalViewCont = elements.$modalScheduleView.querySelector(
+      ".modal-view-content"
+    );
+    if (!$modalViewCont) return;
+  
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/schedules`
+      );
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      if (!Array.isArray(data)) {
+        throw new Error("Received data is not an array");
+      }
+      
+      state.scheduleData = data;
+  
+      const filteredData = filteredScheduleData(data, date);
+      $modalViewCont.innerHTML = renderScheduleContent(filteredData);
+  
+    } catch (error) {
+      console.error("Error fetching schedule data:", error);
+      $modalViewCont.innerHTML = `<p>일정을 불러오는 중 오류가 발생했습니다: ${error.message}</p>`;
+    }
+  }
+
+function filteredScheduleData(data, date) {
+    if (!data || !Array.isArray(data)) {
+        console.error("Invalid data provided to filteredScheduleData");
+        return [];
+      }
+
+    return data.filter((schedule) => {
+        const scheduleStart = new Date(schedule.schedule_start);
+        const scheduleEnd = new Date(schedule.schedule_end);
+  
+        // 날짜 비교를 위해 시간 정보를 제거
+        const scheduleDate = new Date(
+          scheduleStart.getFullYear(),
+          scheduleStart.getMonth(),
+          scheduleStart.getDate()
+        );
+        const clickedDate = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate()
+        );
+  
+        // 기본 일정(반복 없음)
+        if (
+          scheduleDate.getTime() === clickedDate.getTime() ||
+          (clickedDate >= scheduleStart && clickedDate <= scheduleEnd)
+        ) {
+          return true;
+        }
+  
+        // 반복 일정 처리
+        if (schedule.schedule_recurring && schedule.recurring_pattern) {
+          const pattern = schedule.recurring_pattern;
+          const startsOn = new Date(pattern.starts_on);
+          const endsOn = new Date(pattern.ends_on);
+  
+          if (clickedDate >= startsOn && clickedDate <= endsOn) {
+            const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+            switch (pattern.repeat_type) {
+              case "daily":
+                return (
+                  ((clickedDate - startsOn) / (1000 * 60 * 60 * 24)) %
+                    pattern.repeat_interval ===
+                  0
+                );
+              case "weekly":
+                const dayOfWeek = daysOfWeek[clickedDate.getDay()];
+                return pattern.repeat_on.includes(dayOfWeek);
+              case "monthly":
+                const monthDifference =
+                  (clickedDate.getFullYear() - startsOn.getFullYear()) * 12 +
+                  clickedDate.getMonth() -
+                  startsOn.getMonth();
+                return (
+                  monthDifference % pattern.repeat_interval === 0 &&
+                  clickedDate.getDate() >= startsOn.getDate() &&
+                  clickedDate.getDate() <= endsOn.getDate()
+                );
+              case "yearly":
+                return (
+                  clickedDate.getMonth() === startsOn.getMonth() &&
+                  clickedDate.getDate() >= startsOn.getDate() &&
+                  clickedDate.getDate() <= endsOn.getDate()
+                );
+              default:
+                return false;
+            }
+          }
+        }
+        return false;
+      });
+}
+
+function renderScheduleContent(filteredData) {
+    if (!filteredData || filteredData.length === 0) {
+      return "<p>조회 가능한 일정이 없습니다</p>";
+    }
+    
+    return filteredData
+      .map(
+        (schedule) => `
+        <div class="modal-view-box" data-schedule-id="${schedule.schedule_id}">
+          <h3 class="modal-view-title">${schedule.schedule_title}</h3>
+          <div class="modal-view-time">
+            <span class="view-time-start">${formatTime(schedule.schedule_start)}</span>
+            <span class="view-time-separator">~</span>
+            <span class="view-time-end">${formatTime(schedule.schedule_end)}</span>
+          </div>
+          <p class="view-description">${schedule.schedule_description || ""}</p>
+        </div>
+      `
+      )
+      .join("");
+  }
+
+// Schedule editing functions
+function populateEditModal(schedule) {
+  const startDate = new Date(schedule.schedule_start);
+  const endDate = new Date(schedule.schedule_end);
+
+  document.querySelector(
+    ".modal-edit-container .modal-title"
+  ).innerHTML = `<input type="text" id="editTitle" value="${schedule.schedule_title}" />`;
+  document.querySelector(
+    "#selectedDate"
+  ).textContent = `${startDate.getFullYear()}년 ${
+    startDate.getMonth() + 1
+  }월 ${startDate.getDate()}일`;
+  document.querySelector("#selectedTime").textContent = formatTime(
+    schedule.schedule_start
+  );
+  document.querySelector(
+    "#completeDate"
+  ).textContent = `${endDate.getFullYear()}년 ${
+    endDate.getMonth() + 1
+  }월 ${endDate.getDate()}일`;
+  document.querySelector("#completeTime").textContent = formatTime(
+    schedule.schedule_end
+  );
+  document.querySelector(".textarea-container textarea").value =
+    schedule.schedule_description || "";
+}
+
+function getEditModalData() {
+  const title = document.querySelector("#editTitle").value;
+  const startDateText = document.querySelector("#selectedDate").textContent;
+  const startTime = document.querySelector("#selectedTime").textContent;
+  const endDateText = document.querySelector("#completeDate").textContent;
+  const endTime = document.querySelector("#completeTime").textContent;
+  const description = document.querySelector(
+    ".textarea-container textarea"
+  ).value;
+
+  const startDate = formatDateTime(startDateText, startTime);
+  const endDate = formatDateTime(endDateText, endTime);
+
+  return {
+    schedule_title: title,
+    schedule_start: startDate,
+    schedule_end: endDate,
+    schedule_description: description,
+    schedule_notification: true,
+    schedule_recurring: true,
+    recurring_pattern: {
+      repeat_type: "weekly",
+      repeat_interval: 1,
+      repeat_on: ["월"],
+      starts_on: "2024-08-20 00:00:00",
+      ends_on: "2024-08-30 00:00:00",
+    },
+  };
+}
+
+async function updateScheduleData(scheduleId, updatedData) {
+  try {
+    const updatedScheduleData = { ...state.originalSchedule, ...updatedData };
+
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/schedule/${scheduleId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedScheduleData),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`error status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    console.log("Update response:", result);
+    closeModal();
+    await fetchData();
+    updateCalendar();
+  } catch (error) {
+    console.error("Error updating schedule data:", error);
+    alert(`오류 발생: ${error.message}`);
+  }
+}
+
+async function deleteSchedule() {
+  if (!state.selectedScheduleId) {
+    closeModal();
+    return;
+  }
+  const scheduleId = state.selectedScheduleId;
+  try {
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/schedule/${scheduleId}`,
+      {
+        method: "DELETE",
+      }
+    );
+    if (!res.ok) {
+      throw new Error("Failed to delete the schedule");
+    }
+
+    const result = await res.json();
+    console.log(result);
+    closeModal();
+    elements.deleteModal.style.display = "none";
+    await fetchData();
+    updateCalendar();
+  } catch (error) {
+    console.error("에러:", error);
+    alert(`삭제 중 오류 발생: ${error.message}`);
+  }
+}
+
+// Event handlers
+function handleAddButtonClick() {
+  elements.$modalScheduleEdit.style.display = "block";
+  elements.$clearBtn.style.display = "none";
+}
+
+function handleModalViewClick(event) {
+  if (event.target === elements.$modalScheduleView || event.target === elements.$closeBtn) {
+    closeModal();
+  } else if (event.target.closest(".modal-view-box")) {
+    elements.$clearBtn.style.display = "block";
+    const scheduleId = event.target.closest(".modal-view-box").dataset.scheduleId;
+    const schedule = state.scheduleData.find(
+      (s) => s.schedule_id === parseInt(scheduleId)
+    );
+    if (schedule) {
+      state.selectedScheduleId = schedule.schedule_id;
+      state.originalSchedule = { ...schedule };
+      populateEditModal(schedule);
+      elements.$modalScheduleEdit.style.display = "block";
+    }
+  }
+}
+
+function handleSaveButtonClick() {
+  if (state.selectedScheduleId) {
+    const updatedData = getEditModalData();
+    const startDate = new Date(updatedData.schedule_start);
+    const endDate = new Date(updatedData.schedule_end);
+
+    if (startDate > endDate) {
+      alert("시작 날짜와 시간이 종료 날짜와 시간보다 이후일 수 없습니다.");
+      return;
+    }
+
+    updateScheduleData(state.selectedScheduleId, updatedData);
+  } else {
+    alert("수정할 일정을 선택해주세요.");
+  }
+}
+
+function handleClearButtonClick() {
+  elements.deleteModal.style.display = "block";
+}
+
+function handleDeleteConfirmClick() {
+  deleteSchedule();
+}
+
+function handleDeleteCancelClick() {
+  elements.deleteModal.style.display = "none";
+}
+
+// Initialization
+function initializeEventListeners() {
+  document.body.addEventListener("click", handleCalendarDayClick);
+  elements.$addBtn.addEventListener("click", handleAddButtonClick);
+  window.addEventListener("click", handleModalViewClick);
+  elements.$saveBtn.addEventListener("click", handleSaveButtonClick);
+  elements.$clearBtn.addEventListener("click", handleClearButtonClick);
+  elements.$modalDeleteConfirmBtn.addEventListener("click", handleDeleteConfirmClick);
+  elements.$modalDeleteCancelBtn.addEventListener("click", handleDeleteCancelClick);
+}
+
+document.addEventListener("DOMContentLoaded", initializeEventListeners);
+
+// Exports (if needed)
+export { showScheduleModal, fetchScheduleData, updateModalContent };
