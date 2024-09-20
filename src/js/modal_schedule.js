@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
     }
   }
-  
+
   // 필터링 함수
   function filteredScheduleData(data, date) {
     return data.filter((schedule) => {

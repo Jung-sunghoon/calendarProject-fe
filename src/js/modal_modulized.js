@@ -420,4 +420,4 @@ function initializeEventListeners() {
 document.addEventListener("DOMContentLoaded", initializeEventListeners);
 
 // Exports (if needed)
-export { showScheduleModal, fetchScheduleData, updateModalContent };
+export { showScheduleModal, fetchScheduleData, updateModalContent , filteredScheduleData};

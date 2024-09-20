@@ -1,3 +1,4 @@
+import { filteredScheduleData } from './modal_modulized';
 document.addEventListener("DOMContentLoaded", function () {
   const scheduleList = document.querySelector(".sidebar-schedule-list");
   const addButton = document.querySelector(".sidebar-schedule-add");
@@ -41,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // 오늘 일정 업데이트
   function updateTodaySchedules() {
     const today = new Date();
-    todaySchedules = allSchedules.filter((schedule) => isSameDay(new Date(schedule.schedule_start), today));
+    todaySchedules = filteredScheduleData(allSchedules, today);
   }
 
   // 사이드바 일정 업데이트
