@@ -219,7 +219,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return "<p>조회 가능한 일정이 없습니다</p>";
     }
   }
-  
+
   // 메인 함수
   async function fetchScheduleData(date) {
     const $modalViewCont = $modalScheduleView.querySelector(
@@ -248,27 +248,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
   function formatTime(timeString) {
     const date = new Date(timeString);
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
