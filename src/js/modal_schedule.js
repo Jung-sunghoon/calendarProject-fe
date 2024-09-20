@@ -419,6 +419,3 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   });
 });
-
-
-export { filteredScheduleData, renderScheduleContent, fetchScheduleData, updateModalContent };
