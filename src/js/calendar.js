@@ -294,4 +294,4 @@ fetchData();
 updateCalendar();
 initializeSelectBox();
 
-export { updateCalendar, fetchData };
+export { updateCalendar, fetchData, currentDate };

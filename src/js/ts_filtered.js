@@ -189,7 +189,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // 스케줄 랜더링
   function renderScheduleContent(filteredData) {
     if (filteredData.length > 0) {
       return filteredData
@@ -219,7 +218,6 @@ document.addEventListener("DOMContentLoaded", function () {
       return "<p>조회 가능한 일정이 없습니다</p>";
     }
   }
-  
   // 메인 함수
   async function fetchScheduleData(date) {
     const $modalViewCont = $modalScheduleView.querySelector(
