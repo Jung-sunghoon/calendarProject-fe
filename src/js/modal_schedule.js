@@ -421,4 +421,4 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-export { filteredScheduleData, renderScheduleContent, fetchScheduleData };
+export { filteredScheduleData, renderScheduleContent, fetchScheduleData, updateModalContent };
