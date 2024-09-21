@@ -131,46 +131,86 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /******** 작은달력 날짜, 시간 확인버튼 ********/
   startConfirmBtn.addEventListener("click", () => {
-    const timeValue = (input, length, minValue, maxValue) => {
-      const value = input.value.padStart(2, "0");
-      if (value.length > length) {
-        value = value.slice(0, length);
-      } else if (value < minValue) {
-        value = minValue;
-      } else if (value > maxValue) {
-        value = maxValue;
+    const startHour = document.getElementById('start-hour');
+    const startMinute = document.getElementById('start-minute');
+
+    startHour.addEventListener('input', function(){
+      const maxLength = this.dataset.maxLength;
+      const min = this.dataset.min;
+      const max = this.dataset.max;
+      if(this.value.length > maxLength){
+        this.value = this.value.slice(0, maxLength);
       }
-      return input.value;
-    };
-    const startHour = timeValue(document.getElementById("start-hour"), 2, 0, 23).padStart(2, "0");
-    const startMinute = timeValue(document.getElementById("start-minute"), 2, 0, 59).padStart(2, "0");
+      if(parseInt(this.value) < min){
+        this.value = min;
+      }
+      if(parseInt(this.value) > max){
+        this.value = max;
+      }
+    })
+    startMinute.addEventListener('input', function(){
+      const maxLength = this.dataset.maxLength;
+      const min = this.dataset.min;
+      const max = this.dataset.max;
+      if(this.value.length > maxLength){
+        this.value = this.value.slice(0, maxLength);
+      }
+      if(parseInt(this.value) < min){
+        this.value = min;
+      }
+      if(parseInt(this.value) > max){
+        this.value = max;
+      }
+    })
+    
     selectedDateSpan.textContent = `${currentDate.getFullYear()}년 ${
       currentDate.getMonth() + 1
     }월 ${currentDate.getDate()}일`;
     console.log(selectedDateSpan.textContent);
-    selectedTimeSpan.textContent = `${startHour}:${startMinute}`;
+    selectedTimeSpan.textContent = `${startHour.value.slice(0, "2")}:${startMinute.value.slice(0, "2")}`;
     console.log(selectedTimeSpan.textContent);
     datePicker.style.display = datePicker.style.display == "none" ? "block" : "none";
   });
 
   endConfirmBtn.addEventListener("click", () => {
-    const timeValue = (input, length, minValue, maxValue) => {
-      const value = input.value.padStart(2, "0");
-      if (value.length > length) {
-        value = value.slice(0, length);
-      } else if (value < minValue) {
-        value = minValue;
-      } else if (value > maxValue) {
-        value = maxValue;
+    const endHour = document.getElementById('end-hour');
+    const endMinute = document.getElementById('end-minute');
+
+    endHour.addEventListener('input', function(){
+      const maxLength = this.dataset.maxLength;
+      const min = this.dataset.min;
+      const max = this.dataset.max;
+      if(this.value.length > maxLength){
+        this.value = this.value.slice(0, maxLength);
       }
-      return input.value;
-    };
-    const endHour = timeValue(document.getElementById("end-hour"), 2, 0, 23);
-    const endMinute = timeValue(document.getElementById("end-minute"), 2, 0, 59);
+      if(parseInt(this.value) < min){
+        this.value = min;
+      }
+      if(parseInt(this.value) > max){
+        this.value = max;
+      }
+    })
+    endMinute.addEventListener('input', function(){
+      const maxLength = this.dataset.maxLength;
+      const min = this.dataset.min;
+      const max = this.dataset.max;
+      if(this.value.length > maxLength){
+        this.value = this.value.slice(0, maxLength);
+      }
+      if(parseInt(this.value) < min){
+        this.value = min;
+      }
+      if(parseInt(this.value) > max){
+        this.value = max;
+      }
+    })
+    
     completeDateSpan.textContent = `${currentDate.getFullYear()}년 ${
       currentDate.getMonth() + 1
     }월 ${currentDate.getDate()}일`;
-    completeTimeSpan.textContent = `${endHour}:${endMinute}`;
+    console.log(completeDateSpan.textContent);
+    completeTimeSpan.textContent = `${endHour.value.slice(0, "2")}:${endMinute.value.slice(0, "2")}`;
+    console.log(completeTimeSpan.textContent);
     datePicker.style.display = datePicker.style.display == "none" ? "block" : "none";
   });
 
@@ -372,4 +412,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
   updateCalendar();
 });
-//
