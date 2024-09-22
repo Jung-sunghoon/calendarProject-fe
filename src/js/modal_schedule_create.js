@@ -100,22 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCalendar();
   }
 
-  /************************ 현재 일정 나타내기 ************************/
-  const selectDay = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월 ${currentDate.getDate()}일`;
-  selectedDateSpan.textContent = selectDay;
-  const completeDay = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월 ${currentDate.getDate()}일`;
-  completeDateSpan.textContent = completeDay;
-  const selectedTime = `${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(
-    2,
-    "0"
-  )}`;
-  selectedTimeSpan.textContent = selectedTime;
-  const completeTime = `${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(
-    2,
-    "0"
-  )}`;
-  completeTimeSpan.textContent = completeTime;
-
   /************************ 버튼 클릭시 실행될 이벤트값 설정 ************************/
 
   /******** 작은달력 Month 부분 이동버튼 ********/
@@ -130,30 +114,40 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   /******** 작은달력 날짜, 시간 확인버튼 ********/
-  startConfirmBtn.addEventListener("click", () => {
+  startConfirmBtn.addEventListener("click", function() {
     const startHour = document.getElementById('start-hour');
     const startMinute = document.getElementById('start-minute');
-
     startHour.addEventListener('input', function(){
       const maxLength = this.dataset.maxLength;
       const min = this.dataset.min;
       const max = this.dataset.max;
+      let value = parseInt(this.value, 10);
       if(this.value.length > maxLength){
         this.value = this.value.slice(0, maxLength);
       }
-      if(parseInt(this.value) < min){
-        this.value = min;
+      if(!isNaN(value) && value >= 0 && value <= 9){
+        this.value = value.toString().padStart(2, "0");
       }
-      if(parseInt(this.value) > max){
-        this.value = max;
+      if(parseInt(startHour.value) < min){
+        startHour.value = min;
       }
-    })
+      if(parseInt(startHour.value) > max){
+        startHour.value = max;
+      }
+    });
+    if(startHour.value >= 0 && startHour.value <= 9){
+      startHour.value.toString().padStart(2, "0");
+    }
     startMinute.addEventListener('input', function(){
       const maxLength = this.dataset.maxLength;
       const min = this.dataset.min;
       const max = this.dataset.max;
+      let value = parseInt(this.value, 10);
       if(this.value.length > maxLength){
         this.value = this.value.slice(0, maxLength);
+      }
+      if(!isNaN(value) && value >= 0 && value <= 9){
+        this.value = value.toString().padStart(2, "0");
       }
       if(parseInt(this.value) < min){
         this.value = min;
@@ -161,7 +155,10 @@ document.addEventListener("DOMContentLoaded", function () {
       if(parseInt(this.value) > max){
         this.value = max;
       }
-    })
+    });
+    if(startMinute.value >= 0 && startMinute.value <= 9){
+      startMinute.value.toString().padStart(2, "0");
+    }
     
     selectedDateSpan.textContent = `${currentDate.getFullYear()}년 ${
       currentDate.getMonth() + 1
@@ -172,16 +169,19 @@ document.addEventListener("DOMContentLoaded", function () {
     datePicker.style.display = datePicker.style.display == "none" ? "block" : "none";
   });
 
-  endConfirmBtn.addEventListener("click", () => {
+  endConfirmBtn.addEventListener("click", function() {
     const endHour = document.getElementById('end-hour');
     const endMinute = document.getElementById('end-minute');
-
     endHour.addEventListener('input', function(){
       const maxLength = this.dataset.maxLength;
       const min = this.dataset.min;
       const max = this.dataset.max;
+      let value = parseInt(this.value, 10);
       if(this.value.length > maxLength){
         this.value = this.value.slice(0, maxLength);
+      }
+      if(!isNaN(value) && value >= 0 && value <= 9){
+        this.value = value.toString().padStart(2, "0");
       }
       if(parseInt(this.value) < min){
         this.value = min;
@@ -194,8 +194,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const maxLength = this.dataset.maxLength;
       const min = this.dataset.min;
       const max = this.dataset.max;
+      let value = parseInt(this.value, 10);
       if(this.value.length > maxLength){
         this.value = this.value.slice(0, maxLength);
+      }
+      if(!isNaN(value) && value >= 0 && value <= 9){
+        this.value = value.toString().padStart(2, "0");
       }
       if(parseInt(this.value) < min){
         this.value = min;
@@ -213,6 +217,41 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(completeTimeSpan.textContent);
     datePicker.style.display = datePicker.style.display == "none" ? "block" : "none";
   });
+
+  /************************ 현재 일정 나타내기 ************************/
+  function timeState(){
+  const selectDay = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월 ${currentDate.getDate()}일`;
+  selectedDateSpan.textContent = selectDay;
+  const completeDay = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월 ${currentDate.getDate()}일`;
+  completeDateSpan.textContent = completeDay;
+  /************************ 오전,오후 분류 ************************/
+  if(currentTime.getHours() > 12){
+  const selectedTime = `오후 ${String(currentTime.getHours() - 12).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`
+  selectedTimeSpan.textContent = selectedTime;
+  }
+  else if(currentTime.getHours() == 12){
+  const selectedTime = `오후 ${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`
+  selectedTimeSpan.textContent = selectedTime;  
+  }
+  else {
+  const selectedTime = `오전 ${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`
+  selectedTimeSpan.textContent = selectedTime;
+  }  
+  
+  if(currentTime.getHours() > 12){
+  const completeTime = `오후 ${String(currentTime.getHours() - 12).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`
+  completeTimeSpan.textContent = completeTime;
+  }
+  else if(currentTime.getHours() == 12){
+  const completeTime = `오후 ${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`
+  completeTimeSpan.textContent = completeTime;  
+  }
+  else {
+  const completeTime = `오전 ${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`
+  completeTimeSpan.textContent = completeTime;
+  }
+  };
+  timeState();
 
   /******** 작은달력 날짜, 시간 입력input ********/
   startDateInput.addEventListener("click", () => {
@@ -378,7 +417,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /************************ 작은달력 위치 값 조정 ************************/
 
-  selectedDateSpan.addEventListener("click", () => {
+  selectedDateSpan.addEventListener("click", function() {
+    this.value='';
     datePicker.style.display = datePicker.style.display == "none" ? "block" : "none";
     datePicker.style.display = datePicker.style.top = `${
       selectedDateSpan.getBoundingClientRect().bottom + window.scrollY
@@ -387,14 +427,16 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCalendar();
   });
 
-  selectedTimeSpan.addEventListener("click", () => {
+  selectedTimeSpan.addEventListener("click", function() {
+    this.value='';
     datePicker.style.display = datePicker.style.display == "none" ? "block" : "none";
     datePicker.style.top = `${selectedTimeSpan.getBoundingClientRect().bottom + window.scrollY}px`;
     datePicker.style.left = `${selectedTimeSpan.getBoundingClientRect().left + window.scrollX}px`;
     updateCalendar();
   });
 
-  completeDateSpan.addEventListener("click", () => {
+  completeDateSpan.addEventListener("click", function() {
+    this.value='';
     datePicker.style.display = datePicker.style.display == "none" ? "block" : "none";
     datePicker.style.display = datePicker.style.top = `${
       completeDateSpan.getBoundingClientRect().bottom + window.scrollY
@@ -403,7 +445,8 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCalendar();
   });
 
-  completeTimeSpan.addEventListener("click", () => {
+  completeTimeSpan.addEventListener("click", function() {
+    this.value='';
     datePicker.style.display = datePicker.style.display == "none" ? "block" : "none";
     datePicker.style.top = `${completeTimeSpan.getBoundingClientRect().bottom + window.scrollY}px`;
     datePicker.style.left = `${completeTimeSpan.getBoundingClientRect().left + window.scrollX}px`;
@@ -412,3 +455,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
   updateCalendar();
 });
+//
