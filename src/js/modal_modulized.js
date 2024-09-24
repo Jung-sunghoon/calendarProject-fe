@@ -83,7 +83,6 @@ function extractDateFromClickedDay(clickedDay) {
   return new Date(currentYear, currentMonth, clickedDate);
 }
 
-// Modal management functions
 function showScheduleModal(date) {
   updateModalContent(date);
   elements.$modalScheduleView.style.display = "block";
@@ -109,7 +108,7 @@ function closeModal() {
   elements.$modalScheduleEdit.style.display = "none";
 }
 
-// Schedule data management functions
+// 스케쥴 데이터 받아오기
 async function fetchScheduleData(date) {
     const $modalViewCont = elements.$modalScheduleView.querySelector(
       ".modal-view-content"
@@ -171,45 +170,45 @@ function filteredScheduleData(data, date) {
           return true;
         }
   
-        // 반복 일정 처리
-        if (schedule.schedule_recurring && schedule.recurring_pattern) {
-          const pattern = schedule.recurring_pattern;
-          const startsOn = new Date(pattern.starts_on);
-          const endsOn = new Date(pattern.ends_on);
+        // 반복 일정 처리(삭제 예정)
+        // if (schedule.schedule_recurring && schedule.recurring_pattern) {
+        //   const pattern = schedule.recurring_pattern;
+        //   const startsOn = new Date(pattern.starts_on);
+        //   const endsOn = new Date(pattern.ends_on);
   
-          if (clickedDate >= startsOn && clickedDate <= endsOn) {
-            const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
-            switch (pattern.repeat_type) {
-              case "daily":
-                return (
-                  ((clickedDate - startsOn) / (1000 * 60 * 60 * 24)) %
-                    pattern.repeat_interval ===
-                  0
-                );
-              case "weekly":
-                const dayOfWeek = daysOfWeek[clickedDate.getDay()];
-                return pattern.repeat_on.includes(dayOfWeek);
-              case "monthly":
-                const monthDifference =
-                  (clickedDate.getFullYear() - startsOn.getFullYear()) * 12 +
-                  clickedDate.getMonth() -
-                  startsOn.getMonth();
-                return (
-                  monthDifference % pattern.repeat_interval === 0 &&
-                  clickedDate.getDate() >= startsOn.getDate() &&
-                  clickedDate.getDate() <= endsOn.getDate()
-                );
-              case "yearly":
-                return (
-                  clickedDate.getMonth() === startsOn.getMonth() &&
-                  clickedDate.getDate() >= startsOn.getDate() &&
-                  clickedDate.getDate() <= endsOn.getDate()
-                );
-              default:
-                return false;
-            }
-          }
-        }
+        //   if (clickedDate >= startsOn && clickedDate <= endsOn) {
+        //     const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+        //     switch (pattern.repeat_type) {
+        //       case "daily":
+        //         return (
+        //           ((clickedDate - startsOn) / (1000 * 60 * 60 * 24)) %
+        //             pattern.repeat_interval ===
+        //           0
+        //         );
+        //       case "weekly":
+        //         const dayOfWeek = daysOfWeek[clickedDate.getDay()];
+        //         return pattern.repeat_on.includes(dayOfWeek);
+        //       case "monthly":
+        //         const monthDifference =
+        //           (clickedDate.getFullYear() - startsOn.getFullYear()) * 12 +
+        //           clickedDate.getMonth() -
+        //           startsOn.getMonth();
+        //         return (
+        //           monthDifference % pattern.repeat_interval === 0 &&
+        //           clickedDate.getDate() >= startsOn.getDate() &&
+        //           clickedDate.getDate() <= endsOn.getDate()
+        //         );
+        //       case "yearly":
+        //         return (
+        //           clickedDate.getMonth() === startsOn.getMonth() &&
+        //           clickedDate.getDate() >= startsOn.getDate() &&
+        //           clickedDate.getDate() <= endsOn.getDate()
+        //         );
+        //       default:
+        //         return false;
+        //     }
+        //   }
+        // }
         return false;
       });
 }
@@ -236,7 +235,7 @@ function renderScheduleContent(filteredData) {
       .join("");
   }
 
-// Schedule editing functions
+// 일정 수정 함수
 function populateEditModal(schedule) {
   const startDate = new Date(schedule.schedule_start);
   const endDate = new Date(schedule.schedule_end);
@@ -353,7 +352,7 @@ async function deleteSchedule() {
   }
 }
 
-// Event handlers
+// 이벤트 헨들러
 function handleAddButtonClick() {
   elements.$modalScheduleEdit.style.display = "block";
   elements.$clearBtn.style.display = "none";
@@ -406,7 +405,7 @@ function handleDeleteCancelClick() {
   elements.deleteModal.style.display = "none";
 }
 
-// Initialization
+// 초기화
 function initializeEventListeners() {
   document.body.addEventListener("click", handleCalendarDayClick);
   elements.$addBtn.addEventListener("click", handleAddButtonClick);
@@ -419,5 +418,4 @@ function initializeEventListeners() {
 
 document.addEventListener("DOMContentLoaded", initializeEventListeners);
 
-// Exports (if needed)
 export { showScheduleModal, fetchScheduleData, updateModalContent , filteredScheduleData};
