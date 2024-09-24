@@ -316,7 +316,7 @@ async function updateScheduleData(scheduleId, updatedData) {
     const result = await response.json();
     console.log("Update response:", result);
     closeModal();
-    await fetchData();
+    // await fetchData();
     updateCalendar();
   } catch (error) {
     console.error("Error updating schedule data:", error);
@@ -345,7 +345,7 @@ async function deleteSchedule() {
     console.log(result);
     closeModal();
     elements.deleteModal.style.display = "none";
-    await fetchData();
+    // await fetchData();
     updateCalendar();
   } catch (error) {
     console.error("에러:", error);

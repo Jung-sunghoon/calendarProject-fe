@@ -353,7 +353,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("Update response:", result);
       console.log("최신 데이터 받음", result);
       closeModal();
-      await fetchData();
+      // await fetchData();
       updateCalendar();
     } catch (error) {
       console.error("Error updating schedule data:", error);
