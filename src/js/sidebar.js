@@ -1,11 +1,15 @@
-import { filteredScheduleData } from './modal_modulized';
+import { filteredScheduleData } from "./modal_modulized";
+import { schedules } from "./calendar";
+
 document.addEventListener("DOMContentLoaded", function () {
   const scheduleList = document.querySelector(".sidebar-schedule-list");
   const addButton = document.querySelector(".sidebar-schedule-add");
   const newItem = document.querySelector(".sidebar-new-item");
   const scheduleInput = newItem.querySelector(".sidebar-schedule-input");
   const deleteModal = document.querySelector(".modal-schedule-delete");
-  const deleteConfirmBtn = deleteModal.querySelector(".delete-confirmation-btn");
+  const deleteConfirmBtn = deleteModal.querySelector(
+    ".delete-confirmation-btn"
+  );
   const deleteCancelBtn = deleteModal.querySelector(".delete-cancel-btn");
   const viewModal = document.querySelector(".modal-schedule-view");
   const closeModalBtn = viewModal.querySelector(".view-close-button");
@@ -16,33 +20,19 @@ document.addEventListener("DOMContentLoaded", function () {
   let itemToDelete = null;
   let scheduleIdToDelete = null;
   let isAddingItem = false;
-  let allSchedules = [];
   let todaySchedules = [];
 
   // 초기화 함수
   function init() {
-    fetchData();
-  }
-
-  // 일정 데이터 가져오기
-  async function fetchData() {
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/schedules`);
-      if (!res.ok) {
-        throw new Error("Failed to fetch schedules");
-      }
-      allSchedules = await res.json();
-      updateTodaySchedules();
-      updateSidebarSchedules();
-    } catch (error) {
-      console.error("Error fetching schedules:", error);
-    }
+    console.log(schedules, "schedules");
+    updateTodaySchedules();
+    updateSidebarSchedules();
   }
 
   // 오늘 일정 업데이트
   function updateTodaySchedules() {
     const today = new Date();
-    todaySchedules = filteredScheduleData(allSchedules, today);
+    todaySchedules = filteredScheduleData(schedules, today);
   }
 
   // 사이드바 일정 업데이트
@@ -108,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (typeof window.updateCalendar === "function") {
         window.updateCalendar();
       }
-      await fetchData();
+      // await fetchData();
     } catch (error) {
       console.error("일정 추가 중 오류 발생:", error);
     } finally {
@@ -138,9 +128,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // ******* 일정 삭제 *******
   async function deleteSchedule(scheduleId) {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/schedule/${scheduleId}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/schedule/${scheduleId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (!res.ok) {
         const errorData = await res.json();
@@ -207,7 +200,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (itemToDelete && scheduleIdToDelete) {
       deleteSchedule(scheduleIdToDelete);
     } else {
-      console.error("Invalid delete attempt: itemToDelete or scheduleIdToDelete is null");
+      console.error(
+        "Invalid delete attempt: itemToDelete or scheduleIdToDelete is null"
+      );
       // alert("삭제할 일정을 선택해주세요.");
     }
   });
@@ -360,7 +355,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function fetchWeatherData() {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/weather?city=seoul`);
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/weather?city=seoul`
+      );
       if (!res.ok) {
         throw new Error("Failed to fetch weather data");
       }
@@ -368,7 +365,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const data = await res.json();
       console.log(data);
 
-      sidebarWeatherText.innerText = translateWeatherDescription(data.weather[0].id);
+      sidebarWeatherText.innerText = translateWeatherDescription(
+        data.weather[0].id
+      );
       sidebarWeatherTemp.innerText = `${Math.round(data.main.temp)}º`;
       sidebarWeatherIcon.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`;
     } catch (error) {

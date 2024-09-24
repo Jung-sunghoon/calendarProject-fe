@@ -16,7 +16,7 @@ async function fetchData() {
     updateCalendar();
 
     // 데이터 출력
-    console.log(schedules);
+    console.log(schedules, "캘린더js에서 호출");
   } catch (error) {
     // 오류 처리
     console.error("Fetch error:", error);
@@ -56,7 +56,6 @@ function updateCalendar(newSchedules) {
 
   yearSelectText.textContent = `${year} 년`;
   monthSelectText.textContent = `${calendarMonthElement.textContent} 월`;
-  console.log("업데이트 최신");
   renderCalendarDays(year, month);
 }
 // 연도 선택 핸들러
@@ -277,8 +276,6 @@ logoElement.addEventListener("click", function (event) {
   monthSelectText.textContent = "월 선택";
   updateCalendar();
 
-  // 새로운 이벤트 리스너 추가
-
   // 초기화 함수
   function initCalendar() {
     fetchData();
@@ -294,4 +291,4 @@ fetchData();
 updateCalendar();
 initializeSelectBox();
 
-export { updateCalendar, fetchData, currentDate };
+export { updateCalendar, fetchData, currentDate, schedules };
