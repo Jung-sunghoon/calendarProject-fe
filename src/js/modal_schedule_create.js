@@ -1,9 +1,11 @@
+import { updateScheduleData } from "./modal_modulized";
+
 document.addEventListener("DOMContentLoaded", function () {
   /************************ DOM 요소 불러오기 ************************/
   const $modalScheduleEdit = document.querySelector(".modal-schedule-edit");
   const closeBtn = document.getElementById("close-btn");
   const exitBtn = document.getElementById("exit-btn");
-  const saveBtn = document.getElementById("save-btn");
+  const saveBtn = document.getElementById("create-save-btn");
   const clearBtn = document.getElementById("clear-btn");
   const selectedDateSpan = document.getElementById("selectedDate");
   const selectedTimeSpan = document.getElementById("selectedTime");
@@ -13,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const startTimeInput = document.querySelector(".start-time-input");
   const endDateInput = document.querySelector(".end-date-input");
   const endTimeInput = document.querySelector(".end-time-input");
-  const repeatText = document.querySelector(".repeat-text");
   const datePicker = document.getElementById("datePicker");
   const calendar = document.getElementById("calendar");
   const currentMonthSpan = document.getElementById("currentMonth");
@@ -224,32 +225,16 @@ document.addEventListener("DOMContentLoaded", function () {
   selectedDateSpan.textContent = selectDay;
   const completeDay = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월 ${currentDate.getDate()}일`;
   completeDateSpan.textContent = completeDay;
-  /************************ 오전,오후 분류 ************************/
-  if(currentTime.getHours() > 12){
-  const selectedTime = `오후 ${String(currentTime.getHours() - 12).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`
+  const selectedTime = `${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(
+    2,
+    "0"
+  )}`;
   selectedTimeSpan.textContent = selectedTime;
-  }
-  else if(currentTime.getHours() == 12){
-  const selectedTime = `오후 ${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`
-  selectedTimeSpan.textContent = selectedTime;  
-  }
-  else {
-  const selectedTime = `오전 ${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`
-  selectedTimeSpan.textContent = selectedTime;
-  }  
-  
-  if(currentTime.getHours() > 12){
-  const completeTime = `오후 ${String(currentTime.getHours() - 12).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`
+  const completeTime = `${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(
+    2,
+    "0"
+  )}`;
   completeTimeSpan.textContent = completeTime;
-  }
-  else if(currentTime.getHours() == 12){
-  const completeTime = `오후 ${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`
-  completeTimeSpan.textContent = completeTime;  
-  }
-  else {
-  const completeTime = `오전 ${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`
-  completeTimeSpan.textContent = completeTime;
-  }
   };
   timeState();
 
@@ -282,54 +267,6 @@ document.addEventListener("DOMContentLoaded", function () {
     isEnding.style.display = "block";
   });
 
-  /******** 반복일정 횟수 및 주기 설정버튼 ********/
-  repeatText.addEventListener("click", () => {
-    const repeatList = document.querySelector(".repeat-list");
-    const repeatNum = document.getElementById("repeat-num");
-    const noRepeat = document.querySelector(".no-repeat");
-    const dayRepeat = document.querySelector(".day-repeat");
-    const weakRepeat = document.querySelector(".weak-repeat");
-    const monthRepeat = document.querySelector(".month-repeat");
-    const yearRepeat = document.querySelector(".year-repeat");
-
-    noRepeat.addEventListener("click", () => {
-      repeatNum.disabled = true;
-      repeatNum.style.color = "#ccc";
-      repeatText.innerText = noRepeat.textContent;
-      console.log(repeatText.textContent);
-      repeatList.style.display = "block" ? "none" : "block";
-    });
-    dayRepeat.addEventListener("click", () => {
-      repeatNum.disabled = false;
-      repeatNum.style.color = "#000";
-      repeatText.innerText = dayRepeat.textContent;
-      console.log(repeatText.textContent);
-      repeatList.style.display = "block" ? "none" : "block";
-    });
-    weakRepeat.addEventListener("click", () => {
-      repeatNum.disabled = false;
-      repeatNum.style.color = "#000";
-      repeatText.innerText = weakRepeat.textContent;
-      console.log(repeatText.textContent);
-      repeatList.style.display = "block" ? "none" : "block";
-    });
-    monthRepeat.addEventListener("click", () => {
-      repeatNum.disabled = false;
-      repeatNum.style.color = "#000";
-      repeatText.innerText = monthRepeat.textContent;
-      console.log(repeatText.textContent);
-      repeatList.style.display = "block" ? "none" : "block";
-    });
-    yearRepeat.addEventListener("click", () => {
-      repeatNum.disabled = false;
-      repeatNum.style.color = "#000";
-      repeatText.innerText = yearRepeat.textContent;
-      console.log(repeatText.textContent);
-      repeatList.style.display = "block" ? "none" : "block";
-    });
-    repeatList.style.display = repeatList.style.display == "none" ? "block" : "none";
-  });
-
   /******** 일정 모달을 벗어난 다른 곳 클릭시 ********/
   window.addEventListener("click", function (event) {
     const closeModal = () => {
@@ -338,19 +275,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     if (event.target === $modalScheduleEdit || event.target === datePicker) {
       closeModal();
-    }
-    const repeatValue = (input, length, minValue, maxValue) => {
-      input.value = input.value.padStart(length, "0");
-      if (input.value.length > length) {
-        input.value = input.value.slice(0, length);
-      } else if (input.value < minValue) {
-        input.value = minValue;
-      } else if (input.value > maxValue) {
-        input.value = maxValue;
-      }
-      return input.value;
     };
-    const repeat = repeatValue(document.getElementById("repeat-num"), 3, 0, 998);
   });
 
   /************************ 일정 저장하기 ************************/
@@ -360,13 +285,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const startTimeText = document.querySelector("#selectedTime").value;
     const endDateText = document.querySelector("#completeDate").value;
     const endTimeText = document.querySelector("#completeTime").value;
-  //  const repeatText = document.querySelector(".repeat-text").value;
-  //  const repeatNum = document.querySelector("#repeat-num").value;
     const scheduleMemo = document.querySelector(".schedule-memo").value;
   
     const startText = (startDateText, startTimeText);
     const endText = (endDateText, endTimeText);
-  //  const repeat = (repeatText, repeatNum);
   
     if(isAddingItem) return;
     isAddingItem = true;
