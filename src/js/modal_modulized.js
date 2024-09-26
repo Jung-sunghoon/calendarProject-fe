@@ -369,7 +369,6 @@ async function deleteSchedule() {
     updateCalendar();
   } catch (error) {
     console.error('에러:', error);
-    alert(`삭제 중 오류 발생: ${error.message}`);
   }
 }
 
