@@ -1,11 +1,14 @@
-import { updateScheduleData } from "./modal_modulized";
+// import { updateScheduleData } from './modal_modulized.js';
+import { updateCalendar, fetchData } from './calendar.js';
+
 
 document.addEventListener("DOMContentLoaded", function () {
   /************************ DOM 요소 불러오기 ************************/
   const $modalScheduleEdit = document.querySelector(".modal-schedule-edit");
+  const $modalScheduleView = document.querySelector(".modal-schedule-view");
   const closeBtn = document.getElementById("close-btn");
   const exitBtn = document.getElementById("exit-btn");
-  const saveBtn = document.getElementById("create-save-btn");
+  const saveBtn = document.getElementById("save-btn");
   const clearBtn = document.getElementById("clear-btn");
   const selectedDateSpan = document.getElementById("selectedDate");
   const selectedTimeSpan = document.getElementById("selectedTime");
@@ -43,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let selectedDate = null;
   let isAddingItem = false;
 
-  function updateCalendar() {
+  function updateCalendare() {
     calendar.innerHTML = "";
     currentMonthSpan.textContent = `${currentDate.getFullYear()}.${String(currentDate.getMonth() + 1).padStart(
       2,
@@ -98,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function selectDate(date) {
     selectedDate = date;
     currentDate = new Date(date);
-    updateCalendar();
+    updateCalendare();
   }
 
   /************************ 버튼 클릭시 실행될 이벤트값 설정 ************************/
@@ -106,12 +109,12 @@ document.addEventListener("DOMContentLoaded", function () {
   /******** 작은달력 Month 부분 이동버튼 ********/
   prevMonthBtn.addEventListener("click", () => {
     currentDate.setMonth(currentDate.getMonth() - 1);
-    updateCalendar();
+    updateCalendare();
   });
 
   nextMonthBtn.addEventListener("click", () => {
     currentDate.setMonth(currentDate.getMonth() + 1);
-    updateCalendar();
+    updateCalendare();
   });
 
   /******** 작은달력 날짜, 시간 확인버튼 ********/
@@ -278,55 +281,72 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   });
 
+  function convertToStandardFormat(dateTimeString) {
+    const match = dateTimeString.match(
+      /(\d{4})년 (\d{1,2})월 (\d{1,2})일 (\d{1,2}):(\d{2})/
+    );
+  
+    if (!match) {
+      throw new Error('입력 형식이 잘못되었습니다.');
+    }
+  
+    const [_, year, month, day, hour, minute] = match;
+  
+    const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(
+      day
+    ).padStart(2, '0')}`;
+    const formattedTime = `${String(hour).padStart(2, '0')}:${String(
+      minute
+    ).padStart(2, '0')}:00`;
+  
+    return `${formattedDate} ${formattedTime}`;
+  }
+
+
   /************************ 일정 저장하기 ************************/
   const createSchedule = async function () {
-    const scheduleTitle = document.querySelector(".modal-title").value;
-    const startDateText = document.querySelector("#selectedDate").value;
-    const startTimeText = document.querySelector("#selectedTime").value;
-    const endDateText = document.querySelector("#completeDate").value;
-    const endTimeText = document.querySelector("#completeTime").value;
-    const scheduleMemo = document.querySelector(".schedule-memo").value;
-  
-    const startText = (startDateText, startTimeText);
-    const endText = (endDateText, endTimeText);
-  
-    if(isAddingItem) return;
+    const scheduleTitle = document.querySelector('.modal-title').value;
+    const startDateText = document.querySelector('#selectedDate').textContent;
+    const startTimeText = document.querySelector('#selectedTime').textContent;
+    const endDateText = document.querySelector('#completeDate').textContent;
+    const endTimeText = document.querySelector('#completeTime').textContent;
+    const scheduleMemo = document.querySelector('.schedule-memo').value;
+
+    const startText = convertToStandardFormat(
+      `${startDateText} ${startTimeText}`
+    );
+    const endText = convertToStandardFormat(`${endDateText} ${endTimeText}`);
+
+    if (isAddingItem) return;
     isAddingItem = true;
-    try{
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/schedules`, {
-        method : "POST",
-        headers : {"Content-Type" : "application/json"},
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/schedule`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          user_email: 'john.doe@example.com',
           schedule_title: scheduleTitle,
           schedule_description: scheduleMemo,
           schedule_start: startText,
           schedule_end: endText,
           schedule_notification: false,
-          schedule_recurring: true,
+          schedule_recurring: false,
         }),
       });
-      if(!res.ok){
-        throw new error("Failed to delete the schedule");
+      if (!res.ok) {
+        throw new Error('Failed to add new schedule');
       }
-      else{
-        $modalViewCont.innerHTML =  filteredData
-        .map(
-          (schedule) => `
-          <div class="modal-view-box" data-schedule-id="${schedule.schedule_id}">
-            <h3 class="modal-view-title">${schedule.schedule_title}</h3>
-            <div class="modal-view-time">
-              <span class="view-time-start">${formatTime(schedule.schedule_start)}</span>
-              <span class="view-time-separator">~</span>
-              <span class="view-time-end">${formatTime(schedule.schedule_end)}</span>
-            </div>
-            <p class="view-description">${schedule.schedule_description || ""}</p>
-          </div>
-        `
-        )
-        .join("");
-      } // 다른 코드 가져온건데 제대로 동작할지 모르겠어..
-    } catch(error){
-      console.error("일정을 추가할수 없습니다.");
+      function closeModal() {
+        $modalScheduleView.style.display = 'none';
+        $modalScheduleEdit.style.display = 'none';
+      }
+      closeModal();
+      await fetchData();
+      updateCalendar();
+    } catch (error) {
+      console.error('일정 추가 중 오류 발생:', error);
+    } finally {
+      isAddingItem = false;
     }
   };
 
@@ -334,9 +354,10 @@ document.addEventListener("DOMContentLoaded", function () {
   saveBtn.addEventListener("click", () => {
     if (!isAddingItem){
       createSchedule();
-    }
+    };
+    $modalScheduleEdit.style.display = $modalScheduleEdit.style.display == "none" ? "block" : "none";
+    $modalScheduleView.style.display = $modalScheduleView.style.display == "none" ? "block" : "none";
   });
-
   /************************ 작은달력 위치 값 조정 ************************/
 
   selectedDateSpan.addEventListener("click", function() {
@@ -346,7 +367,7 @@ document.addEventListener("DOMContentLoaded", function () {
       selectedDateSpan.getBoundingClientRect().bottom + window.scrollY
     }px`;
     datePicker.style.left = `${selectedDateSpan.getBoundingClientRect().left + window.scrollX}px`;
-    updateCalendar();
+    updateCalendare();
   });
 
   selectedTimeSpan.addEventListener("click", function() {
@@ -354,7 +375,7 @@ document.addEventListener("DOMContentLoaded", function () {
     datePicker.style.display = datePicker.style.display == "none" ? "block" : "none";
     datePicker.style.top = `${selectedTimeSpan.getBoundingClientRect().bottom + window.scrollY}px`;
     datePicker.style.left = `${selectedTimeSpan.getBoundingClientRect().left + window.scrollX}px`;
-    updateCalendar();
+    updateCalendare();
   });
 
   completeDateSpan.addEventListener("click", function() {
@@ -364,7 +385,7 @@ document.addEventListener("DOMContentLoaded", function () {
       completeDateSpan.getBoundingClientRect().bottom + window.scrollY
     }px`;
     datePicker.style.left = `${completeDateSpan.getBoundingClientRect().left + window.scrollX}px`;
-    updateCalendar();
+    updateCalendare();
   });
 
   completeTimeSpan.addEventListener("click", function() {
@@ -372,9 +393,9 @@ document.addEventListener("DOMContentLoaded", function () {
     datePicker.style.display = datePicker.style.display == "none" ? "block" : "none";
     datePicker.style.top = `${completeTimeSpan.getBoundingClientRect().bottom + window.scrollY}px`;
     datePicker.style.left = `${completeTimeSpan.getBoundingClientRect().left + window.scrollX}px`;
-    updateCalendar();
+    updateCalendare();
   });
 
-  updateCalendar();
+  updateCalendare();
 });
 //
