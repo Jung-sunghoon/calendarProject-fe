@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let selectedDate = null;
   let isAddingItem = false;
 
-  function updateCalendare() {
+  function updateSchedule() {
     calendar.innerHTML = "";
     currentMonthSpan.textContent = `${currentDate.getFullYear()}.${String(currentDate.getMonth() + 1).padStart(
       2,
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function selectDate(date) {
     selectedDate = date;
     currentDate = new Date(date);
-    updateCalendare();
+    updateSchedule();
   }
 
   /************************ 버튼 클릭시 실행될 이벤트값 설정 ************************/
@@ -109,12 +109,12 @@ document.addEventListener("DOMContentLoaded", function () {
   /******** 작은달력 Month 부분 이동버튼 ********/
   prevMonthBtn.addEventListener("click", () => {
     currentDate.setMonth(currentDate.getMonth() - 1);
-    updateCalendare();
+    updateSchedule();
   });
 
   nextMonthBtn.addEventListener("click", () => {
     currentDate.setMonth(currentDate.getMonth() + 1);
-    updateCalendare();
+    updateSchedule();
   });
 
   /******** 작은달력 날짜, 시간 확인버튼 ********/
@@ -367,7 +367,7 @@ document.addEventListener("DOMContentLoaded", function () {
       selectedDateSpan.getBoundingClientRect().bottom + window.scrollY
     }px`;
     datePicker.style.left = `${selectedDateSpan.getBoundingClientRect().left + window.scrollX}px`;
-    updateCalendare();
+    updateSchedule();
   });
 
   selectedTimeSpan.addEventListener("click", function() {
@@ -375,7 +375,7 @@ document.addEventListener("DOMContentLoaded", function () {
     datePicker.style.display = datePicker.style.display == "none" ? "block" : "none";
     datePicker.style.top = `${selectedTimeSpan.getBoundingClientRect().bottom + window.scrollY}px`;
     datePicker.style.left = `${selectedTimeSpan.getBoundingClientRect().left + window.scrollX}px`;
-    updateCalendare();
+    updateSchedule();
   });
 
   completeDateSpan.addEventListener("click", function() {
@@ -385,7 +385,7 @@ document.addEventListener("DOMContentLoaded", function () {
       completeDateSpan.getBoundingClientRect().bottom + window.scrollY
     }px`;
     datePicker.style.left = `${completeDateSpan.getBoundingClientRect().left + window.scrollX}px`;
-    updateCalendare();
+    updateSchedule();
   });
 
   completeTimeSpan.addEventListener("click", function() {
@@ -393,9 +393,9 @@ document.addEventListener("DOMContentLoaded", function () {
     datePicker.style.display = datePicker.style.display == "none" ? "block" : "none";
     datePicker.style.top = `${completeTimeSpan.getBoundingClientRect().bottom + window.scrollY}px`;
     datePicker.style.left = `${completeTimeSpan.getBoundingClientRect().left + window.scrollX}px`;
-    updateCalendare();
+    updateSchedule();
   });
 
-  updateCalendare();
+  updateSchedule();
 });
 //
