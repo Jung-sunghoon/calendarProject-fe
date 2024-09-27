@@ -322,8 +322,8 @@ async function addNewItem() {
     await fetchData();
     updateTodaySchedules();
     updateSidebarSchedules();
-    newItem.style.display = "none";
     updateCalendar();
+    newItem.style.display = "none";
   } catch (error) {
     console.error("일정 추가 중 오류 발생:", error);
   } finally {

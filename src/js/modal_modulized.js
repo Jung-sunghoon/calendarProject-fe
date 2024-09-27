@@ -31,7 +31,7 @@ const elements = {
   $modalDeleteCancelBtn: document.querySelector(".delete-cancel-btn"),
 };
 
-// Utility functions
+// func: 시간 포맷 설정
 function formatDateTime(dateTimeString) {
   // 정규 표현식을 사용하여 "HH:MM" 부분을 추출
   const match = dateTimeString.match(/\d{2}:\d{2}/);
@@ -310,9 +310,12 @@ async function updateScheduleData(scheduleId, updatedData) {
 
     const result = await response.json();
     console.log("Update response:", result);
-    closeModal();
+
+
+
     await fetchData();
     updateCalendar();
+    closeModal();
     // location.reload();
   } catch (error) {
     console.error("Error updating schedule data:", error);
