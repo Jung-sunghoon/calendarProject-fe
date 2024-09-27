@@ -148,11 +148,11 @@ function renderCalendarDays(year, month) {
     }
 
     let td = document.createElement("td");
-    let span = document.createElement("span")
+    let span = document.createElement("span");
     span.textContent = date;
-    td.appendChild(span)
+    td.appendChild(span);
     td.classList.add("calendar-day");
-    span.classList.add("calendar-day-date")
+    span.classList.add("calendar-day-date");
 
     // 오늘 날짜 클래스 추가 ==> 후에 css 작업
     if (
@@ -163,13 +163,13 @@ function renderCalendarDays(year, month) {
       td.classList.add("today");
       // td.style.color = "red";
       // today 셀의 숫자에 따로 div 태그, class 추가 했습니다.
-      let todaySpan = document.createElement("span")
-      todaySpan.classList.add("calendar-day-date")
+      let todaySpan = document.createElement("span");
+      todaySpan.classList.add("calendar-day-date");
       let todayIndicator = document.createElement("div");
       todayIndicator.classList.add("today-indicator");
       todayIndicator.textContent = date;
       td.innerHTML = "";
-      todaySpan.appendChild(todayIndicator)
+      todaySpan.appendChild(todayIndicator);
       td.appendChild(todaySpan);
     }
 
@@ -231,10 +231,7 @@ logoElement.addEventListener("click", function (event) {
   yearSelectText.textContent = "년도 선택";
   monthSelectText.textContent = "월 선택";
   updateCalendar();
-
 });
-
-
 
 // 사이드바 js 코드
 const scheduleList = document.querySelector(".sidebar-schedule-list");
@@ -242,9 +239,7 @@ const addButton = document.querySelector(".sidebar-schedule-add");
 const newItem = document.querySelector(".sidebar-new-item");
 const scheduleInput = newItem.querySelector(".sidebar-schedule-input");
 const deleteModal = document.querySelector(".modal-schedule-delete");
-const deleteConfirmBtn = deleteModal.querySelector(
-  ".delete-confirmation-btn"
-);
+const deleteConfirmBtn = deleteModal.querySelector(".delete-confirmation-btn");
 const deleteCancelBtn = deleteModal.querySelector(".delete-cancel-btn");
 const viewModal = document.querySelector(".modal-schedule-view");
 const closeModalBtn = viewModal.querySelector(".view-close-button");
@@ -263,7 +258,6 @@ const formatDateToKST = (dateString) => {
   const kstDate = new Date(date.getTime() + kstOffset * 60000);
   return kstDate.toISOString().slice(0, 19).replace("T", " ");
 };
-
 
 // 오늘 일정 업데이트
 function updateTodaySchedules() {
@@ -376,7 +370,6 @@ async function deleteSchedule(scheduleId) {
     updateTodaySchedules();
     updateSidebarSchedules();
     updateCalendar();
-    
   } catch (error) {
     console.error("Error deleting schedule:", error);
     alert(`서버 통신 실패: ${error.message}`);
@@ -431,8 +424,8 @@ function closeDeleteModal() {
 
 // 삭제 확인 버튼
 deleteConfirmBtn.addEventListener("click", () => {
-  console.log(itemToDelete,'itemToDelete')
-  console.log(scheduleIdToDelete,'scheduleIdToDelete')
+  console.log(itemToDelete, "itemToDelete");
+  console.log(scheduleIdToDelete, "scheduleIdToDelete");
   if (itemToDelete && scheduleIdToDelete) {
     deleteSchedule(scheduleIdToDelete);
   } else {
@@ -597,7 +590,6 @@ async function fetchWeatherData() {
     }
 
     const data = await res.json();
-    console.log(data);
 
     sidebarWeatherText.innerText = translateWeatherDescription(
       data.weather[0].id
