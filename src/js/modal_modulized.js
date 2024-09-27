@@ -159,45 +159,6 @@ function filteredScheduleData(data, date) {
       return true;
     }
 
-    // 반복 일정 처리
-    if (schedule.schedule_recurring && schedule.recurring_pattern) {
-      const pattern = schedule.recurring_pattern;
-      const startsOn = new Date(pattern.starts_on);
-      const endsOn = new Date(pattern.ends_on);
-
-      if (clickedDate >= startsOn && clickedDate <= endsOn) {
-        const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
-        switch (pattern.repeat_type) {
-          case 'daily':
-            return (
-              ((clickedDate - startsOn) / (1000 * 60 * 60 * 24)) %
-                pattern.repeat_interval ===
-              0
-            );
-          case 'weekly':
-            const dayOfWeek = daysOfWeek[clickedDate.getDay()];
-            return pattern.repeat_on.includes(dayOfWeek);
-          case 'monthly':
-            const monthDifference =
-              (clickedDate.getFullYear() - startsOn.getFullYear()) * 12 +
-              clickedDate.getMonth() -
-              startsOn.getMonth();
-            return (
-              monthDifference % pattern.repeat_interval === 0 &&
-              clickedDate.getDate() >= startsOn.getDate() &&
-              clickedDate.getDate() <= endsOn.getDate()
-            );
-          case 'yearly':
-            return (
-              clickedDate.getMonth() === startsOn.getMonth() &&
-              clickedDate.getDate() >= startsOn.getDate() &&
-              clickedDate.getDate() <= endsOn.getDate()
-            );
-          default:
-            return false;
-        }
-      }
-    }
     return false;
   });
 }
