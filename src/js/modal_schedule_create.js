@@ -1,6 +1,11 @@
+// import { updateScheduleData } from './modal_modulized.js';
+import { updateCalendar, fetchData } from './calendar.js';
+
+
 document.addEventListener("DOMContentLoaded", function () {
   /************************ DOM 요소 불러오기 ************************/
   const $modalScheduleEdit = document.querySelector(".modal-schedule-edit");
+  const $modalScheduleView = document.querySelector(".modal-schedule-view");
   const closeBtn = document.getElementById("close-btn");
   const exitBtn = document.getElementById("exit-btn");
   const saveBtn = document.getElementById("save-btn");
@@ -13,7 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const startTimeInput = document.querySelector(".start-time-input");
   const endDateInput = document.querySelector(".end-date-input");
   const endTimeInput = document.querySelector(".end-time-input");
-  const repeatText = document.querySelector(".repeat-text");
   const datePicker = document.getElementById("datePicker");
   const calendar = document.getElementById("calendar");
   const currentMonthSpan = document.getElementById("currentMonth");
@@ -42,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let selectedDate = null;
   let isAddingItem = false;
 
-  function updateCalendar() {
+  function updateSchedule() {
     calendar.innerHTML = "";
     currentMonthSpan.textContent = `${currentDate.getFullYear()}.${String(currentDate.getMonth() + 1).padStart(
       2,
@@ -97,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function selectDate(date) {
     selectedDate = date;
     currentDate = new Date(date);
-    updateCalendar();
+    updateSchedule();
   }
 
   /************************ 버튼 클릭시 실행될 이벤트값 설정 ************************/
@@ -105,12 +109,12 @@ document.addEventListener("DOMContentLoaded", function () {
   /******** 작은달력 Month 부분 이동버튼 ********/
   prevMonthBtn.addEventListener("click", () => {
     currentDate.setMonth(currentDate.getMonth() - 1);
-    updateCalendar();
+    updateSchedule();
   });
 
   nextMonthBtn.addEventListener("click", () => {
     currentDate.setMonth(currentDate.getMonth() + 1);
-    updateCalendar();
+    updateSchedule();
   });
 
   /******** 작은달력 날짜, 시간 확인버튼 ********/
@@ -224,32 +228,16 @@ document.addEventListener("DOMContentLoaded", function () {
   selectedDateSpan.textContent = selectDay;
   const completeDay = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월 ${currentDate.getDate()}일`;
   completeDateSpan.textContent = completeDay;
-  /************************ 오전,오후 분류 ************************/
-  if(currentTime.getHours() > 12){
-  const selectedTime = `오후 ${String(currentTime.getHours() - 12).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`
+  const selectedTime = `${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(
+    2,
+    "0"
+  )}`;
   selectedTimeSpan.textContent = selectedTime;
-  }
-  else if(currentTime.getHours() == 12){
-  const selectedTime = `오후 ${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`
-  selectedTimeSpan.textContent = selectedTime;  
-  }
-  else {
-  const selectedTime = `오전 ${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`
-  selectedTimeSpan.textContent = selectedTime;
-  }  
-  
-  if(currentTime.getHours() > 12){
-  const completeTime = `오후 ${String(currentTime.getHours() - 12).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`
+  const completeTime = `${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(
+    2,
+    "0"
+  )}`;
   completeTimeSpan.textContent = completeTime;
-  }
-  else if(currentTime.getHours() == 12){
-  const completeTime = `오후 ${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`
-  completeTimeSpan.textContent = completeTime;  
-  }
-  else {
-  const completeTime = `오전 ${String(currentTime.getHours()).padStart(2, "0")}:${String(currentTime.getMinutes()).padStart(2, "0")}`
-  completeTimeSpan.textContent = completeTime;
-  }
   };
   timeState();
 
@@ -282,54 +270,6 @@ document.addEventListener("DOMContentLoaded", function () {
     isEnding.style.display = "block";
   });
 
-  /******** 반복일정 횟수 및 주기 설정버튼 ********/
-  repeatText.addEventListener("click", () => {
-    const repeatList = document.querySelector(".repeat-list");
-    const repeatNum = document.getElementById("repeat-num");
-    const noRepeat = document.querySelector(".no-repeat");
-    const dayRepeat = document.querySelector(".day-repeat");
-    const weakRepeat = document.querySelector(".weak-repeat");
-    const monthRepeat = document.querySelector(".month-repeat");
-    const yearRepeat = document.querySelector(".year-repeat");
-
-    noRepeat.addEventListener("click", () => {
-      repeatNum.disabled = true;
-      repeatNum.style.color = "#ccc";
-      repeatText.innerText = noRepeat.textContent;
-      console.log(repeatText.textContent);
-      repeatList.style.display = "block" ? "none" : "block";
-    });
-    dayRepeat.addEventListener("click", () => {
-      repeatNum.disabled = false;
-      repeatNum.style.color = "#000";
-      repeatText.innerText = dayRepeat.textContent;
-      console.log(repeatText.textContent);
-      repeatList.style.display = "block" ? "none" : "block";
-    });
-    weakRepeat.addEventListener("click", () => {
-      repeatNum.disabled = false;
-      repeatNum.style.color = "#000";
-      repeatText.innerText = weakRepeat.textContent;
-      console.log(repeatText.textContent);
-      repeatList.style.display = "block" ? "none" : "block";
-    });
-    monthRepeat.addEventListener("click", () => {
-      repeatNum.disabled = false;
-      repeatNum.style.color = "#000";
-      repeatText.innerText = monthRepeat.textContent;
-      console.log(repeatText.textContent);
-      repeatList.style.display = "block" ? "none" : "block";
-    });
-    yearRepeat.addEventListener("click", () => {
-      repeatNum.disabled = false;
-      repeatNum.style.color = "#000";
-      repeatText.innerText = yearRepeat.textContent;
-      console.log(repeatText.textContent);
-      repeatList.style.display = "block" ? "none" : "block";
-    });
-    repeatList.style.display = repeatList.style.display == "none" ? "block" : "none";
-  });
-
   /******** 일정 모달을 벗어난 다른 곳 클릭시 ********/
   window.addEventListener("click", function (event) {
     const closeModal = () => {
@@ -338,73 +278,75 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     if (event.target === $modalScheduleEdit || event.target === datePicker) {
       closeModal();
-    }
-    const repeatValue = (input, length, minValue, maxValue) => {
-      input.value = input.value.padStart(length, "0");
-      if (input.value.length > length) {
-        input.value = input.value.slice(0, length);
-      } else if (input.value < minValue) {
-        input.value = minValue;
-      } else if (input.value > maxValue) {
-        input.value = maxValue;
-      }
-      return input.value;
     };
-    const repeat = repeatValue(document.getElementById("repeat-num"), 3, 0, 998);
   });
+
+  function convertToStandardFormat(dateTimeString) {
+    const match = dateTimeString.match(
+      /(\d{4})년 (\d{1,2})월 (\d{1,2})일 (\d{1,2}):(\d{2})/
+    );
+  
+    if (!match) {
+      throw new Error('입력 형식이 잘못되었습니다.');
+    }
+  
+    const [_, year, month, day, hour, minute] = match;
+  
+    const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(
+      day
+    ).padStart(2, '0')}`;
+    const formattedTime = `${String(hour).padStart(2, '0')}:${String(
+      minute
+    ).padStart(2, '0')}:00`;
+  
+    return `${formattedDate} ${formattedTime}`;
+  }
+
 
   /************************ 일정 저장하기 ************************/
   const createSchedule = async function () {
-    const scheduleTitle = document.querySelector(".modal-title").value;
-    const startDateText = document.querySelector("#selectedDate").value;
-    const startTimeText = document.querySelector("#selectedTime").value;
-    const endDateText = document.querySelector("#completeDate").value;
-    const endTimeText = document.querySelector("#completeTime").value;
-  //  const repeatText = document.querySelector(".repeat-text").value;
-  //  const repeatNum = document.querySelector("#repeat-num").value;
-    const scheduleMemo = document.querySelector(".schedule-memo").value;
-  
-    const startText = (startDateText, startTimeText);
-    const endText = (endDateText, endTimeText);
-  //  const repeat = (repeatText, repeatNum);
-  
-    if(isAddingItem) return;
+    const scheduleTitle = document.querySelector('.modal-title').value;
+    const startDateText = document.querySelector('#selectedDate').textContent;
+    const startTimeText = document.querySelector('#selectedTime').textContent;
+    const endDateText = document.querySelector('#completeDate').textContent;
+    const endTimeText = document.querySelector('#completeTime').textContent;
+    const scheduleMemo = document.querySelector('.schedule-memo').value;
+
+    const startText = convertToStandardFormat(
+      `${startDateText} ${startTimeText}`
+    );
+    const endText = convertToStandardFormat(`${endDateText} ${endTimeText}`);
+
+    if (isAddingItem) return;
     isAddingItem = true;
-    try{
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/schedules`, {
-        method : "POST",
-        headers : {"Content-Type" : "application/json"},
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/schedule`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          user_email: 'john.doe@example.com',
           schedule_title: scheduleTitle,
           schedule_description: scheduleMemo,
           schedule_start: startText,
           schedule_end: endText,
           schedule_notification: false,
-          schedule_recurring: true,
+          schedule_recurring: false,
         }),
       });
-      if(!res.ok){
-        throw new error("Failed to delete the schedule");
+      if (!res.ok) {
+        throw new Error('Failed to add new schedule');
       }
-      else{
-        $modalViewCont.innerHTML =  filteredData
-        .map(
-          (schedule) => `
-          <div class="modal-view-box" data-schedule-id="${schedule.schedule_id}">
-            <h3 class="modal-view-title">${schedule.schedule_title}</h3>
-            <div class="modal-view-time">
-              <span class="view-time-start">${formatTime(schedule.schedule_start)}</span>
-              <span class="view-time-separator">~</span>
-              <span class="view-time-end">${formatTime(schedule.schedule_end)}</span>
-            </div>
-            <p class="view-description">${schedule.schedule_description || ""}</p>
-          </div>
-        `
-        )
-        .join("");
-      } // 다른 코드 가져온건데 제대로 동작할지 모르겠어..
-    } catch(error){
-      console.error("일정을 추가할수 없습니다.");
+      function closeModal() {
+        $modalScheduleView.style.display = 'none';
+        $modalScheduleEdit.style.display = 'none';
+      }
+      closeModal();
+      await fetchData();
+      updateCalendar();
+    } catch (error) {
+      console.error('일정 추가 중 오류 발생:', error);
+    } finally {
+      isAddingItem = false;
     }
   };
 
@@ -412,9 +354,10 @@ document.addEventListener("DOMContentLoaded", function () {
   saveBtn.addEventListener("click", () => {
     if (!isAddingItem){
       createSchedule();
-    }
+    };
+    $modalScheduleEdit.style.display = $modalScheduleEdit.style.display == "none" ? "block" : "none";
+    $modalScheduleView.style.display = $modalScheduleView.style.display == "none" ? "block" : "none";
   });
-
   /************************ 작은달력 위치 값 조정 ************************/
 
   selectedDateSpan.addEventListener("click", function() {
@@ -424,7 +367,7 @@ document.addEventListener("DOMContentLoaded", function () {
       selectedDateSpan.getBoundingClientRect().bottom + window.scrollY
     }px`;
     datePicker.style.left = `${selectedDateSpan.getBoundingClientRect().left + window.scrollX}px`;
-    updateCalendar();
+    updateSchedule();
   });
 
   selectedTimeSpan.addEventListener("click", function() {
@@ -432,7 +375,7 @@ document.addEventListener("DOMContentLoaded", function () {
     datePicker.style.display = datePicker.style.display == "none" ? "block" : "none";
     datePicker.style.top = `${selectedTimeSpan.getBoundingClientRect().bottom + window.scrollY}px`;
     datePicker.style.left = `${selectedTimeSpan.getBoundingClientRect().left + window.scrollX}px`;
-    updateCalendar();
+    updateSchedule();
   });
 
   completeDateSpan.addEventListener("click", function() {
@@ -442,7 +385,7 @@ document.addEventListener("DOMContentLoaded", function () {
       completeDateSpan.getBoundingClientRect().bottom + window.scrollY
     }px`;
     datePicker.style.left = `${completeDateSpan.getBoundingClientRect().left + window.scrollX}px`;
-    updateCalendar();
+    updateSchedule();
   });
 
   completeTimeSpan.addEventListener("click", function() {
@@ -450,9 +393,9 @@ document.addEventListener("DOMContentLoaded", function () {
     datePicker.style.display = datePicker.style.display == "none" ? "block" : "none";
     datePicker.style.top = `${completeTimeSpan.getBoundingClientRect().bottom + window.scrollY}px`;
     datePicker.style.left = `${completeTimeSpan.getBoundingClientRect().left + window.scrollX}px`;
-    updateCalendar();
+    updateSchedule();
   });
 
-  updateCalendar();
+  updateSchedule();
 });
 //
