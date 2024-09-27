@@ -37,17 +37,13 @@ function formatDateTime(dateTimeString) {
 }
 // Calendar interaction functions
 function handleCalendarDayClick(event) {
-  const clickedDay = findClickedDay(event.target);
+  const clickedDay = event.target.closest('td.calendar-day, td.prev-month, td.next-month');
+  console.log('clickedDay: ', clickedDay);
   if (clickedDay) {
     const date = extractDateFromClickedDay(clickedDay);
     showScheduleModal(date);
   }
 }
-
-function findClickedDay(element) {
-  return element.closest('td.calendar-day, td.prev-month, td.next-month');
-}
-
 function extractDateFromClickedDay(clickedDay) {
   let currentYear = parseInt(elements.calendarYearElement.textContent);
   let currentMonth = parseInt(elements.calendarMonthElement.textContent) - 1;
@@ -71,6 +67,8 @@ function extractDateFromClickedDay(clickedDay) {
 
   return new Date(currentYear, currentMonth, clickedDate);
 }
+
+console.log('extractDateFromClickedDay: ', extractDateFromClickedDay);
 
 // Modal management functions
 function showScheduleModal(date) {
