@@ -17,7 +17,7 @@ async function fetchData() {
     schedules = await res.json();
     updateCalendar();
 
-    // 데이터 출력
+    // 데이터 출력rm
     console.log(schedules, "캘린더js에서 호출");
   } catch (error) {
     // 오류 처리
@@ -104,6 +104,7 @@ function initializeSelectBox() {
   updateCalendar();
 }
 
+// func: 캘린더 ui랜더링 (기능 볼려구여... 나중에 지우겠읍니다(성재))
 function renderCalendarDays(year, month) {
   calendarCont.innerHTML = "";
 
