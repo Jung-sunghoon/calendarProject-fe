@@ -148,8 +148,11 @@ function renderCalendarDays(year, month) {
     }
 
     let td = document.createElement("td");
-    td.textContent = date;
+    let span = document.createElement("span")
+    span.textContent = date;
+    td.appendChild(span)
     td.classList.add("calendar-day");
+    span.classList.add("calendar-day-date")
 
     // 오늘 날짜 클래스 추가 ==> 후에 css 작업
     if (
@@ -160,11 +163,14 @@ function renderCalendarDays(year, month) {
       td.classList.add("today");
       // td.style.color = "red";
       // today 셀의 숫자에 따로 div 태그, class 추가 했습니다.
+      let todaySpan = document.createElement("span")
+      todaySpan.classList.add("calendar-day-date")
       let todayIndicator = document.createElement("div");
       todayIndicator.classList.add("today-indicator");
       todayIndicator.textContent = date;
       td.innerHTML = "";
-      td.appendChild(todayIndicator);
+      todaySpan.appendChild(todayIndicator)
+      td.appendChild(todaySpan);
     }
 
     const scheduleForDate = schedules.filter((schedule) => {
@@ -182,59 +188,6 @@ function renderCalendarDays(year, month) {
       ) {
         return true;
       }
-
-      // 반복 일정 처리
-      if (schedule.schedule_recurring && schedule.recurring_pattern) {
-        const pattern = schedule.recurring_pattern;
-        const startsOn = new Date(pattern.starts_on);
-        const endsOn = new Date(pattern.ends_on);
-
-        if (
-          new Date(year, month - 1, date) >= startsOn &&
-          new Date(year, month - 1, date) <= endsOn
-        ) {
-          switch (pattern.repeat_type) {
-            case "daily":
-              return (
-                ((new Date(year, month - 1, date) - startsOn) /
-                  (1000 * 60 * 60 * 24)) %
-                  pattern.repeat_interval ===
-                0
-              );
-
-            case "weekly":
-              const dayOfWeek = daysOfWeek.indexOf(
-                daysOfWeek[new Date(year, month - 1, date).getDay()]
-              );
-              return pattern.repeat_on.includes(daysOfWeek[dayOfWeek]);
-
-            case "monthly":
-              const currentDate = new Date(year, month - 1, date);
-              const monthDifference =
-                (currentDate.getFullYear() - startsOn.getFullYear()) * 12 +
-                currentDate.getMonth() -
-                startsOn.getMonth();
-
-              const isWithinRecurringRange =
-                monthDifference % pattern.repeat_interval === 0 &&
-                date >= startsOn.getDate() &&
-                date <= endsOn.getDate();
-
-              return isWithinRecurringRange;
-
-            case "yearly":
-              return (
-                month === startsOn.getMonth() + 1 &&
-                date >= startsOn.getDate() &&
-                date <= endsOn.getDate()
-              );
-
-            default:
-              return false;
-          }
-        }
-      }
-      return false;
     });
 
     // 스케줄 바 추가
@@ -283,7 +236,7 @@ logoElement.addEventListener("click", function (event) {
 
 
 
-
+// 사이드바 js 코드
 const scheduleList = document.querySelector(".sidebar-schedule-list");
 const addButton = document.querySelector(".sidebar-schedule-add");
 const newItem = document.querySelector(".sidebar-new-item");
@@ -303,6 +256,13 @@ let itemToDelete = null;
 let scheduleIdToDelete = null;
 let isAddingItem = false;
 let todaySchedules = [];
+
+const formatDateToKST = (dateString) => {
+  const date = new Date(dateString);
+  const kstOffset = 9 * 60;
+  const kstDate = new Date(date.getTime() + kstOffset * 60000);
+  return kstDate.toISOString().slice(0, 19).replace("T", " ");
+};
 
 
 // 오늘 일정 업데이트
@@ -352,8 +312,8 @@ async function addNewItem() {
         user_email: "john.doe@example.com", // 나중에 알맞은 이메일 받아와야함
         schedule_title: scheduleInput.value,
         schedule_description: "",
-        schedule_start: new Date(),
-        schedule_end: new Date(),
+        schedule_start: formatDateToKST(new Date()),
+        schedule_end: formatDateToKST(new Date()),
         schedule_notification: false,
         schedule_recurring: false,
       }),
@@ -471,6 +431,8 @@ function closeDeleteModal() {
 
 // 삭제 확인 버튼
 deleteConfirmBtn.addEventListener("click", () => {
+  console.log(itemToDelete,'itemToDelete')
+  console.log(scheduleIdToDelete,'scheduleIdToDelete')
   if (itemToDelete && scheduleIdToDelete) {
     deleteSchedule(scheduleIdToDelete);
   } else {

@@ -1,6 +1,13 @@
 // modal_schedule.js
 import { updateCalendar, fetchData, currentDate } from './calendar.js';
 
+const formatDateToKST = (dateString) => {
+  const date = new Date(dateString);
+  const kstOffset = 9 * 60;
+  const kstDate = new Date(date.getTime() + kstOffset * 60000);
+  return kstDate.toISOString().slice(0, 19).replace("T", " ");
+};
+
 // State management
 const state = {
   scheduleData: [],
@@ -38,6 +45,7 @@ function formatDateTime(dateTimeString) {
 // Calendar interaction functions
 function handleCalendarDayClick(event) {
   const clickedDay = findClickedDay(event.target);
+  console.log(clickedDay,'clickedDay111')
   if (clickedDay) {
     const date = extractDateFromClickedDay(clickedDay);
     showScheduleModal(date);
@@ -45,13 +53,24 @@ function handleCalendarDayClick(event) {
 }
 
 function findClickedDay(element) {
-  return element.closest('td.calendar-day, td.prev-month, td.next-month');
+  // 가장 가까운 td.calendar-day 요소를 찾고, 그 안에서 calendar-day-date 클래스를 가진 span을 선택합니다.
+  const clickedDayElement = element.closest('td.calendar-day, td.prev-month, td.next-month');
+  console.log(clickedDayElement,'clickedDayElement')
+  return clickedDayElement ? clickedDayElement : null;
 }
 
 function extractDateFromClickedDay(clickedDay) {
   let currentYear = parseInt(elements.calendarYearElement.textContent);
   let currentMonth = parseInt(elements.calendarMonthElement.textContent) - 1;
-  let clickedDate = parseInt(clickedDay.textContent);
+  let clickedDate;
+
+  // clickedDay가 calendar-day-date span을 포함하고 있는지 확인
+  const dateSpan = clickedDay.querySelector('.calendar-day-date');
+  if (dateSpan) {
+    clickedDate = parseInt(dateSpan.textContent, 10); // string에서 number로 변환
+  } else {
+    clickedDate = parseInt(clickedDay.textContent, 10);
+  }
 
   if (clickedDay.classList.contains('prev-month')) {
     if (currentMonth === 0) {
