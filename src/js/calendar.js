@@ -1,4 +1,4 @@
-import { filteredScheduleData } from "./modal_modulized";
+import { filteredScheduleData, showScheduleModal } from "./modal_modulized";
 
 // 전체 스케줄 가져오기
 let schedules = [];
@@ -443,78 +443,11 @@ deleteCancelBtn.addEventListener("click", closeDeleteModal);
 async function openViewModal() {
   try {
     const today = new Date();
-    updateModalContent(today);
-    viewModal.style.display = "block";
+    await showScheduleModal(today);
   } catch (error) {
     console.error("Error fetching schedule details:", error);
     alert(`일정 정보를 가져오는데 실패했습니다: ${error.message}`);
   }
-}
-
-// 모달 내용 업데이트
-function updateModalContent(date) {
-  updateElement(".view-year", date.getFullYear());
-  updateElement(".view-month", String(date.getMonth() + 1).padStart(2, "0"));
-  updateElement(".view-day", String(date.getDate()).padStart(2, "0"));
-
-  const modalViewCont = viewModal.querySelector(".modal-view-content");
-  modalViewCont.innerHTML = "";
-
-  if (todaySchedules.length === 0) {
-    modalViewCont.innerHTML = "<p>오늘은 일정이 없습니다.</p>";
-  } else {
-    todaySchedules.forEach((schedule) => {
-      const articleHtml = `
-        <article class="modal-view-box">
-          <h3 class="modal-view-title">
-            ${schedule.schedule_title}
-          </h3>
-          <div class="modal-view-time">
-            <span class="view-time-start">
-              ${formatDateTime(schedule.schedule_start)}
-            </span>
-            <span class="view-time-separator">~</span>
-            <span class="view-time-end">
-              ${formatDateTime(schedule.schedule_end)}
-            </span>
-          </div>
-          <p class="view-description">
-            ${schedule.schedule_description || ""}
-          </p>
-        </article>
-      `;
-      modalViewCont.innerHTML += articleHtml;
-    });
-  }
-}
-
-// 조회 모달 닫기 버튼
-closeModalBtn?.addEventListener("click", () => {
-  viewModal.style.display = "none";
-});
-
-// ******* 유틸리티 *******
-// 요소 내용 업데이트
-function updateElement(selector, content) {
-  const element = viewModal.querySelector(selector);
-  if (element) {
-    element.textContent = content;
-  }
-}
-
-// 날짜 형식화
-function formatDateTime(dateString) {
-  const date = new Date(dateString);
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  const hour = String(date.getHours()).padStart(2, "0");
-  const minute = String(date.getMinutes()).padStart(2, "0");
-  return `${month}월 ${day}일 ${hour}:${minute}`;
-}
-
-// 같은 날짜인지 확인
-function isSameDay(date1, date2) {
-  return date1.toDateString() === date2.toDateString();
 }
 
 // ******* 날씨 정보 가져오기 *******
