@@ -1,7 +1,35 @@
 import { filteredScheduleData, showScheduleModal } from "./modal_modulized";
 
+class EventEmitter {
+  constructor() {
+    this.events = {};
+  }
+
+  on(eventName, callback) {
+    if (!this.events[eventName]) {
+      this.events[eventName] = [];
+    }
+    this.events[eventName].push(callback);
+  }
+
+  emit(eventName, data) {
+    const event = this.events[eventName];
+    if (event) {
+      event.forEach(callback => callback(data));
+    }
+  }
+}
+
+export const eventEmitter = new EventEmitter();
+export const SCHEDULE_UPDATED = 'scheduleUpdated';
+
 // 전체 스케줄 가져오기
 let schedules = [];
+let updateSidebarFunction = null;
+
+export function setUpdateSidebarFunction(func) {
+  updateSidebarFunction = func;
+}
 
 async function fetchData() {
   try {
@@ -19,6 +47,9 @@ async function fetchData() {
 
     // 데이터 출력
     console.log(schedules, "캘린더js에서 호출");
+    if (updateSidebarFunction) {
+      updateSidebarFunction(schedules);
+    }
   } catch (error) {
     // 오류 처리
     console.error("Fetch error:", error);
@@ -26,6 +57,7 @@ async function fetchData() {
 }
 
 let currentDate = new Date();
+
 
 const logoElement = document.querySelector(".sidebar-logo a");
 const calendarMonthElement = document.querySelector(".calendar-month");
@@ -323,6 +355,9 @@ async function addNewItem() {
     updateSidebarSchedules();
     newItem.style.display = "none";
     updateCalendar();
+    if (updateSidebarFunction) {
+      updateSidebarFunction(schedules);
+    }
   } catch (error) {
     console.error("일정 추가 중 오류 발생:", error);
   } finally {
@@ -370,6 +405,8 @@ async function deleteSchedule(scheduleId) {
     updateTodaySchedules();
     updateSidebarSchedules();
     updateCalendar();
+    if (updateSidebarFunction) {
+      updateSidebarFunction(schedules);}
   } catch (error) {
     console.error("Error deleting schedule:", error);
     alert(`서버 통신 실패: ${error.message}`);
