@@ -74,6 +74,14 @@ main .sidebar {
   padding: 38px 20px;
   background-color: #fff;
   border-radius: 1.2em;
+  overflow: scroll;
+  overflow: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE, Edge */
+}
+.sidebar-schedule::-webkit-scrollbar {
+width: 0;
+color: transparent;
 }
 .sidebar-schedule .sidebar-today {
   height: 34px;
@@ -424,6 +432,8 @@ main .calendar {
   gap: 23px;
   overflow-y: scroll;
   overflow: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE, Edge */
 }
 .modal-view-content::-webkit-scrollbar {
   width: 0;

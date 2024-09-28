@@ -1,35 +1,7 @@
 import { filteredScheduleData, showScheduleModal } from "./modal_modulized";
 
-class EventEmitter {
-  constructor() {
-    this.events = {};
-  }
-
-  on(eventName, callback) {
-    if (!this.events[eventName]) {
-      this.events[eventName] = [];
-    }
-    this.events[eventName].push(callback);
-  }
-
-  emit(eventName, data) {
-    const event = this.events[eventName];
-    if (event) {
-      event.forEach(callback => callback(data));
-    }
-  }
-}
-
-export const eventEmitter = new EventEmitter();
-export const SCHEDULE_UPDATED = 'scheduleUpdated';
-
 // 전체 스케줄 가져오기
 let schedules = [];
-let updateSidebarFunction = null;
-
-export function setUpdateSidebarFunction(func) {
-  updateSidebarFunction = func;
-}
 
 async function fetchData() {
   try {
@@ -45,11 +17,8 @@ async function fetchData() {
     schedules = await res.json();
     updateCalendar();
 
-    // 데이터 출력rm
+    // 데이터 출력
     console.log(schedules, "캘린더js에서 호출");
-    if (updateSidebarFunction) {
-      updateSidebarFunction(schedules);
-    }
   } catch (error) {
     // 오류 처리
     console.error("Fetch error:", error);
@@ -57,7 +26,6 @@ async function fetchData() {
 }
 
 let currentDate = new Date();
-
 
 const logoElement = document.querySelector(".sidebar-logo a");
 const calendarMonthElement = document.querySelector(".calendar-month");
@@ -136,7 +104,6 @@ function initializeSelectBox() {
   updateCalendar();
 }
 
-// func: 캘린더 ui랜더링 (기능 볼려구여... 나중에 지우겠읍니다(성재))
 function renderCalendarDays(year, month) {
   calendarCont.innerHTML = "";
 
@@ -274,8 +241,6 @@ const scheduleInput = newItem.querySelector(".sidebar-schedule-input");
 const deleteModal = document.querySelector(".modal-schedule-delete");
 const deleteConfirmBtn = deleteModal.querySelector(".delete-confirmation-btn");
 const deleteCancelBtn = deleteModal.querySelector(".delete-cancel-btn");
-const viewModal = document.querySelector(".modal-schedule-view");
-const closeModalBtn = viewModal.querySelector(".view-close-button");
 const sidebarWeatherText = document.querySelector(".sidebar-weather-text");
 const sidebarWeatherTemp = document.querySelector(".sidebar-weather-temp");
 const sidebarWeatherIcon = document.querySelector(".sidebar-weather-icon");
@@ -354,14 +319,8 @@ async function addNewItem() {
     await fetchData();
     updateTodaySchedules();
     updateSidebarSchedules();
-    updateCalendar();
-<<<<<<< HEAD
-    if (updateSidebarFunction) {
-      updateSidebarFunction(schedules);
-    }
-=======
     newItem.style.display = "none";
->>>>>>> 61a5c7e56f2d3a7790c1a5c03272952f61bd4793
+    updateCalendar();
   } catch (error) {
     console.error("일정 추가 중 오류 발생:", error);
   } finally {
@@ -409,8 +368,6 @@ async function deleteSchedule(scheduleId) {
     updateTodaySchedules();
     updateSidebarSchedules();
     updateCalendar();
-    if (updateSidebarFunction) {
-      updateSidebarFunction(schedules);}
   } catch (error) {
     console.error("Error deleting schedule:", error);
     alert(`서버 통신 실패: ${error.message}`);
