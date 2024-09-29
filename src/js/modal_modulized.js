@@ -1,5 +1,5 @@
 // modal_schedule.js
-import { updateCalendar, fetchData, currentDate } from './calendar.js';
+import { updateCalendar, fetchData, currentDate, updateTodaySchedules, updateSidebarSchedules } from './calendar.js';
 
 // State management
 const state = {
@@ -306,6 +306,9 @@ async function updateScheduleData(scheduleId, updatedData) {
     await fetchData();
     updateCalendar();
 
+    updateTodaySchedules();
+    updateSidebarSchedules();
+
     // location.reload();
   } catch (error) {
     console.error('Error updating schedule data:', error);
@@ -336,6 +339,8 @@ async function deleteSchedule() {
     elements.deleteModal.style.display = 'none';
     await fetchData();
     updateCalendar();
+    updateTodaySchedules();
+    updateSidebarSchedules();
   } catch (error) {
     console.error('에러:', error);
   }

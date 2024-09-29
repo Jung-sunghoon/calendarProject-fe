@@ -1,5 +1,5 @@
 // import { updateScheduleData } from './modal_modulized.js';
-import { updateCalendar, fetchData } from './calendar.js';
+import { updateCalendar, fetchData, updateTodaySchedules, updateSidebarSchedules } from './calendar.js';
 import { updateScheduleData } from './modal_modulized.js'; // 수정 함수 가져오기
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -372,6 +372,8 @@ document.addEventListener('DOMContentLoaded', function () {
       closeModal();
       await fetchData();
       updateCalendar();
+      updateTodaySchedules();
+      updateSidebarSchedules();
     } catch (error) {
       console.error('일정 추가 중 오류 발생:', error);
     } finally {
