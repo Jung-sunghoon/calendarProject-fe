@@ -360,8 +360,6 @@ document.addEventListener('DOMContentLoaded', function () {
           schedule_description: scheduleMemo,
           schedule_start: startText,
           schedule_end: endText,
-          schedule_notification: false,
-          schedule_recurring: false,
         }),
       });
       if (!res.ok) {
