@@ -376,7 +376,7 @@ function handleModalViewClick(event) {
 }
 
 function handleSaveButtonClick() {
-  if (state.selectedScheduleId) {
+  if (elements.$saveBtn.textContent === '수정') {
     const updatedData = getEditModalData();
     const startDate = new Date(updatedData.schedule_start);
     const endDate = new Date(updatedData.schedule_end);
