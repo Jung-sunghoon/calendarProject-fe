@@ -1,7 +1,12 @@
-// modal_schedule.js
-import { updateCalendar, fetchData, currentDate, updateTodaySchedules, updateSidebarSchedules } from './calendar.js';
+import {
+  updateCalendar,
+  fetchData,
+  currentDate,
+  updateTodaySchedules,
+  updateSidebarSchedules,
+} from './calendar.js';
 
-// State management
+// 전역으로 데이터 관리
 const state = {
   scheduleData: [],
   originalSchedule: null,
@@ -9,7 +14,7 @@ const state = {
   selectedDate: null,
 };
 
-// DOM Elements
+// 돔 요소
 const elements = {
   $modalScheduleView: document.querySelector('.modal-schedule-view'),
   $modalScheduleEdit: document.querySelector('.modal-schedule-edit'),
@@ -18,14 +23,13 @@ const elements = {
   calendarMonthElement: document.querySelector('.calendar-month'),
   calendarYearElement: document.querySelector('.calendar-year'),
   $saveBtn: document.querySelector('#save-btn'),
-  // 세이브 버튼 아이디 확인하기
   $clearBtn: document.querySelector('#clear-btn'),
   deleteModal: document.querySelector('.modal-schedule-delete'),
   $modalDeleteConfirmBtn: document.querySelector('.delete-confirmation-btn'),
   $modalDeleteCancelBtn: document.querySelector('.delete-cancel-btn'),
 };
 
-// func: 시간 포맷 설정
+// 시간 포맷 설정
 function formatDateTime(dateTimeString) {
   // 정규 표현식을 사용하여 "HH:MM" 부분을 추출
   const match = dateTimeString.match(/\d{2}:\d{2}/);
@@ -36,7 +40,8 @@ function formatDateTime(dateTimeString) {
 
   return match[0]; // "HH:MM" 형태의 시간 반환
 }
-// Calendar interaction functions
+
+// 클릭된 날짜 모달 띄우는 함수
 function handleCalendarDayClick(event) {
   const clickedDay = findClickedDay(event.target);
   if (clickedDay) {
@@ -108,7 +113,7 @@ function closeModal() {
   elements.$modalScheduleEdit.style.display = 'none';
 }
 
-// Schedule data management functions
+// 스케쥴 데이터 관리
 async function fetchScheduleData(date) {
   const $modalViewCont = elements.$modalScheduleView.querySelector(
     '.modal-view-content'
@@ -199,7 +204,7 @@ function renderScheduleContent(filteredData) {
     .join('');
 }
 
-// Schedule editing functions
+// 일정 수정 모달 데이터 설정
 function populateEditModal(schedule) {
   const startDate = new Date(schedule.schedule_start);
   const endDate = new Date(schedule.schedule_end);
@@ -207,7 +212,6 @@ function populateEditModal(schedule) {
   document.querySelector('.modal-edit-container .modal-title').value =
     schedule.schedule_title;
 
-  // 날짜 및 시간 설정
   document.querySelector(
     '#selectedDate'
   ).textContent = `${startDate.getFullYear()}년 ${
@@ -251,7 +255,7 @@ function convertToStandardFormat(dateTimeString) {
 
   return `${formattedDate} ${formattedTime}`;
 }
-
+// 일정 수정 시 데이터 설정
 function getEditModalData() {
   const title = document.querySelector(
     '.modal-edit-container .modal-title'
@@ -267,20 +271,14 @@ function getEditModalData() {
   const startDate = convertToStandardFormat(`${startDateText} ${startTime}`);
   const endDate = convertToStandardFormat(`${endDateText} ${endTime}`);
 
-  console.log(`startTime === ${startTime}`);
-  console.log(`endTime === ${endTime}`);
-  console.log(`startDate === ${startDate}`);
-  console.log(`endDate === ${endDate}`);
   return {
     schedule_title: title,
     schedule_start: startDate,
     schedule_end: endDate,
     schedule_description: description,
-    schedule_notification: true,
-    schedule_recurring: true,
   };
 }
-
+// 일정 수정 요청
 async function updateScheduleData(scheduleId, updatedData) {
   try {
     const updatedScheduleData = { ...state.originalSchedule, ...updatedData };
@@ -308,8 +306,6 @@ async function updateScheduleData(scheduleId, updatedData) {
 
     updateTodaySchedules();
     updateSidebarSchedules();
-
-    // location.reload();
   } catch (error) {
     console.error('Error updating schedule data:', error);
     alert(`오류 발생: ${error.message}`);
@@ -345,21 +341,23 @@ async function deleteSchedule() {
     console.error('에러:', error);
   }
 }
+
+// 추가 버튼 클릭으로 나온 일정 생성 모달 날짜 데이터 변환
 function formatAddBtnDate(dateString) {
   const date = new Date(dateString);
 
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더함
+  const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
 
   return `${year}년 ${month}월 ${day}일`;
 }
-// 이벤트 헨들러
+
+// 추가 버튼 클릭 시 나오는 일정 생성 모달 설정
 function handleAddButtonClick() {
-  console.log(state.selectedDate);
   elements.$modalScheduleEdit.style.display = 'block';
   elements.$clearBtn.style.display = 'none';
-  elements.$saveBtn.textContent = '저장'; // 추가 버튼 클릭 시 "저장"으로 변경
+  elements.$saveBtn.textContent = '저장';
   document.querySelector('.modal-edit-container .modal-title').value = '';
   document.querySelector('.textarea-container textarea').value = '';
   document.querySelector('#selectedDate').textContent = formatAddBtnDate(
@@ -372,6 +370,7 @@ function handleAddButtonClick() {
   document.querySelector('#completeTime').textContent = '00:00';
 }
 
+// 이벤트에 따라 모달 내용 수정
 function handleModalViewClick(event) {
   if (event.target === elements.$addBtn) {
     handleAddButtonClick();
@@ -397,6 +396,7 @@ function handleModalViewClick(event) {
   }
 }
 
+// 저장 버튼 데이터 설정 및 날짜 비교
 function handleSaveButtonClick() {
   if (elements.$saveBtn.textContent === '수정') {
     const updatedData = getEditModalData();

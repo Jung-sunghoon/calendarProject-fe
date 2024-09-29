@@ -1,6 +1,9 @@
-// import { updateScheduleData } from './modal_modulized.js';
-import { updateCalendar, fetchData, updateTodaySchedules, updateSidebarSchedules } from './calendar.js';
-import { updateScheduleData } from './modal_modulized.js'; // 수정 함수 가져오기
+import {
+  updateCalendar,
+  fetchData,
+  updateTodaySchedules,
+  updateSidebarSchedules,
+} from './calendar.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   /************************ DOM 요소 불러오기 ************************/
@@ -25,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const nextMonthBtn = document.getElementById('nextMonth');
   const startConfirmBtn = document.getElementById('start-confirm');
   const endConfirmBtn = document.getElementById('end-confirm');
-  const addBtn = document.querySelector('.view-add-btn'); // 추가 버튼
 
   /************************ 모달창 닫힘 기능 구현 ************************/
 
@@ -380,22 +382,20 @@ document.addEventListener('DOMContentLoaded', function () {
       isAddingItem = false;
     }
   };
-  // 저장 버튼 클릭시 데이터 적용
+  // 저장 버튼 클릭 시 생성 요청
   saveBtn.addEventListener('click', () => {
     const saveBtnText = saveBtn.textContent.trim();
 
     if (saveBtnText === '저장') {
       createSchedule(); // 생성 요청
-    } else if (saveBtnText === '수정') {
-      // 수정 요청 id 랑 데이터 가져와서 해보기
     }
-
     $modalScheduleEdit.style.display = 'none';
   });
 
+  // 일정 모달에서 일정 클릭 시 저장 버튼 텍스트 수정
   document.body.addEventListener('click', function (event) {
     if (event.target.closest('.modal-view-box')) {
-      saveBtn.textContent = '수정'; // "수정"으로 변경
+      saveBtn.textContent = '수정';
     }
   });
 
