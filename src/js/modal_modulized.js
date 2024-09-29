@@ -307,10 +307,10 @@ async function updateScheduleData(scheduleId, updatedData) {
 
     const result = await response.json();
     console.log('Update response:', result);
-
+    closeModal();
     await fetchData();
     updateCalendar();
-    closeModal();
+
     // location.reload();
   } catch (error) {
     console.error('Error updating schedule data:', error);
@@ -350,6 +350,7 @@ async function deleteSchedule() {
 function handleAddButtonClick() {
   elements.$modalScheduleEdit.style.display = 'block';
   elements.$clearBtn.style.display = 'none';
+  elements.$saveBtn.textContent = '저장'; // 추가 버튼 클릭 시 "저장"으로 변경
 }
 
 function handleModalViewClick(event) {
@@ -425,4 +426,5 @@ export {
   fetchScheduleData,
   updateModalContent,
   filteredScheduleData,
+  updateScheduleData,
 };
