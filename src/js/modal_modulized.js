@@ -1,18 +1,12 @@
 // modal_schedule.js
 import { updateCalendar, fetchData, currentDate } from './calendar.js';
 
-const formatDateToKST = (dateString) => {
-  const date = new Date(dateString);
-  const kstOffset = 9 * 60;
-  const kstDate = new Date(date.getTime() + kstOffset * 60000);
-  return kstDate.toISOString().slice(0, 19).replace('T', ' ');
-};
-
 // State management
 const state = {
   scheduleData: [],
   originalSchedule: null,
   selectedScheduleId: null,
+  selectedDate: null,
 };
 
 // DOM Elements
@@ -47,6 +41,7 @@ function handleCalendarDayClick(event) {
   const clickedDay = findClickedDay(event.target);
   if (clickedDay) {
     const date = extractDateFromClickedDay(clickedDay);
+    state.selectedDate = date;
     showScheduleModal(date);
   }
 }
@@ -345,15 +340,37 @@ async function deleteSchedule() {
     console.error('에러:', error);
   }
 }
+function formatAddBtnDate(dateString) {
+  const date = new Date(dateString);
 
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더함
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}년 ${month}월 ${day}일`;
+}
 // 이벤트 헨들러
 function handleAddButtonClick() {
+  console.log(state.selectedDate);
   elements.$modalScheduleEdit.style.display = 'block';
   elements.$clearBtn.style.display = 'none';
   elements.$saveBtn.textContent = '저장'; // 추가 버튼 클릭 시 "저장"으로 변경
+  document.querySelector('.modal-edit-container .modal-title').value = '';
+  document.querySelector('.textarea-container textarea').value = '';
+  document.querySelector('#selectedDate').textContent = formatAddBtnDate(
+    state.selectedDate
+  );
+  document.querySelector('#completeDate').textContent = formatAddBtnDate(
+    state.selectedDate
+  );
+  document.querySelector('#selectedTime').textContent = '00:00';
+  document.querySelector('#completeTime').textContent = '00:00';
 }
 
 function handleModalViewClick(event) {
+  if (event.target === elements.$addBtn) {
+    handleAddButtonClick();
+  }
   if (
     event.target === elements.$modalScheduleView ||
     event.target === elements.$closeBtn
