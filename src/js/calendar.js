@@ -422,8 +422,6 @@ function closeDeleteModal() {
 
 // 삭제 확인 버튼
 deleteConfirmBtn.addEventListener("click", () => {
-  console.log(itemToDelete, "itemToDelete");
-  console.log(scheduleIdToDelete, "scheduleIdToDelete");
   if (itemToDelete && scheduleIdToDelete) {
     deleteSchedule(scheduleIdToDelete);
   } else {
@@ -547,4 +545,4 @@ async function init() {
 
 init();
 
-export { updateCalendar, fetchData, currentDate, schedules };
+export { updateCalendar, fetchData, currentDate, schedules, updateTodaySchedules, updateSidebarSchedules };
