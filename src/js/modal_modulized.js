@@ -31,18 +31,18 @@ const elements = {
   $modalDeleteCancelBtn: document.querySelector('.delete-cancel-btn'),
 };
 
-// func: 시간 포맷 설정
+// func: 시간 포맷 설정(HH:MM)
 function formatDateTime(dateTimeString) {
-  // 정규 표현식을 사용하여 "HH:MM" 부분을 추출
   const match = dateTimeString.match(/\d{2}:\d{2}/);
 
   if (!match) {
     throw new Error('입력된 형식이 잘못되었습니다.');
   }
 
-  return match[0]; // "HH:MM" 형태의 시간 반환
+  return match[0];
+
 }
-// Calendar interaction functions
+// 클릭한 날짜는
 function handleCalendarDayClick(event) {
   const clickedDay = findClickedDay(event.target);
   if (clickedDay) {
@@ -51,10 +51,12 @@ function handleCalendarDayClick(event) {
   }
 }
 
+// 클릭한 요소의 가장 가까운 td를 가져오기
 function findClickedDay(element) {
   return element.closest('td.calendar-day, td.prev-month, td.next-month');
 }
 
+// func: 클릭한 날짜 추출하는 함수
 function extractDateFromClickedDay(clickedDay) {
   let currentYear = parseInt(elements.calendarYearElement.textContent);
   let currentMonth = parseInt(elements.calendarMonthElement.textContent) - 1;
@@ -203,7 +205,7 @@ function renderScheduleContent(filteredData) {
     )
     .join('');
 }
-
+// ----------------------------------------------------------------------------------------
 // Schedule editing functions
 function populateEditModal(schedule) {
   const startDate = new Date(schedule.schedule_start);
