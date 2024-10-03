@@ -38,7 +38,6 @@ function formatDateTime(dateTimeString) {
   }
 
   return match[0];
-
 }
 // Calendar interaction functions
 function handleCalendarDayClick(event) {
@@ -205,7 +204,7 @@ function renderScheduleContent(filteredData) {
     .join('');
 }
 
-// Schedule editing functions
+// 일정 수정 시 선택한 일정 세부 정보 설정
 function populateEditModal(schedule) {
   const startDate = new Date(schedule.schedule_start);
   const endDate = new Date(schedule.schedule_end);
@@ -236,6 +235,7 @@ function populateEditModal(schedule) {
   document.querySelector('.textarea-container textarea').value =
     schedule.schedule_description || '';
 }
+// 날짜, 시간 변환
 function convertToStandardFormat(dateTimeString) {
   const match = dateTimeString.match(
     /(\d{4})년 (\d{1,2})월 (\d{1,2})일 (\d{1,2}):(\d{2})/
@@ -304,7 +304,6 @@ async function updateScheduleData(scheduleId, updatedData) {
     closeModal();
     await fetchData();
     updateCalendar();
-
     updateTodaySchedules();
     updateSidebarSchedules();
   } catch (error) {
