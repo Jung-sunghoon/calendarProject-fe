@@ -51,8 +51,8 @@ function handleCalendarDayClick(event) {
 }
 
 // 클릭한 요소의 가장 가까운 td를 가져오기
-function findClickedDay(element) {
-  return element.closest('td.calendar-day, td.prev-month, td.next-month');
+function findClickedDay(td) {
+  return td.closest('td.calendar-day, td.prev-month, td.next-month');
 }
 
 // func: 클릭한 날짜 추출하는 함수
@@ -91,8 +91,8 @@ function extractDateFromClickedDay(clickedDay) {
 // Modal management functions
 function showScheduleModal(date) {
   updateModalContent(date);
-  elements.$modalScheduleView.style.display = 'block';
   fetchScheduleData(date);
+  elements.$modalScheduleView.style.display = 'block';
 }
 
 function updateModalContent(date) {
