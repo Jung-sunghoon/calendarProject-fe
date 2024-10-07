@@ -39,7 +39,7 @@ function formatDateTime(dateTimeString) {
 
   return match[0];
 }
-// Calendar interaction functions
+
 function handleCalendarDayClick(event) {
   const clickedDay = findClickedDay(event.target);
   if (clickedDay) {
@@ -427,8 +427,8 @@ function handleDeleteCancelClick() {
 // 초기화
 function initializeEventListeners() {
   document.body.addEventListener('click', handleCalendarDayClick);
-  elements.$addBtn.addEventListener('click', handleAddButtonClick);
   window.addEventListener('click', handleModalViewClick);
+  elements.$addBtn.addEventListener('click', handleAddButtonClick);
   elements.$saveBtn.addEventListener('click', handleSaveButtonClick);
   elements.$clearBtn.addEventListener('click', handleClearButtonClick);
   elements.$modalDeleteConfirmBtn.addEventListener(
